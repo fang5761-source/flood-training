@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>精銳救援隊 - 防汛簽證練習系統</title>
+    
+    <!-- 分享時出現的預覽圖與說明 -->
+    <meta property="og:title" content="🛡️ 精銳救援隊 - 防汛簽證練習系統">
+    <meta property="og:description" content="本系統由 散木團隊 開發製作，提供專業防汛戰術練習與全篇章導讀。">
+    <meta property="og:type" content="website">
+    <!-- 這裡預設一個圖標，分享時會更專業 -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%232d3a30%22/><path d=%22M50 15 L80 30 L80 60 C80 75 50 85 50 85 C50 85 20 75 20 60 L20 30 Z%22 fill=%22%234f772d%22 stroke=%22%23f1ede4%22 stroke-width=%223%22/><path d=%22M30 55 Q50 45 70 55 T70 65%22 fill=%22none%22 stroke=%22%23bc6c25%22 stroke-width=%224%22/></svg>">
+
     <style>
         :root { 
             --primary: #2d3a30; /* 戰術深綠 */
@@ -253,9 +261,6 @@
             margin-top: 20px;
             font-weight: bold;
         }
-
-        /* iOS 指引動畫 */
-        .ios-hint-img { width: 100%; border-radius: 10px; margin: 10px 0; border: 1px solid #ccc; }
     </style>
 </head>
 <body>
@@ -263,7 +268,7 @@
 <div class="app-container">
     <div class="header">
         <h2>🛡️ 防汛簽證練習系統</h2>
-        <div id="progress">進度載入中...</div>
+        <div id="progress">進度讀取中...</div>
     </div>
 
     <!-- 升級版多音軌播放器 -->
@@ -303,36 +308,35 @@
 
         <div class="btn-group" style="margin-top:25px;">
             <button class="main-btn" id="submit-btn" onclick="checkAnswer()">提交判斷</button>
-            <button class="main-btn" id="next-btn" onclick="nextQuestion()" style="display:none;">進入下一題</button>
+            <button class="main-btn" id="next-btn" onclick="nextQuestion()" style="display:none;">前進下一題</button>
             
             <div class="action-row">
                 <button class="sub-btn" onclick="shuffleCurrentMode()">隨機出題</button>
                 <button class="sub-btn" onclick="resetProgress()">重置紀錄</button>
             </div>
             
-            <!-- 新增功能列 -->
             <div class="action-row">
                 <button class="sub-btn share-btn" onclick="shareToLine()">🟢 LINE 分享</button>
-                <button class="sub-btn install-btn" onclick="showInstallInstructions()">📲 安裝到主畫面</button>
+                <button class="sub-btn install-btn" onclick="showInstallInstructions()">📲 把我放進手機桌面</button>
             </div>
         </div>
     </div>
 
     <div class="footer-info">
         <strong>本系統由 散木團隊 開發製作</strong><br>
-        <span id="dev-info" style="cursor:pointer; text-decoration:underline;" onclick="showUpdateLog()">版本：v1.0.11 | 更新日：115/03/23 (查看更新)</span>
+        <span id="dev-info" style="cursor:pointer; text-decoration:underline;" onclick="showUpdateLog()">版本：v1.0.12 | 更新日：115/03/23 (查看更新內容)</span>
     </div>
 </div>
 
 <!-- 更新紀錄彈窗 -->
 <div id="updateModal" class="modal">
     <div class="modal-content">
-        <div class="modal-header">🚩 戰術升級簡報 (v1.0.11)</div>
+        <div class="modal-header">🚩 戰術升級簡報 (v1.0.12)</div>
         <div class="update-list">
-            • 🔗 <b>LINE 分享</b>：一鍵將練習系統分享給同袍。<br>
-            • 📱 <b>App 化安裝</b>：支援將系統固定在手機桌面，開啟更快速。<br>
-            • 🎨 <b>介面微調</b>：優化按鈕佈局與點擊區域。<br>
-            • 🛠️ <b>穩定性</b>：優化音軌切換時的載入邏輯。
+            • 🎨 <b>App 圖標設計</b>：新增專屬桌面 Icon，更有專業感。<br>
+            • 🗣️ <b>白話導引</b>：全面翻修安裝指引，聽得懂、做得出。<br>
+            • 🔗 <b>分享優化</b>：分享至 LINE 時會呈現系統縮圖與標題。<br>
+            • 🛠️ <b>視覺微調</b>：優化戰術迷彩風格配色細節。
         </div>
         <button class="close-modal" onclick="closeUpdateLog()">收到</button>
     </div>
@@ -341,11 +345,11 @@
 <!-- 安裝指引彈窗 -->
 <div id="installModal" class="modal">
     <div class="modal-content">
-        <div class="modal-header">📲 安裝到手機主畫面</div>
+        <div class="modal-header">📲 把我放進手機桌面吧！</div>
         <div id="install-body" class="update-list">
             <!-- 內容由 JS 根據設備判斷 -->
         </div>
-        <button class="close-modal" onclick="closeInstallModal()">了解</button>
+        <button class="close-modal" onclick="closeInstallModal()">了解！</button>
     </div>
 </div>
 
@@ -361,7 +365,7 @@ const AUDIO_DATA = {
 const basicQuestions = [
     { q: "1. 關於洪水的特性，下列哪些敘述正確？(複選)", options: ["具有突發性", "力量非常大", "完全可以精準預測", "環境多變難以掌握"], ans: [0, 1, 3], analysis: "洪水力量大且難預測。救援前第一步是判斷環境，不是盲目衝進去！" },
     { q: "2. 台灣洪水具有哪些特徵？(複選)", options: ["降雨非常集中", "地形陡峭", "河川長度極長", "多屬於急流型洪水"], ans: [0, 1, 3], analysis: "台灣河川短促、坡度大，流速很快，足以沖倒成年人。" },
-    { q: "3. 關於「速度平方效應」，下列哪些說法是正確的？(複選)", options: ["流速增加 1 倍，力量增加 2 倍", "流速增加 1 倍，力量增加 4 倍", "流速增加 3 倍，力量增加 9 倍", "水流推力與流速的平方成正比"], ans: [1, 2, 3], analysis: "流速只要快一點點，力量是成平方倍跳上去的，這是科學基礎。" },
+    { q: "3. 關於「速度平方效應」，下列哪些說法是正確特？(複選)", options: ["流速增加 1 倍，力量增加 2 倍", "流速增加 1 倍，力量增加 4 倍", "流速增加 3 倍，力量增加 9 倍", "水流推力與流速的平方成正比"], ans: [1, 2, 3], analysis: "流速只要快一點點，力量是成平方倍跳上去的，這是科學基礎。" },
     { q: "4. 當流速達到多少時，一般成人通常就站不住了？(複選)", options: ["流速 0.5 m/s", "流速 1.5 m/s 開始不穩", "流速 2 m/s 幾乎站不住", "流速 3 m/s 成人會被沖倒"], ans: [1, 2, 3], analysis: "1.5公尺/秒就開始晃了，3公尺/秒以上絕對會被沖走。" },
     { q: "5. 急流環境中常見的「過濾機 (Strainer)」障礙物包含哪些？(複選)", options: ["水中的倒木", "橋墩結構", "鐵欄杆", "河岸邊的緩流區"], ans: [0, 1, 2], analysis: "Strainer 是會讓水流過、但把人卡住的東西，非常致命！" },
     { q: "6. 關於「回流區 (Hydraulic)」，下列敘述哪些正確？(複選)", options: ["又稱為液壓區", "水流越過落差後形成", "人掉進去會被不斷拉回", "是絕對安全的休息區"], ans: [0, 1, 2], analysis: "回流區會把人捲住，讓人無法自行脫困，要非常小心。" },
@@ -391,7 +395,7 @@ const basicQuestions = [
     { q: "30. 關於急流專用頭盔的敘述，下列何者正確？(複選)", options: ["必須具備排水孔以避免水壓影響", "主要功能為保護頭部碰撞岩石", "完全不透水設計", "防止碰撞岩石"], ans: [0, 1, 3], analysis: "排水孔防止水壓扭傷脖子，防撞最重要。" },
     { q: "31. 執行「單人涉水」技術時，應注意哪些細節？(複選)", options: ["身體應微向上游方向傾斜", "必須使用長杖探測水底狀況", "大步前進", "確保腳步穩定再前進"], ans: [0, 1, 3], analysis: "重心放低，長杖是你的第三隻腳。" },
     { q: "32. 關於「五人涉水」隊形的優點，下列敘述何者正確？(複選)", options: ["形成一道穩定的「人牆」結構", "穩定性最高", "適合應用於較強的水流環境", "移動速度最快"], ans: [0, 1, 2], analysis: "人牆隊形可以有效抗衡強水流。" },
-    { q: "33. 拋繩袋內的浮水繩規格，一般標準為何？(複選)", options: ["直徑約 8–10 mm", "長度約 15–30 m", "材質必須能漂浮於水面", "直徑至少要 20 mm 以上"], ans: [0, 1, 2], analysis: "長度要適中，重點是要會浮在水上。" },
+    { q: "33. 拋繩袋內的負載繩規格，一般標準為何？(複選)", options: ["直徑約 8–10 mm", "長度約 15–30 m", "材質必須能漂浮於水面", "直徑至少要 20 mm 以上"], ans: [0, 1, 2], analysis: "長度要適中，重點是要會浮在水上。" },
     { q: "34. 救援小組組長在任務現場的主要職責為何？(複選)", options: ["負責任務整體的指揮與決策", "進行動態風險評估", "下令救援方式的切換", "親自架設繩索細節"], ans: [0, 1, 2], analysis: "組長是大腦，要留在岸上觀察全局。" },
     { q: "35. 當救援現場噪音巨大導致無線電受干擾時，應如何確保通訊？(複選)", options: ["使用標準手勢進行溝通", "使用哨音口令", "大聲喊叫", "建立視覺通訊機制"], ans: [0, 1, 3], analysis: "水聲會蓋過吼叫，手勢跟哨音最準。" },
     { q: "36. 救援任務結束後的「撤離階段」，應包含哪些工作？(複選)", options: ["回收現場所有救援器材", "確認所有任務人員安全在位", "再次對環境進行安全評估", "建立暫時性的醫療安置點"], ans: [0, 1, 2], analysis: "撤退時要清點好所有人跟裝備。" },
@@ -399,7 +403,7 @@ const basicQuestions = [
     { q: "38. 關於救助器材的保養與管理，下列敘述何者正確？(複選)", options: ["器材使用後應定期檢查", "清洗泥沙並陰乾", "避開高溫曝曬", "受油污損壞應汰換"], ans: [0, 1, 2, 3], analysis: "保養好裝備，下次它才會救你。" },
     { q: "39. 專業小組在橫渡系統架設上的速度要求？(複選)", options: ["10 分鐘內完成架設", "快速部署能力", "精確協同分工", "一小時內完成"], ans: [0, 1, 2], analysis: "救人是搶時間，10分鐘是專業門檻。" },
     { q: "40. V 型橫渡系統在洪水救援中的主要應用價值為何？(複選)", options: ["可以精確控制受困者的移動方向", "非常適合用於擔架傷患的轉運", "架設過程比拋繩簡單快速", "只需要一條繩"], ans: [0, 1], analysis: "兩條繩控制，像遙控一樣精準平穩。" },
-    { q: "41. 如何判斷及建立穩固的「地錨固定點」？(複選)", options: ["使用三根鋼釘組成的三角地錨", "土壤緊實度與深度", "鋼釘打入一半深度即可", "鋼釘應盡量完全打入"], ans: [0, 1, 3], analysis: "釘子要打實，土壤太軟就不安全。" },
+    { q: "41. 如何判斷及建立穩固的「地錨固定點」？(複選)", options: ["使用三根鋼釘組組成三角地錨", "土壤緊實度與深度", "鋼釘打入一半深度即可", "鋼釘應盡量完全打入"], ans: [0, 1, 3], analysis: "釘子要打實，土壤太軟就不安全。" },
     { q: "42. 傷患救出後的轉運階段，應注意哪些事項？(複選)", options: ["立即將傷患送至安全區域", "輸送過程中應保持平穩", "必須防止傷患發生二次傷害", "速度第一"], ans: [0, 1, 2], analysis: "傷患脆弱，平穩送到安全區安置最重要。" },
     { q: "43. 洪水力學中，關於水流推力公式參數的敘述何者正確？(複選)", options: ["ρ 為水密度", "V 為水流速度", "A 為迎水面積", "Cd 為阻力係數"], ans: [0, 1, 2, 3], analysis: "這些數據決定了水流對人的衝擊力。" },
     { q: "44. 在偵察中發現「過濾機 (Strainer)」障礙物時，應如何處理？(複選)", options: ["標記並嚴禁靠近", "絕對規避路徑", "說明致命風險", "利用作站立點"], ans: [0, 1, 2], analysis: "那是奪命區，一定要叫弟兄避開。" },
@@ -490,20 +494,21 @@ function showInstallInstructions() {
     
     if (isIOS) {
         body.innerHTML = `
-            iPhone 用戶請依照下列戰術動作安裝：<br><br>
-            1. 點擊瀏覽器下方的<b>「分享」</b>圖示 (向上箭頭)。<br>
-            2. 往下滑動，選擇<b>「加入主畫面」</b>。<br>
-            3. 點擊右上角<b>「新增」</b>。<br>
-            <div style="text-align:center; color:var(--accent); font-weight:bold; margin-top:10px;">系統將像 App 一樣出現在桌面！</div>
+            iPhone 的弟兄請按這幾個動作：<br><br>
+            1. 點手機下面那個<b>「分享按鈕」</b>（就是一個正方形框框箭頭向上）。<br>
+            2. 手指往上滑一下，找到<b>「加入主畫面」</b>點下去。<br>
+            3. 最後點右上角的<b>「新增」</b>就好啦！<br>
+            <div style="text-align:center; color:var(--accent); font-weight:bold; margin-top:15px;">系統就會像 App 一樣出現在妳的桌面，超好找！</div>
         `;
     } else if (deferredPrompt) {
-        body.innerHTML = `偵測到支援快速安裝，請點擊下方按鈕啟動：<br><br><button class="main-btn" style="width:100%" onclick="triggerPWA()">立即安裝到桌面</button>`;
+        body.innerHTML = `妳的手機支援快速安裝！<br><br><button class="main-btn" style="width:100%" onclick="triggerPWA()">點我立即安裝到桌面</button>`;
     } else {
         body.innerHTML = `
-            Android/PC 用戶請依照下列戰術動作安裝：<br><br>
-            1. 點擊瀏覽器右上角的<b>「三個點」</b>或選單。<br>
-            2. 選擇<b>「安裝應用程式」</b>或<b>「加入主畫面」</b>。<br>
-            <div style="text-align:center; color:var(--accent); font-weight:bold; margin-top:10px;">即可像 App 一樣隨時開啟練習！</div>
+            Android 或電腦用戶請看這邊：<br><br>
+            1. 點瀏覽器右上角那<b>「三個點點」</b>。<br>
+            2. 找一下<b>「安裝應用程式」</b>或是<b>「加入主畫面」</b>。<br>
+            3. 按下去之後，妳的桌面就會出現練習圖標了！<br>
+            <div style="text-align:center; color:var(--accent); font-weight:bold; margin-top:15px;">下次練習不用再找網址囉！</div>
         `;
     }
     modal.style.display = 'block';
@@ -522,7 +527,6 @@ function closeInstallModal() {
     document.getElementById('installModal').style.display = 'none';
 }
 
-// 其餘功能邏輯 (保持不變)
 function changeAudioSource() {
     const selector = document.getElementById('audio-chapter-select');
     const audioPlayer = document.getElementById('lecture-audio');
