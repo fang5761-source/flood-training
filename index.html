@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>精銳救援隊 - 防汛簽證練習系統</title>
+    <style>
+        :root { --primary: #2c3e50; --secondary: #27ae60; --accent: #f39c12; --danger: #e74c3c; --bg: #f4f7f6; }
+        body { font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; background: var(--bg); margin: 0; padding: 15px; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 600px; background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); padding: 20px; box-sizing: border-box; }
+        .header { text-align: center; border-bottom: 2px solid #eee; margin-bottom: 20px; padding-bottom: 10px; }
+        .mode-selector { display: flex; gap: 10px; margin-bottom: 20px; }
+        .mode-btn { flex: 1; padding: 10px; border: 1px solid var(--primary); background: white; cursor: pointer; border-radius: 5px; font-weight: bold; }
+        .mode-btn.active { background: var(--primary); color: white; }
+        .question-box { background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid var(--primary); }
+        .option-item { display: block; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: 0.2s; position: relative; }
+        .option-item input { margin-right: 10px; }
+        .option-item.correct { border: 2px solid var(--secondary); background: #e8f5e9; }
+        .option-item.wrong { border: 2px solid var(--danger); background: #ffebee; }
+        .btn-group { display: flex; flex-direction: column; gap: 10px; }
+        .main-btn { padding: 15px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
+        .sub-btn { padding: 10px; background: #95a5a6; color: white; border: none; border-radius: 8px; cursor: pointer; }
+        .analysis { margin-top: 15px; padding: 15px; background: #fff3cd; border-left: 5px solid var(--accent); border-radius: 8px; display: none; line-height: 1.6; }
+        .footer-info { margin-top: 30px; padding-top: 15px; border-top: 1px dashed #ccc; color: #7f8c8d; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="header">
+        <h2>防汛簽證練習系統</h2>
+        <div id="progress">進度：載入中...</div>
+    </div>
+
+    <div class="mode-selector">
+        <button class="mode-btn active" id="btn-basic" onclick="switchMode('basic')">第一關：基礎複選</button>
+        <button class="mode-btn" id="btn-scenario" onclick="switchMode('scenario')">第二關：情境模擬</button>
+    </div>
+
+    <div id="quiz-area">
+        <div class="question-box" id="q-text"></div>
+        <div id="options-area"></div>
+        
+        <div class="analysis" id="analysis-box">
+            <strong>💡 白話解析：</strong><br>
+            <span id="analysis-text"></span>
+        </div>
+
+        <div class="btn-group" style="margin-top:20px;">
+            <button class="main-btn" id="submit-btn" onclick="checkAnswer()">送出判斷</button>
+            <button class="main-btn" id="next-btn" onclick="nextQuestion()" style="display:none;">下一題</button>
+            <button class="sub-btn" onclick="shuffleCurrentMode()">亂序出題 (挑戰用)</button>
+            <button class="sub-btn" onclick="resetProgress()" style="background:#7f8c8d">重置本關進度</button>
+        </div>
+    </div>
+
+    <div class="footer-info">
+        <strong>【開發與版本資訊】</strong><br>
+        <span id="dev-info">內容建置中...（姊姊晚點給內容）</span>
+    </div>
+</div>
+
+<script>
+// 題庫數據區
+const basicQuestions = [
+    { q: "關於洪水的特性，下列哪些敘述正確？(複選)", options: ["具有突發性", "力量非常大", "完全可以精準預測", "環境多變難以掌握"], ans: [0, 1, 3], analysis: "洪水力量大且難預測。救援前第一步是判斷環境，不是盲目衝進去！" },
+    { q: "台灣洪水具有哪些特徵？(複選)", options: ["降雨非常集中", "地形陡峭", "河川長度極長", "多屬於急流型洪水"], ans: [0, 1, 3], analysis: "台灣河川短促、坡度大，流速很快，足以沖倒成年人。" },
+    { q: "關於「速度平方效應」，下列哪些說法是正確的？(複選)", options: ["流速增加 1 倍，力量增加 2 倍", "流速增加 1 倍，力量增加 4 倍", "流速增加 3 倍，力量增加 9 倍", "水流推力與流速的平方成正比"], ans: [1, 2, 3], analysis: "流速只要快一點點，力量是成平方倍跳上去的，這是科學！" },
+    { q: "當流速達到多少時，一般成人通常就站不住了？(複選)", options: ["流速 0.5 m/s", "流速 1.5 m/s 開始不穩", "流速 2 m/s 幾乎站不住", "流速 3 m/s 成人會被沖倒"], ans: [1, 2, 3], analysis: "1.5公尺/秒就開始晃了，3公尺/秒以上絕對會被沖走。" },
+    { q: "急流環境中常見的「過濾機 (Strainer)」障礙物包含哪些？(複選)", options: ["水中的倒木", "橋墩結構", "鐵欄杆", "河岸邊的緩流區"], ans: [0, 1, 2], analysis: "Strainer 是會讓水流過、但把人卡住的東西，非常致命！" },
+    { q: "關於「回流區 (Hydraulic)」，下列敘述哪些正確？(複選)", options: ["又稱為液壓區", "水流越過落差後形成", "人掉進去會被不斷拉回", "是絕對安全的休息區"], ans: [0, 1, 2], analysis: "回流區會把人捲住，讓人無法自行脫困，要非常小心。" },
+    { q: "洪水救援的優先順序（低風險到高風險）為何？(複選)", options: ["優先使用非接觸式救援（如拋繩）", "儘量避免涉水救援", "船艇救援風險低於拋繩", "下水游泳接近是最後手段"], ans: [0, 1, 3], analysis: "能不接觸就不接觸，拋繩比下水安全多了！" },
+    { q: "急流游泳技術中，「防禦式游泳」的重點為何？(複選)", options: ["背部朝下", "腳朝下游方向", "雙腳抬起防止卡住", "頭部朝下游觀察"], ans: [0, 1, 2], analysis: "腳朝下游是用來推開障礙物、保護頭部的。" },
+    { q: "執行「三人涉水」隊形時，下列敘述哪些正確？(複選)", options: ["最強壯的人在上游位", "三人站成三角形", "互相抓住救生衣肩帶", "最強壯的人在最下游"], ans: [0, 1, 2], analysis: "上游的人負責破水，三角形結構最穩。" },
+    { q: "拋繩袋救援的正確步驟為何？(複選)", options: ["繩索一端需固定在救援者身上", "目標瞄準受困者的「上游」", "受困者抓住後應保持仰姿", "直接將繩索拉直對抗水流"], ans: [0, 1, 2], analysis: "要丟上游，水流才會把繩子帶到受困者手上。" },
+    { q: "合格的急流救生衣 (PFD) 具備哪些功能？(複選)", options: ["浮力約 70–100 N", "具備快速釋放扣", "具備救援拖曳環", "必須是自動充氣式"], ans: [0, 1, 2], analysis: "急流救生衣不能用充氣式的，會破！快速釋放扣是保命用的。" },
+    { q: "洪水固定點選擇 tree (樹木) 時，應注意哪些？(複選)", options: ["樹幹直徑建議 30 cm 以上", "根系要穩定", "土壤不能過於鬆軟", "只要有葉子就可以"], ans: [0, 1, 2], analysis: "大樹才拉得住橫渡的張力，小樹會被拔起來。" },
+    { q: "使用車輛作為固定點時，哪些位置較安全？(複選)", options: ["拖車鉤", "車架大樑", "保險桿", "車門把手"], ans: [0, 1], analysis: "保險桿通常是塑膠或薄金屬，一拉就掉。" },
+    { q: "關於橫渡繩的張力與角度，下列哪些敘述正確？(複選)", options: ["夾角越小，張力越大", "夾角 30度時張力是負載的 2 倍以上", "繩索應拉到死緊不能有弧度", "保留弧度可減少固定點受力"], ans: [0, 1, 3], analysis: "拉越直越危險！固定點可能會被扯斷。" },
+    { q: "急流救援三大原則為何？(複選)", options: ["不要讓救援者成為受困者", "優先使用非接觸救援", "建立下游安全", "英雄式下水救人"], ans: [0, 1, 2], analysis: "自己先安全，才能救人；下游安全是最後一道防線。" },
+    { q: "20人小組執行防汛時，應如何分工？(複選)", options: ["固定點組", "繩索架設組", "安全組", "打飯組"], ans: [0, 1, 2], analysis: "精準分工才能在10分鐘內快速部署。" },
+    { q: "「子惠結」在洪水救援中有何應用？(複選)", options: ["摩擦可預測", "滑動可控制", "漸進式鎖定", "只能用來綁鞋帶"], ans: [0, 1, 2], analysis: "子惠結是很好的戰術摩擦結，控繩很順。[cite: 3]" },
+    { q: "洪水危險矩陣中，哪些組合是極高風險？(複選)", options: ["腰部以上深度", "大腿深且流速 1m/s 以上", "小腿深且流速 3m/s 以上", "腳踝深且無流速"], ans: [0, 1, 2], analysis: "只要水深過大腿或流速過快，都是極限了。" },
+    { q: "夜間救援應注意哪些事項？(複選)", options: ["增加照明", "降低速度", "加強通信", "為了救人可以冒險"], ans: [0, 1, 2], analysis: "夜間看不清環境，安全監控要加倍。" },
+    { q: "救援任務的 SOP 五階段包含哪些？(複選)", options: ["偵察", "建立安全區", "救援與轉運", "撤離"], ans: [0, 1, 2, 3], analysis: "每個階段都有標準流程，不能亂跳。" },
+    { q: "關於「下縮 (Undercut)」，下列敘述何者正確？(複選)", options: ["水流侵蝕岩石底部形成", "人被吸入後很難脫困", "是游泳的捷徑", "屬於危險地形"], ans: [0, 1, 3], analysis: "Undercut 會把人吸進去石縫，絕對要避開。" },
+    { q: "急流繩索通常使用什麼材質？(複選)", options: ["聚丙烯 (可漂浮)", "重量輕", "純棉繩", "聚酯繩"], ans: [0, 1, 3], analysis: "急流用的繩子要會浮在水面上，才不會纏到水底雜物。" },
+    { q: "拋繩後的「擺盪救援」原理為何？(複選)", options: ["利用水流將人帶向岸邊", "受困者保持仰姿", "救援者用力往回拉", "繩索不應完全拉死"], ans: [0, 1, 3], analysis: "利用水的力量把人「盪」回來，最省力。" },
+    { q: "橫渡系統中，何時需要使用高張力系統？(複選)", options: ["長距離橫渡", "擔架輸送", "水流過強", "短距離拋繩"], ans: [0, 1, 2], analysis: "重負荷或遠距離才需要用到 3:1 或 5:1 的滑輪組。" },
+    { q: "環境偵察時應評估哪些重點？(複選)", options: ["流速", "水深", "障礙物", "固定點位置"], ans: [0, 1, 2, 3], analysis: "這些數據決定了我們要用什麼方式救人。" },
+    { q: "「攻擊式游泳」的使用時機為何？(複選)", options: ["快速接近目標", "短距離衝刺", "觀察下游地形", "避開障礙物"], ans: [0, 1], analysis: "攻擊式是趴著游，速度快但看不到前面，只能短程用。" },
+    { q: "救援者安全的核心觀念為何？(複選)", options: ["救人前先看自己裝備", "確認有無下游安全", "不冒無謂的險", "學長說衝就衝"], ans: [0, 1, 2], analysis: "救援者變成受困者是最大的失敗。" },
+    { q: "洪水中的「水流拖曳力」受哪些因素影響？(複選)", options: ["流速的平方", "迎水面積", "水的密度", "當天的氣溫"], ans: [0, 1, 2], analysis: "流速跟身體受力面積是關鍵，溫度的影響微乎其微。" },
+    { q: "建立「下游安全」的方式有哪些？(複選)", options: ["安排拋繩組在下游待命", "建立備份攔截點", "叫受困者自己游回來", "設置觀察員"], ans: [0, 1, 3], analysis: "萬一救援失敗，下游一定要有人能接住掉下去的人。" },
+    { q: "關於「急流頭盔」，下列敘述何者正確？(複選)", options: ["必須有排水孔", "防止水壓影響", "保護頭部撞擊岩石", "越重越好"], ans: [0, 1, 2], analysis: "排水孔很重要，不然水壓會把你的脖子扭傷。" },
+    { q: "單人涉水時應注意什麼？(複選)", options: ["身體向上游傾斜", "使用長杖探底", "大步奔跑", "重心放低"], ans: [0, 1, 3], analysis: "每一步都要踩穩，長杖就像你的第三隻腳。" },
+    { q: "五人涉水隊形的優點為何？(複選)", options: ["形成「人牆」", "穩定性最高", "適合強流", "移動速度最快"], ans: [0, 1, 2], analysis: "人多力量大，人牆可以有效抗衡強水流。" },
+    { q: "拋繩袋的繩長通常約為多少？(複選)", options: ["15 公尺", "30 公尺", "5 公尺", "100 公尺"], ans: [0, 1], analysis: "太長丟不準，太短救不到。15-30公尺最剛好。" },
+    { q: "下列哪些是救援小組組長的職責？(複選)", options: ["風險評估", "任務指揮", "行動決策", "親自下水游泳"], ans: [0, 1, 2], analysis: "組長是大腦，要留在岸上觀察全局，不能隨便下水。" },
+    { q: "洪水環境下通訊不順時該辦？(複選)", options: ["使用標準手勢", "使用哨音", "使用口令", "放棄溝通"], ans: [0, 1, 2], analysis: "聲音會被水聲蓋過，手勢跟哨音才是真可靠。" },
+    { q: "執行任務撤離時應注意什麼？(複選)", options: ["回收所有裝備", "清點人員", "確認環境安全", "隨地丟棄廢棄物"], ans: [0, 1, 2], analysis: "有秩序的撤退，才是專業的救援隊。" },
+    { q: "為什麼不能直接涉水救人？(複選)", options: ["流速難以預測", "水底可能有障礙物", "救援者易被沖倒", "因為懶惰"], ans: [0, 1, 2], analysis: "涉水是高風險行為，能拋繩就不要走水裡。" },
+    { q: "救援裝備使用後應如何保養？(複選)", options: ["清水沖洗泥沙", "陰乾不能曝曬", "檢查有無破損", "直接收進倉庫"], ans: [0, 1, 2], analysis: "泥沙會磨損繩索纖維，曝曬會讓救生衣材質劣化。" },
+    { q: "關於「橫渡系統架設速度」，特戰級要求是多少？(複選)", options: ["10 分鐘內", "快速部署", "精確協同", "一小時"], ans: [0, 1, 2], analysis: "救人是搶時間，10分鐘是專業的門檻。" },
+    { q: "V型橫渡系統的優點？(複選)", options: ["可控制橫渡方向", "適合傷患輸送", "架設最簡單", "只需要一條繩"], ans: [0, 1], analysis: "兩條繩控制，像遙控一樣精準。" },
+    { q: "如何判斷洪水固定點「地錨」的穩定度？(複選)", options: ["鋼釘打入深度", "土壤緊實度", "夾角是否適中", "隨便插一下就好"], ans: [0, 1, 2], analysis: "地錨是最後手段，每一根鋼釘都要打實。" },
+    { q: "傷患轉運時應注意什麼？(複選)", options: ["保持頭部高於水面", "避免二次傷害", "穩定輸送速度", "快速拉動"], ans: [0, 1, 2], analysis: "傷患很脆弱，平穩輸送比快更重要。" },
+    { q: "關於「洪水力學」，ρ 代表什麼？(複選)", options: ["水的密度", "影響推力的因素", "水的流速", "水的溫度"], ans: [0, 1], analysis: "密度跟力量有關，但在地球上我們主要看流速 V 的平方。" },
+    { q: "救援時遇到大型漂流木應如何處理？(複選)", options: ["暫停下水動作", "避開撞擊路徑", "建立觀察哨提醒", "嘗試接住它"], ans: [0, 1, 2], analysis: "漂流木力量巨大，千萬別去挑戰它。" },
+    { q: "為什麼要學習「子惠結」？(複選)", options: ["它是戰術用結", "摩擦分布均勻", "比一般結更安全", "只是為了好看"], ans: [0, 1, 2], analysis: "它是精銳救援隊的標準結組，控繩專業戶必學。[cite: 3]" },
+    { q: "洪水救援的「安全區」包含哪些？(複選)", options: ["裝備區", "醫療區", "指揮區", "販賣區"], ans: [0, 1, 2], analysis: "井然有序的區域劃分，能提高救援效率。" },
+    { q: "環境評估中，「水深 30 cm」代表什麼？(複選)", options: ["仍具威脅性", "可沖倒成人", "絕對安全", "需看流速決定"], ans: [0, 1, 3], analysis: "30公分加上流速，一樣能殺死人。" },
+    { q: "急流救生衣的「快速釋放扣」何時使用？(複選)", options: ["被卡住時", "需要脫離繩索時", "上廁所時", "平時練習"], ans: [0, 1], analysis: "當你被繩子拉入水底時，這是你最後的保命符。" },
+    { q: "建立固定點時，車輛應如何停放？(複選)", options: ["手剎車拉緊", "打入P檔", "輪胎後方加檔塊", "隨便停就好"], ans: [0, 1, 2], analysis: "車子如果滑動，整個系統就會垮掉。" },
+    { q: "簽證官在檢查繩索系統時應看什麼？(複選)", options: ["繩結正確度", "固定點強度", "備份系統有無", "繩子顏色"], ans: [0, 1, 2], analysis: "安全、正確、有備份，是簽證通過的鐵律。" }
+];
+
+const scenarioQuestions = [
+    { q: "【情境】發現受困者在河中石頭上，距離岸邊 20 公尺，水流急促。你該怎麼辦？(複選)", options: ["優先嘗試拋繩救援", "建立下游安全組", "派人直接游過去", "架設橫渡系統"], ans: [0, 1, 3], analysis: "能拋就拋，不能拋就架繩。直接游過去是最後手段。" },
+    { q: "【情境】架設橫渡繩時發現樹太細，旁邊有一台救助車。你該如何處理？(複選)", options: ["改用車輛拖車鉤當固定點", "車輛應拉緊手剎車並加檔塊", "兩者併用增加強度", "硬拉小樹試試看"], ans: [0, 1, 2], analysis: "活用裝備，車輛是很好的固定點，但要停穩。" },
+    { q: "【情境】受困者抓住拋繩後，被水流帶動。救援者應如何應對？(複選)", options: ["利用擺盪效應帶向岸邊", "保持繩索張力", "大喊指示受困者仰躺", "用力把繩子往回抽"], ans: [0, 1, 2], analysis: "利用水的力量讓他盪回來，別跟水硬碰硬。" },
+    { q: "【情境】三人涉水到一半，有人腳步滑動。該如何處置？(複選)", options: ["集體停止移動", "互相支撐穩住重心", "放手各自逃生", "撤回起點重來"], ans: [0, 1, 3], analysis: "隊友是一體的，穩住後再慢慢撤回。" },
+    { q: "【情境】夜間山洪救援，現場視線不良且通訊受阻。你該如何指揮？(複選)", options: ["增加照明設備", "使用哨音與手勢", "降低行動速度", "關掉頭燈省電"], ans: [0, 1, 2], analysis: "慢就是快，安全第一，通訊要用看的或聽哨音。" },
+    { q: "【情境】受困車輛在水中，水深及門，流速 2m/s。你該如何救援？(複選)", options: ["禁止弟兄涉水靠近", "使用拋繩或橫渡", "建立下游攔截網", "叫受困者開門走出來"], ans: [0, 1, 2], analysis: "2m/s 很強，開門水會灌進去更危險。岸上架繩救援最穩。" },
+    { q: "【情境】橫渡系統架好後，繩子拉得跟鋼弦一樣緊。簽證官該說什麼？(複選)", options: ["「太緊了，會扯斷固定點！」", "「放鬆一點，保留弧度。」", "「做得好，非常專業。」", "「檢查夾角是否過小。」"], ans: [0, 1, 3], analysis: "太緊不是好事，留點彈性（弧度）才是真安全。" },
+    { q: "【情境】任務完成準備撤離，現場剩下一堆廢棄救生衣碎片。該怎麼辦？(複選)", options: ["全部回收帶回處置", "落實環境復原", "清點人員與裝備", "丟在河邊紀念"], ans: [0, 1, 2], analysis: "帶走所有不屬於大自然的東東西。" },
+    { q: "【情境】發現下游觀察員擅離職守。你該如何處置？(複選)", options: ["立即暫停救援行動", "重新指派觀察員", "對該員實施糾正", "沒關係繼續救"], ans: [0, 1, 2], analysis: "下游安全是保命符，沒人在那看著絕對不能動手。" },
+    { q: "【情境】學員在急流中練習，沒穿防寒衣。你該提醒他什麼？(複選)", options: ["注意失溫風險", "防寒衣可提供浮力", "防寒衣可保護皮膚", "沒穿比較帥"], ans: [0, 1, 2], analysis: "水溫會帶走熱量，失溫會讓你肌肉抽筋失去功能。" },
+    { q: "【情境】使用地錨當固定點，鋼釘只打入一半。該如何簽證？(複選)", options: ["要求全部打入", "檢查土壤支撐力", "判定不合格", "這樣就可以了"], ans: [0, 1, 2], analysis: "安全不能打折，地錨要打到底才有用。" },
+    { q: "【情境】受困者極度恐慌，不肯抓住拋繩袋。該怎麼辦？(複選)", options: ["言語安撫穩定情緒", "重新精準拋投", "考慮船艇或橫渡接近", "轉頭就走"], ans: [0, 1, 2], analysis: "心裡建設也是救援的一部分，給他信心跟更好的設備。" },
+    { q: "【情境】救援中繩索被水底雜物卡住。該如何處理？(複選)", options: ["嘗試改變拉力角度解開", "若危及人員立即切斷", "用力死命拉", "派人下水去解開"], ans: [0, 1], analysis: "切莫硬拉，更不能在沒安全保護下派人去解繩。" },
+    { q: "【情境】山洪突然暴漲，流速瞬間變快。該如何反應？(複選)", options: ["全員撤往高處", "暫停所有水域作業", "加強下游觀察", "加速救人"], ans: [0, 1, 2], analysis: "大自然發威時，先躲避才是明智之舉。" },
+    { q: "【情境】學員架設子惠結時，圈數不夠。你該如何指導？(複選)", options: ["增加纏繞圈數", "解釋摩擦力原理", "判定動作不標準", "沒關係能鎖就好"], ans: [0, 1, 2], analysis: "圈數決定摩擦力，少一圈可能就會滑動失控。[cite: 3]" },
+    { q: "【情境】救援器材（如繩索）接觸到化學油污。該怎麼辦？(複選)", options: ["該繩索除役不再使用", "化學品會破壞纖維", "用強效洗潔劑洗乾淨就好", "標記為訓練用廢繩"], ans: [0, 1, 3], analysis: "化學傷害是看不見的，受損的繩子絕對不能再救人。" },
+    { q: "【情境】需要長距離橫渡，但只有一組滑輪。該如何架設？(複選)", options: ["架設簡單的 3:1 系統", "利用結組增加省力比", "尋找更多人幫忙拉", "放棄架設"], ans: [0, 1, 2], analysis: "利用物理原理，沒滑輪也能做省力系統。" },
+    { q: "【情境】學員在急流游泳時腳伸直踩水底。你該喊什麼？(複選)", options: ["「腳抬高！小心腳被卡住！」", "「保持防禦姿勢！」", "「腳朝下游！」", "「用力踩到底！」"], ans: [0, 1, 2], analysis: "腳卡在水底石縫是急流殺手，千萬別踩到底！" },
+    { q: "【情境】看到隊友救生衣的快速釋放扣沒關好。你該做什麼？(複選)", options: ["主動提醒或幫忙關好", "落實互助檢查", "不關沒關係", "判定該組不合格"], ans: [0, 1, 3], analysis: "互助檢查是精銳小組的基本功，命是大家的。" },
+    { q: "【情境】簽證時學員不清楚「Strainer」在哪。你該如何引導？(複選)", options: ["指著水中的倒木解說", "說明其「水過人不過去」特性", "要他自己看書", "現場模擬示範危險"], ans: [0, 1, 3], analysis: "實物教學最有效，讓他知道哪裡是禁區。" },
+    { q: "【情境】轉運傷患時水流突然變大。該如何應變？(複選)", options: ["穩定橫渡速度", "觀察員持續監看水情", "保護傷患頭部高於水", "直接把傷患丟進水裡"], ans: [0, 1, 2], analysis: "無論如何，傷患的安全與頭部空間是第一。 " },
+    { q: "【情境】任務結束後，隊友疲憊不願意收繩。你該說什麼？(複選)", options: ["「裝備保養也是訓練的一部分」", "「大家分工合作快收完」", "「隨便塞進車裡就好」", "「確認裝備沒遺失」"], ans: [0, 1, 3], analysis: "裝備是隊友，你要照顧它，下次它才會救你。" },
+    { q: "【情境】救援中通訊無線電沒電了。該怎麼辦？(複選)", options: ["啟動預備通訊計畫", "改用手勢或口令", "立即建立替代通訊", "大聲喊叫"], ans: [0, 1, 2], analysis: "備援計畫很重要，救援現場不能沒溝通。" },
+    { q: "【情境】評估固定點 tree 太老舊。你該如何決定？(複選)", options: ["放棄該固定點", "找尋更穩定的地錨或車輛", "試拉看看", "勉強使用"], ans: [0, 1], analysis: "老樹根系不穩，一拉就垮，絕對不能用。" },
+    { q: "【情境】救援現場出現大量圍觀群眾。該如何管理？(複選)", options: ["劃定警戒區禁止進入", "指派人員管制交通", "請民眾幫忙拉繩", "專心救人不管他們"], ans: [0, 1], analysis: "群眾會干擾救援且自身有危險，一定要隔開。" },
+    { q: "【情境】傷患被救上岸後臉色發白。你應採取的醫療動作？(複選)", options: ["注意保暖防止失溫", "維持呼吸道暢通", "立即送醫處置", "給他喝冰水"], ans: [0, 1, 2], analysis: "防汛救援後，保暖是存活的關鍵步驟。" },
+    { q: "【情境】學員在橫渡時將繩索纏繞在手掌上拉。你該糾正什麼？(複選)", options: ["「嚴禁纏繞手部！會被拉斷！」", "「使用正確握法」", "「這樣拉比較有力」", "「使用機械優勢輔助」"], ans: [0, 1, 3], analysis: "水流力量大到能拉斷人的手骨，絕對不能纏手！" },
+    { q: "【情境】偵察發現下游 100 公尺處有大型瀑布。你該如何決定？(複選)", options: ["下游安全組必須極度強化", "若風險過高應改採高空救援", "沒關係距離還遠", "建立多道攔截線"], ans: [0, 1, 3], analysis: "那是致命的威脅，防線要多做幾層。" },
+    { q: "【情境】學員使用拋繩時重心不穩跌倒。你該提醒什麼？(複選)", options: ["「站穩馬步，重心放低」", "「注意繩索拖曳力」", "「坐下拋繩也可以」", "「單手拋比較帥」"], ans: [0, 1, 2], analysis: "受困者抓住後的力量很大，沒站穩你會被拉進水裡。" },
+    { q: "【情境】簽證最後，學員表現優異。你該說什麼？(複選)", options: ["「恭喜通過簽證！」", "「回連隊要好好教導弟兄」", "「防汛作戰，安全第一」", "「你現在可以一個人去救災了」"], ans: [0, 1, 2], analysis: "傳承與安全，才是簽證真正的目的。" }
+];
+
+// App 核心邏輯 (其餘邏輯同上個版本)
+let currentMode = 'basic';
+let currentIndex = 0;
+let questions = [];
+
+function initApp() {
+    currentMode = localStorage.getItem('flood_mode') || 'basic';
+    const savedIndex = localStorage.getItem(`flood_index_${currentMode}`);
+    currentIndex = savedIndex ? parseInt(savedIndex) : 0;
+    
+    updateModeButtons();
+    loadQuestions();
+    showQuestion();
+    
+    // 預留版本資訊更新
+    document.getElementById('dev-info').innerText = "版本：v1.0.0 | 最後更新：2026/03/23";
+}
+
+function switchMode(mode) {
+    currentMode = mode;
+    localStorage.setItem('flood_mode', mode);
+    const savedIndex = localStorage.getItem(`flood_index_${currentMode}`);
+    currentIndex = savedIndex ? parseInt(savedIndex) : 0;
+    
+    updateModeButtons();
+    loadQuestions();
+    showQuestion();
+}
+
+function updateModeButtons() {
+    document.getElementById('btn-basic').className = `mode-btn ${currentMode === 'basic' ? 'active' : ''}`;
+    document.getElementById('btn-scenario').className = `mode-btn ${currentMode === 'scenario' ? 'active' : ''}`;
+}
+
+function loadQuestions() {
+    questions = currentMode === 'basic' ? [...basicQuestions] : [...scenarioQuestions];
+}
+
+function showQuestion() {
+    if (currentIndex >= questions.length) {
+        document.getElementById('quiz-area').innerHTML = "<h3>✅ 恭喜完成本區所有練習！</h3><button class='main-btn' onclick='resetProgress()'>回第一題重新挑戰</button>";
+        return;
+    }
+    
+    const data = questions[currentIndex];
+    document.getElementById('progress').innerText = `進度：第 ${currentIndex + 1} / ${questions.length} 題`;
+    document.getElementById('q-text').innerText = data.q;
+    document.getElementById('analysis-box').style.display = 'none';
+    document.getElementById('submit-btn').style.display = 'block';
+    document.getElementById('next-btn').style.display = 'none';
+    
+    const optionsArea = document.getElementById('options-area');
+    optionsArea.innerHTML = '';
+    data.options.forEach((opt, i) => {
+        optionsArea.innerHTML += `<label class="option-item" id="opt-${i}"><input type="checkbox" value="${i}"> ${opt}</label>`;
+    });
+}
+
+function checkAnswer() {
+    const data = questions[currentIndex];
+    const inputs = document.querySelectorAll('input');
+    const selected = Array.from(document.querySelectorAll('input:checked')).map(el => parseInt(el.value));
+    
+    let isPerfect = true;
+    
+    data.options.forEach((_, i) => {
+        const item = document.getElementById(`opt-${i}`);
+        const isCorrect = data.ans.includes(i);
+        const isSelected = selected.includes(i);
+        
+        if (isCorrect) {
+            item.classList.add('correct');
+        }
+        if (isSelected && !isCorrect) {
+            item.classList.add('wrong');
+            isPerfect = false;
+        }
+        if (isCorrect && !isSelected) {
+            isPerfect = false;
+        }
+    });
+
+    document.getElementById('analysis-text').innerText = data.analysis;
+    document.getElementById('analysis-box').style.display = 'block';
+    document.getElementById('submit-btn').style.display = 'none';
+    document.getElementById('next-btn').style.display = 'block';
+}
+
+function nextQuestion() {
+    currentIndex++;
+    localStorage.setItem(`flood_index_${currentMode}`, currentIndex);
+    showQuestion();
+}
+
+function shuffleCurrentMode() {
+    for (let i = questions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [questions[i], questions[j]] = [questions[j], questions[i]];
+    }
+    currentIndex = 0;
+    showQuestion();
+}
+
+function resetProgress() {
+    if(confirm("確定要清除本關進度，從第一題重新開始嗎？")) {
+        localStorage.removeItem(`flood_index_${currentMode}`);
+        currentIndex = 0;
+        showQuestion();
+    }
+}
+
+initApp();
+</script>
+</body>
+</html>
