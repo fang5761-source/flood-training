@@ -9,9 +9,10 @@
             --primary: #2d3a30; /* 戰術深綠 */
             --secondary: #4f772d; /* 軍綠色 */
             --accent: #bc6c25; /* 戰術大地橙 */
+            --line-green: #06c755; /* LINE 代表色 */
             --danger: #991b1b; 
             --bg-gradient: linear-gradient(135deg, #1a2421 0%, #2d3a30 100%);
-            --card-bg: #fdfaf6; /* 淺沙色/骨色底，確保閱讀舒適 */
+            --card-bg: #fdfaf6; /* 淺沙色/骨色底 */
             --text-main: #131c15;
         }
         
@@ -37,6 +38,7 @@
             box-sizing: border-box; 
             margin: auto;
             border: 2px solid #3d4e41;
+            position: relative;
         }
 
         .header { 
@@ -154,15 +156,21 @@
 
         .main-btn:hover { background: #3d4e41; transform: translateY(-1px); }
 
+        .action-row { display: flex; gap: 10px; margin-top: 10px; }
         .sub-btn { 
+            flex: 1;
             padding: 12px; 
             background: #57635a; 
             color: white; 
             border: none; 
             border-radius: 8px; 
             cursor: pointer; 
-            font-size: 14px; 
+            font-size: 13px; 
+            font-weight: bold;
         }
+
+        .share-btn { background: var(--line-green); }
+        .install-btn { background: var(--accent); }
 
         .analysis { 
             margin-top: 20px; 
@@ -212,6 +220,42 @@
             margin-top: 8px;
             font-weight: 800;
         }
+
+        /* 彈窗樣式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.7);
+        }
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: 15% auto;
+            padding: 24px;
+            border: 2px solid var(--primary);
+            width: 85%;
+            max-width: 400px;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        .modal-header { border-bottom: 2px solid #ddd; padding-bottom: 10px; margin-bottom: 15px; font-weight: 800; color: var(--primary); font-size: 1.1rem; }
+        .update-list { font-size: 15px; line-height: 1.8; color: #333; }
+        .close-modal {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 8px;
+            float: right;
+            cursor: pointer;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        /* iOS 指引動畫 */
+        .ios-hint-img { width: 100%; border-radius: 10px; margin: 10px 0; border: 1px solid #ccc; }
     </style>
 </head>
 <body>
@@ -259,17 +303,49 @@
 
         <div class="btn-group" style="margin-top:25px;">
             <button class="main-btn" id="submit-btn" onclick="checkAnswer()">提交判斷</button>
-            <button class="main-btn" id="next-btn" onclick="nextQuestion()" style="display:none;">前進下一題</button>
-            <div style="display:flex; gap:10px; margin-top:5px;">
-                <button class="sub-btn" style="flex:1" onclick="shuffleCurrentMode()">隨機出題</button>
-                <button class="sub-btn" style="flex:1; background:#8a8d81" onclick="resetProgress()">重置紀錄</button>
+            <button class="main-btn" id="next-btn" onclick="nextQuestion()" style="display:none;">進入下一題</button>
+            
+            <div class="action-row">
+                <button class="sub-btn" onclick="shuffleCurrentMode()">隨機出題</button>
+                <button class="sub-btn" onclick="resetProgress()">重置紀錄</button>
+            </div>
+            
+            <!-- 新增功能列 -->
+            <div class="action-row">
+                <button class="sub-btn share-btn" onclick="shareToLine()">🟢 LINE 分享</button>
+                <button class="sub-btn install-btn" onclick="showInstallInstructions()">📲 安裝到主畫面</button>
             </div>
         </div>
     </div>
 
     <div class="footer-info">
         <strong>本系統由 散木團隊 開發製作</strong><br>
-        <span id="dev-info">版本：v1.0.9 | 最後更新：115/03/23</span>
+        <span id="dev-info" style="cursor:pointer; text-decoration:underline;" onclick="showUpdateLog()">版本：v1.0.11 | 更新日：115/03/23 (查看更新)</span>
+    </div>
+</div>
+
+<!-- 更新紀錄彈窗 -->
+<div id="updateModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">🚩 戰術升級簡報 (v1.0.11)</div>
+        <div class="update-list">
+            • 🔗 <b>LINE 分享</b>：一鍵將練習系統分享給同袍。<br>
+            • 📱 <b>App 化安裝</b>：支援將系統固定在手機桌面，開啟更快速。<br>
+            • 🎨 <b>介面微調</b>：優化按鈕佈局與點擊區域。<br>
+            • 🛠️ <b>穩定性</b>：優化音軌切換時的載入邏輯。
+        </div>
+        <button class="close-modal" onclick="closeUpdateLog()">收到</button>
+    </div>
+</div>
+
+<!-- 安裝指引彈窗 -->
+<div id="installModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">📲 安裝到手機主畫面</div>
+        <div id="install-body" class="update-list">
+            <!-- 內容由 JS 根據設備判斷 -->
+        </div>
+        <button class="close-modal" onclick="closeInstallModal()">了解</button>
     </div>
 </div>
 
@@ -281,6 +357,7 @@ const AUDIO_DATA = {
     ch4: "ch4.mp3"
 };
 
+// 題目數據庫 (略，與前版一致)
 const basicQuestions = [
     { q: "1. 關於洪水的特性，下列哪些敘述正確？(複選)", options: ["具有突發性", "力量非常大", "完全可以精準預測", "環境多變難以掌握"], ans: [0, 1, 3], analysis: "洪水力量大且難預測。救援前第一步是判斷環境，不是盲目衝進去！" },
     { q: "2. 台灣洪水具有哪些特徵？(複選)", options: ["降雨非常集中", "地形陡峭", "河川長度極長", "多屬於急流型洪水"], ans: [0, 1, 3], analysis: "台灣河川短促、坡度大，流速很快，足以沖倒成年人。" },
@@ -347,14 +424,14 @@ const scenarioQuestions = [
     { q: "60. 【情境】簽證考核中學員未對下游進行安全布置就拋繩。應如何處理？(複選)", options: ["判定該項簽證不合格", "說明下游安全是生命防線", "要求立即補設安全防護", "給過"], ans: [0, 1, 2], analysis: "安全原則不打折，這是簽證底線。" },
     { q: "61. 【情境】偵察發現上遊山洪預警。應如何處理？(複選)", options: ["全員立即撤離水域", "暫停救援作業", "移往高處", "加速救援"], ans: [0, 1, 2], analysis: "洪水來襲別挑戰大自然，保命撤退第一。" },
     { q: "62. 【情境】橫渡繩路徑正接觸尖銳岩石。應如何處理？(複選)", options: ["使用繩套或防磨墊保護", "調整固定點位置避開接觸", "說明受損風險", "直接使用"], ans: [0, 1, 2], analysis: "繩子磨石頭會瞬間斷裂，加墊或移位。" },
-    { q: "63. 【情境】學員拋繩落在受困者正下游。應如何處理？(複選)", options: ["糾正瞄準上游方向", "說明水流帶動原理", "收回重丟", "丟得好"], ans: [0, 1, 2], analysis: "丟下游受困者根本抓不到繩子。" },
+    { q: "63. 【情境】學員拋繩落在受困者正下游。應如何處理？(複選)", options: ["糾正瞄準上游方向", "說明水流帶動原理", "要求收回重丟", "丟得好"], ans: [0, 1, 2], analysis: "丟下游受困者根本抓不到繩子。" },
     { q: "64. 【情境】需運送傷患橫渡 40 公尺強流區。應如何處理？(複選)", options: ["架設高張力橫渡系統", "滑輪組增加穩定度", "單人涉水背負", "讓傷患游過"], ans: [0, 1], analysis: "重負載或長距需省力機械優勢。" },
     { q: "65. 【情境】學員將繩繫在救援車保險桿。應如何處理？(複選)", options: ["立即糾正強度不足風險", "說明張力扯落危險", "指導尋找拖車鉤", "可以接受"], ans: [0, 1, 2], analysis: "保險桿只是塑膠皮，絕對拉不動系統。" },
     { q: "66. 【情境】學員穿戴救生衣後未對快速釋放扣進行檢查。應如何處理？(複選)", options: ["提醒檢查功能性", "說明脫離作用", "要求互助檢查", "不理會"], ans: [0, 1, 2], analysis: "那是最後保命按鈕，每天都要檢查。" },
     { q: "67. 【情境】受困者在回流區 (Hydraulic) 內打轉。應如何處理？(複選)", options: ["利用拋繩袋實施救援", "救援人員嚴禁進入該區", "評估回流區的力量", "下水營救"], ans: [0, 1, 2], analysis: "那是死亡地帶，用非接觸方式救人。" },
     { q: "68. 【情境】任務完成撤離，現場留有垃圾破損器材。應如何處理？(複選)", options: ["落實環境復原帶走垃圾", "全數回收清點器材", "人員平安離開", "破損留現場"], ans: [0, 1, 2], analysis: "有紀律的部隊收工時不留一片紙屑。" },
     { q: "69. 【情境】現場有一棵倒在河中的大樹 (Strainer)。應如何處理？(複選)", options: ["指出過濾機致命風險", "嚴禁人員漂向該區域", "致命地形陷阱說明", "休息區"], ans: [0, 1, 2], analysis: "看見 Strainer 就躲得遠遠的。" },
-    { q: "70. 【情境】橫渡系統夾角角度過小。應如何處理？(複選)", options: ["立即增加系統弧度", "說明固定點失效風險", "重新調整固定點位置", "拉更緊"], ans: [0, 1, 2], analysis: "角度太小會扯斷地錨，一定要放鬆。" },
+    { q: "70. 【情境】橫渡系統夾角角度過小。應如何處理？(複選)", options: ["立即增加系統弧度", "說明固定點失效風險", "重新調整固定點位置", "拉更緊"], ans: [0, 1, 2], analysis: "角度太小會扯斷地錨，一定要裝備放鬆。" },
     { q: "71. 【情境】隊員拉繩時將繩索纏繞在手臂上。應如何處理？(複選)", options: ["喊禁止纏繞！會扯斷手臂！", "指導正確握法", "嚴重違規糾正", "沒關係"], ans: [0, 1, 2], analysis: "水流力量大到能拉斷手骨，絕不纏手。" },
     { q: "72. 【情境】下游 50 公尺有大型障礙設施。應如何處理？(複選)", options: ["強化下游安全組防線", "嚴禁人員下水游泳", "考慮高處救援方案", "不理會"], ans: [0, 1, 2], analysis: "下游有陷阱，防線要做多幾層。" },
     { q: "73. 【情境】固定點樹木生長在土鬆陡坡。應如何處理？(複選)", options: ["視為不穩定固定點棄用", "說明根系拔起風險", "尋找車體替代", "先試拉"], ans: [0, 1, 2], analysis: "根基不穩，不能拿命去賭。" },
@@ -364,13 +441,15 @@ const scenarioQuestions = [
     { q: "77. 【情境】學員未戴頭盔下水。應如何處理？(複選)", options: ["立即停止補穿", "說明岩石撞擊危險", "判定安全意識不合格", "繼續"], ans: [0, 1, 2], analysis: "水底石頭多，沒頭盔等於沒保險。" },
     { q: "78. 【情境】發現繩索磨損斷絲。應如何處理？(複選)", options: ["立即判定該繩除役", "禁止負重任務使用", "標記不可承人廢繩", "繼續用"], ans: [0, 1, 2], analysis: "繩子是生命線，壞了絕對不能用。" },
     { q: "79. 【情境】目標位於石縫 (Undercut) 前方。應如何處理？(複選)", options: ["提醒嚴防吸入地形風險", "路徑絕對規避區域", "加強對危險點監控", "沒關係"], ans: [0, 1, 2], analysis: "Undercut 是吞人的洞，離遠一點。" },
-    { q: "80. 【情境】簽證考核順利完成。教官應如何勉勵？(複選)", options: ["勉勵安全第一團隊至上", "回連隊落實簽證傳承", "恭喜簽證合格", "表現普通"], ans: [0, 1, 2], analysis: "簽證是為了專業與安全的傳承。" }
+    { q: "80. 【情境】簽證考核順利完成。教官應如何勉勵？(複選)", options: ["勉勵安全第一團隊至上", "回連隊落實簽證傳承", "恭喜簽證合格取得簽證", "表現普通"], ans: [0, 1, 2], analysis: "簽證是為了專業與安全的傳承。" }
 ];
 
 let currentMode = 'basic';
 let currentIndex = 0;
 let questions = [];
+let deferredPrompt;
 
+// 初始化
 function initApp() {
     currentMode = localStorage.getItem('flood_mode') || 'basic';
     const savedIndex = localStorage.getItem(`flood_index_${currentMode}`);
@@ -380,8 +459,70 @@ function initApp() {
     loadQuestions();
     showQuestion();
     changeAudioSource();
+
+    // 監聽 PWA 安裝事件
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+    });
 }
 
+function showUpdateLog() {
+    document.getElementById('updateModal').style.display = 'block';
+}
+
+function closeUpdateLog() {
+    document.getElementById('updateModal').style.display = 'none';
+}
+
+// 分享到 LINE
+function shareToLine() {
+    const url = window.location.href;
+    const text = "🛡️ 精銳救援隊 - 防汛簽證練習系統：專業救援知識、全章節導讀。快來一起練習升級！";
+    window.open(`https://line.me/R/msg/text/?${encodeURIComponent(text + "\n" + url)}`, '_blank');
+}
+
+// 安裝指引
+function showInstallInstructions() {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const modal = document.getElementById('installModal');
+    const body = document.getElementById('install-body');
+    
+    if (isIOS) {
+        body.innerHTML = `
+            iPhone 用戶請依照下列戰術動作安裝：<br><br>
+            1. 點擊瀏覽器下方的<b>「分享」</b>圖示 (向上箭頭)。<br>
+            2. 往下滑動，選擇<b>「加入主畫面」</b>。<br>
+            3. 點擊右上角<b>「新增」</b>。<br>
+            <div style="text-align:center; color:var(--accent); font-weight:bold; margin-top:10px;">系統將像 App 一樣出現在桌面！</div>
+        `;
+    } else if (deferredPrompt) {
+        body.innerHTML = `偵測到支援快速安裝，請點擊下方按鈕啟動：<br><br><button class="main-btn" style="width:100%" onclick="triggerPWA()">立即安裝到桌面</button>`;
+    } else {
+        body.innerHTML = `
+            Android/PC 用戶請依照下列戰術動作安裝：<br><br>
+            1. 點擊瀏覽器右上角的<b>「三個點」</b>或選單。<br>
+            2. 選擇<b>「安裝應用程式」</b>或<b>「加入主畫面」</b>。<br>
+            <div style="text-align:center; color:var(--accent); font-weight:bold; margin-top:10px;">即可像 App 一樣隨時開啟練習！</div>
+        `;
+    }
+    modal.style.display = 'block';
+}
+
+async function triggerPWA() {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        closeInstallModal();
+    }
+}
+
+function closeInstallModal() {
+    document.getElementById('installModal').style.display = 'none';
+}
+
+// 其餘功能邏輯 (保持不變)
 function changeAudioSource() {
     const selector = document.getElementById('audio-chapter-select');
     const audioPlayer = document.getElementById('lecture-audio');
@@ -412,9 +553,9 @@ function loadQuestions() {
 function showQuestion() {
     if (currentIndex >= questions.length) {
         document.getElementById('quiz-area').innerHTML = `<div style="text-align:center; padding:40px 0;">
-            <h3 style="color:var(--secondary); font-size:24px;">✅ 恭喜完成本區所有練習！</h3>
-            <p style="color:#57635a; margin-bottom:30px; font-weight:bold;">您已經具備了扎實的防汛知識基礎。</p>
-            <button class='main-btn' style="width:200px" onclick='resetProgress()'>回第一題重新挑戰</button>
+            <h3 style="color:var(--secondary); font-size:24px;">✅ 恭喜完成練習！</h3>
+            <p style="color:#57635a; margin-bottom:30px; font-weight:bold;">您已完成所有戰術測驗，請保持精進。</p>
+            <button class='main-btn' style="width:200px" onclick='resetProgress()'>重新挑戰</button>
         </div>`;
         return;
     }
@@ -464,7 +605,7 @@ function shuffleCurrentMode() {
 }
 
 function resetProgress() {
-    if(confirm("確定要重置本關進度嗎？")) {
+    if(confirm("確定要重置進度紀錄嗎？")) {
         localStorage.removeItem(`flood_index_${currentMode}`);
         currentIndex = 0;
         showQuestion();
