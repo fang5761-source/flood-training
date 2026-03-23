@@ -6,12 +6,13 @@
     <title>精銳救援隊 - 防汛簽證練習系統</title>
     <style>
         :root { 
-            --primary: #1e293b; 
-            --secondary: #10b981; 
-            --accent: #f59e0b; 
-            --danger: #ef4444; 
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            --card-bg: #ffffff;
+            --primary: #2d3a30; /* 戰術深綠 */
+            --secondary: #4f772d; /* 軍綠色 */
+            --accent: #bc6c25; /* 戰術大地橙 */
+            --danger: #991b1b; 
+            --bg-gradient: linear-gradient(135deg, #1a2421 0%, #2d3a30 100%);
+            --card-bg: #fdfaf6; /* 淺沙色/骨色底，確保閱讀舒適 */
+            --text-main: #131c15;
         }
         
         body { 
@@ -23,23 +24,24 @@
             display: flex; 
             justify-content: center; 
             min-height: 100vh;
-            color: #334155;
+            color: var(--text-main);
         }
 
         .app-container { 
             width: 100%; 
             max-width: 600px; 
             background: var(--card-bg); 
-            border-radius: 20px; 
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2); 
+            border-radius: 15px; 
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4); 
             padding: 24px; 
             box-sizing: border-box; 
             margin: auto;
+            border: 2px solid #3d4e41;
         }
 
         .header { 
             text-align: center; 
-            border-bottom: 2px solid #f1f5f9; 
+            border-bottom: 2px solid #dcd7cc; 
             margin-bottom: 20px; 
             padding-bottom: 15px; 
         }
@@ -48,23 +50,24 @@
             margin: 0;
             color: var(--primary);
             font-size: 1.5rem;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            font-weight: 800;
         }
 
         .audio-section { 
-            background: #f8fafc; 
-            border-radius: 12px; 
+            background: #e9e5d9; 
+            border-radius: 10px; 
             padding: 15px; 
             margin-bottom: 20px; 
-            border: 1px solid #e2e8f0;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #c4bfae;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .audio-controls { display: flex; flex-direction: column; gap: 10px; }
         .audio-select { 
             padding: 10px; 
-            border-radius: 8px; 
-            border: 1px solid #cbd5e1; 
+            border-radius: 6px; 
+            border: 1px solid #a39e8d; 
             font-size: 14px; 
             width: 100%; 
             background-color: white;
@@ -72,15 +75,15 @@
             cursor: pointer;
         }
 
-        .mode-selector { display: flex; gap: 12px; margin-bottom: 25px; }
+        .mode-selector { display: flex; gap: 10px; margin-bottom: 25px; }
         .mode-btn { 
             flex: 1; 
             padding: 12px; 
             border: 2px solid var(--primary); 
-            background: transparent; 
+            background: #f1ede4; 
             color: var(--primary);
             cursor: pointer; 
-            border-radius: 10px; 
+            border-radius: 8px; 
             font-weight: bold; 
             font-size: 15px; 
             transition: all 0.3s ease;
@@ -88,49 +91,48 @@
 
         .mode-btn.active { 
             background: var(--primary); 
-            color: white; 
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            color: #f1ede4; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
         }
 
         .question-box { 
-            background: #f1f5f9; 
+            background: #e9e5d9; 
             padding: 20px; 
-            border-radius: 12px; 
+            border-radius: 10px; 
             margin-bottom: 20px; 
-            border-left: 6px solid var(--primary);
+            border-left: 8px solid var(--primary);
             font-size: 1.1rem;
-            line-height: 1.5;
-            font-weight: 500;
+            line-height: 1.6;
+            font-weight: 600;
         }
 
         .option-item { 
             display: block; 
             padding: 14px 18px; 
-            border: 1px solid #e2e8f0; 
-            border-radius: 12px; 
+            border: 1px solid #d1ccbc; 
+            border-radius: 10px; 
             margin-bottom: 12px; 
             cursor: pointer; 
             transition: all 0.2s ease; 
-            position: relative; 
             font-size: 16px; 
             background: white;
         }
 
         .option-item:hover { 
-            border-color: var(--primary);
-            background: #f8fafc;
+            border-color: var(--secondary);
+            background: #f8f7f0;
         }
 
-        .option-item input { margin-right: 12px; transform: scale(1.3); }
+        .option-item input { margin-right: 12px; transform: scale(1.3); accent-color: var(--secondary); }
 
         .option-item.correct { 
-            border: 2px solid var(--secondary); 
-            background: #ecfdf5; 
-            color: #065f46;
+            border: 3px solid var(--secondary); 
+            background: #f0fdf4; 
+            color: #166534;
         }
 
         .option-item.wrong { 
-            border: 2px solid var(--danger); 
+            border: 3px solid var(--danger); 
             background: #fef2f2; 
             color: #991b1b;
         }
@@ -139,36 +141,35 @@
         .main-btn { 
             padding: 16px; 
             background: var(--primary); 
-            color: white; 
+            color: #f1ede4; 
             border: none; 
-            border-radius: 12px; 
+            border-radius: 10px; 
             font-size: 18px; 
             font-weight: bold; 
             cursor: pointer; 
             transition: all 0.3s ease;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            text-transform: uppercase;
         }
 
-        .main-btn:hover { filter: brightness(1.2); transform: translateY(-1px); }
-        .main-btn:active { transform: translateY(0); }
+        .main-btn:hover { background: #3d4e41; transform: translateY(-1px); }
 
         .sub-btn { 
             padding: 12px; 
-            background: #64748b; 
+            background: #57635a; 
             color: white; 
             border: none; 
-            border-radius: 10px; 
+            border-radius: 8px; 
             cursor: pointer; 
             font-size: 14px; 
-            transition: all 0.2s ease;
         }
 
         .analysis { 
             margin-top: 20px; 
             padding: 18px; 
-            background: #fffbeb; 
+            background: #fef3c7; 
             border-left: 6px solid var(--accent); 
-            border-radius: 12px; 
+            border-radius: 10px; 
             display: none; 
             line-height: 1.7; 
             font-size: 15px; 
@@ -184,37 +185,32 @@
             border-bottom: 1px solid #fde68a;
         }
 
-        .legend-item { display: flex; align-items: center; gap: 5px; font-weight: 600; }
-        .dot { width: 12px; height: 12px; border-radius: 3px; }
-        .dot.green { background: var(--secondary); border: 1px solid #065f46; }
-        .dot.red { background: var(--danger); border: 1px solid #991b1b; }
+        .legend-item { display: flex; align-items: center; gap: 5px; font-weight: 700; }
+        .dot { width: 14px; height: 14px; border-radius: 3px; }
+        .dot.green { background: var(--secondary); border: 1px solid #166534; }
+        .dot.red { background: var(--danger); border: 1px solid #7f1d1d; }
 
         .footer-info { 
             margin-top: 40px; 
             padding-top: 20px; 
-            border-top: 1px solid #f1f5f9; 
-            color: #94a3b8; 
+            border-top: 1px solid #dcd7cc; 
+            color: #7a7f71; 
             font-size: 13px; 
             text-align: center; 
         }
 
-        .footer-info strong { color: #64748b; }
-
         .play-hint { 
             font-size: 13px; 
-            color: var(--accent); 
+            color: #854d0e; 
             margin-bottom: 8px; 
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+            font-weight: 700;
         }
 
         #progress {
             font-size: 14px;
-            color: #64748b;
+            color: #57635a;
             margin-top: 8px;
-            font-weight: bold;
+            font-weight: 800;
         }
     </style>
 </head>
@@ -244,8 +240,8 @@
     </div>
 
     <div class="mode-selector">
-        <button class="mode-btn active" id="btn-basic" onclick="switchMode('basic')">第一關：基礎複選</button>
-        <button class="mode-btn" id="btn-scenario" onclick="switchMode('scenario')">第二關：情境模擬</button>
+        <button class="mode-btn active" id="btn-basic" onclick="switchMode('basic')">基礎複選</button>
+        <button class="mode-btn" id="btn-scenario" onclick="switchMode('scenario')">情境模擬</button>
     </div>
 
     <div id="quiz-area">
@@ -253,7 +249,6 @@
         <div id="options-area"></div>
         
         <div class="analysis" id="analysis-box">
-            <!-- 顏色圖例 -->
             <div class="legend">
                 <div class="legend-item"><div class="dot green"></div> 正確答案</div>
                 <div class="legend-item"><div class="dot red"></div> 選擇錯誤</div>
@@ -263,23 +258,22 @@
         </div>
 
         <div class="btn-group" style="margin-top:25px;">
-            <button class="main-btn" id="submit-btn" onclick="checkAnswer()">確認判斷</button>
-            <button class="main-btn" id="next-btn" onclick="nextQuestion()" style="display:none;">進入下一題</button>
+            <button class="main-btn" id="submit-btn" onclick="checkAnswer()">提交判斷</button>
+            <button class="main-btn" id="next-btn" onclick="nextQuestion()" style="display:none;">前進下一題</button>
             <div style="display:flex; gap:10px; margin-top:5px;">
-                <button class="sub-btn" style="flex:1" onclick="shuffleCurrentMode()">亂序挑戰</button>
-                <button class="sub-btn" style="flex:1; background:#94a3b8" onclick="resetProgress()">重置進度</button>
+                <button class="sub-btn" style="flex:1" onclick="shuffleCurrentMode()">隨機出題</button>
+                <button class="sub-btn" style="flex:1; background:#8a8d81" onclick="resetProgress()">重置紀錄</button>
             </div>
         </div>
     </div>
 
     <div class="footer-info">
         <strong>本系統由 散木團隊 開發製作</strong><br>
-        <span id="dev-info">版本：v1.0.7 | 最後更新：115/03/23</span>
+        <span id="dev-info">版本：v1.0.9 | 最後更新：115/03/23</span>
     </div>
 </div>
 
 <script>
-// 音檔連結資料庫
 const AUDIO_DATA = {
     ch1: "ch1.mp3",
     ch2: "ch2.mp3",
@@ -419,7 +413,7 @@ function showQuestion() {
     if (currentIndex >= questions.length) {
         document.getElementById('quiz-area').innerHTML = `<div style="text-align:center; padding:40px 0;">
             <h3 style="color:var(--secondary); font-size:24px;">✅ 恭喜完成本區所有練習！</h3>
-            <p style="color:#64748b; margin-bottom:30px;">您已經具備了扎實的防汛知識基礎。</p>
+            <p style="color:#57635a; margin-bottom:30px; font-weight:bold;">您已經具備了扎實的防汛知識基礎。</p>
             <button class='main-btn' style="width:200px" onclick='resetProgress()'>回第一題重新挑戰</button>
         </div>`;
         return;
