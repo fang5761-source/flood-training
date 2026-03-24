@@ -2,26 +2,27 @@
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>防汛簽證練習系統</title>
     
-    <!-- PWA 重要連結：這行沒加，手機就認不出它是 App -->
-    <link rel="manifest" href="manifest.json">
+    <!-- PWA 重要連結：加上 ?v=17 是為了破除手機快取，讓三星機讀到新設定 -->
+    <link rel="manifest" href="manifest.json?v=17">
     <meta name="theme-color" content="#1a2421">
 
-    <!-- 分享預覽設定 (Open Graph) - 加強版 -->
+    <!-- Safari / iPhone 專用 App 設定 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="防汛簽證">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=17">
+
+    <!-- 分享預覽設定 (Open Graph) - 強制更新版 -->
     <meta property="og:title" content="🛡️ 防汛簽證練習系統">
     <meta property="og:description" content="本系統由 散木團隊 開發製作，提供專業防汛技術練習與篇章導讀。">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://fang5761-source.github.io/flood-training/">
-    <!-- 確保 LINE 能抓到這張 512x512 的大圖 -->
-    <meta property="og:image" content="https://fang5761-source.github.io/flood-training/icon-512.png">
+    <meta property="og:image" content="https://fang5761-source.github.io/flood-training/icon-512.png?v=17">
     <meta property="og:image:width" content="512">
     <meta property="og:image:height" content="512">
-
-    <!-- 桌面圖標設定：對應妳上傳的檔案名稱 -->
-    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 
     <style>
         :root { 
@@ -45,6 +46,7 @@
             justify-content: center; 
             min-height: 100vh;
             color: var(--text-main);
+            overflow-x: hidden;
         }
 
         .app-container { 
@@ -139,24 +141,10 @@
             background: white;
         }
 
-        .option-item:hover { 
-            border-color: var(--secondary);
-            background: #f8f7f0;
-        }
-
+        .option-item:hover { border-color: var(--secondary); background: #f8f7f0; }
         .option-item input { margin-right: 12px; transform: scale(1.3); accent-color: var(--secondary); }
-
-        .option-item.correct { 
-            border: 3px solid var(--secondary); 
-            background: #f0fdf4; 
-            color: #166534;
-        }
-
-        .option-item.wrong { 
-            border: 3px solid var(--danger); 
-            background: #fef2f2; 
-            color: #991b1b;
-        }
+        .option-item.correct { border: 3px solid var(--secondary); background: #f0fdf4; color: #166534; }
+        .option-item.wrong { border: 3px solid var(--danger); background: #fef2f2; color: #991b1b; }
 
         .btn-group { display: flex; flex-direction: column; gap: 12px; }
         .main-btn { 
@@ -172,7 +160,6 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.2);
             text-transform: uppercase;
         }
-
         .main-btn:hover { background: #3d4e41; transform: translateY(-1px); }
 
         .action-row { display: flex; gap: 10px; margin-top: 10px; }
@@ -187,7 +174,6 @@
             font-size: 13px; 
             font-weight: bold;
         }
-
         .share-btn { background: var(--line-green); }
         .install-btn { background: var(--accent); }
 
@@ -211,7 +197,6 @@
             padding-bottom: 10px;
             border-bottom: 1px solid #fde68a;
         }
-
         .legend-item { display: flex; align-items: center; gap: 5px; font-weight: 700; }
         .dot { width: 14px; height: 14px; border-radius: 3px; }
         .dot.green { background: var(--secondary); border: 1px solid #166534; }
@@ -226,21 +211,9 @@
             text-align: center; 
         }
 
-        .play-hint { 
-            font-size: 13px; 
-            color: #854d0e; 
-            margin-bottom: 8px; 
-            font-weight: 700;
-        }
+        .play-hint { font-size: 13px; color: #854d0e; margin-bottom: 8px; font-weight: 700; }
+        #progress { font-size: 14px; color: #57635a; margin-top: 8px; font-weight: 800; }
 
-        #progress {
-            font-size: 14px;
-            color: #57635a;
-            margin-top: 8px;
-            font-weight: 800;
-        }
-
-        /* 彈窗樣式 */
         .modal {
             display: none;
             position: fixed;
@@ -257,7 +230,6 @@
             max-width: 400px;
             border-radius: 15px;
             box-shadow: 0 5px 25px rgba(0,0,0,0.5);
-            position: relative;
         }
         .modal-header { border-bottom: 2px solid #ddd; padding-bottom: 10px; margin-bottom: 15px; font-weight: 800; color: var(--primary); font-size: 1.1rem; }
         .update-list { font-size: 15px; line-height: 1.8; color: #333; }
@@ -279,7 +251,7 @@
 <div class="app-container">
     <div class="header">
         <h2>🛡️ 防汛簽證練習系統</h2>
-        <div id="progress">進度讀取中...</div>
+        <div id="progress">進度載入中...</div>
     </div>
 
     <!-- 音軌播放器 -->
@@ -335,19 +307,19 @@
 
     <div class="footer-info">
         <strong>本系統由 散木團隊 開發製作</strong><br>
-        <span id="dev-info" style="cursor:pointer; text-decoration:underline;" onclick="showUpdateLog()">版本：v1.0.16 | 更新日：115/03/24 (查看更新)</span>
+        <span id="dev-info" style="cursor:pointer; text-decoration:underline;" onclick="showUpdateLog()">版本：v1.0.17 | 更新日：115/03/24 (查看更新)</span>
     </div>
 </div>
 
 <!-- 更新紀錄彈窗 -->
 <div id="updateModal" class="modal">
     <div class="modal-content">
-        <div class="modal-header">🚩 系統更新簡報 (v1.0.16)</div>
+        <div class="modal-header">🚩 系統更新簡報 (v1.0.17)</div>
         <div class="update-list">
-            • 🔗 <b>App 化修正</b>：修復 Android 安裝視窗不顯示的問題。<br>
-            • 🖼️ <b>圖標升級</b>：修正桌面圖示與 LINE 分享預覽圖。 <br>
-            • ⚙️ <b>後台優化</b>：啟用 Service Worker 離線快取機制。 <br>
-            • 📱 <b>安裝指引</b>：針對不同系統提供更精確的建立捷徑步驟。
+            • 🔗 <b>快取強制更新</b>：修復部分裝置持續顯示舊版 Icon 的問題。<br>
+            • 🖼️ <b>預覽圖修復</b>：優化 LINE 分享預覽圖抓取邏輯。<br>
+            • 📱 <b>三星/Android 優化</b>：強化 PWA 安裝提示彈窗觸發。<br>
+            • 🛡️ <b>Safari 指令</b>：針對 iOS 加入專用全螢幕模式宣告。
         </div>
         <button class="close-modal" onclick="closeUpdateLog()">確認</button>
     </div>
@@ -357,9 +329,7 @@
 <div id="installModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">📲 將系統加入手機主畫面</div>
-        <div id="install-body" class="update-list">
-            <!-- 內容由 JS 根據設備動態生成 -->
-        </div>
+        <div id="install-body" class="update-list"></div>
         <button class="close-modal" onclick="closeInstallModal()">關閉</button>
     </div>
 </div>
@@ -372,7 +342,7 @@ const AUDIO_DATA = {
     ch4: "ch4.mp3"
 };
 
-// 題目庫 (保留 80 題數據)
+// 題目庫 (省略以縮短回覆，內容與前版一致)
 const basicQuestions = [
     { q: "1. 關於洪水的特性，下列哪些敘述正確？(複選)", options: ["具有突發性", "力量非常大", "完全可以精準預測", "環境多變難以掌握"], ans: [0, 1, 3], analysis: "洪水力量大且難預測。救援前第一步是判斷環境，不是盲目衝進去！" },
     { q: "2. 台灣洪水具有哪些特徵？(複選)", options: ["降雨非常集中", "地形陡峭", "河川長度極長", "多屬於急流型洪水"], ans: [0, 1, 3], analysis: "台灣河川短促、坡度大，流速很快，足以沖倒成年人。" },
@@ -408,13 +378,13 @@ const basicQuestions = [
     { q: "32. 關於「五人涉水」隊形的優點，下列敘述何者正確？(複選)", options: ["形成一道穩定的「人牆」結構", "穩定性最高", "適合應用於較強的水流環境", "移動速度最快"], ans: [0, 1, 2], analysis: "人牆隊形可以有效抗衡強水流。" },
     { q: "33. 拋繩袋內的負載繩規格，一般標準為何？(複選)", options: ["直徑約 8–10 mm", "長度約 15–30 m", "材質必須能漂浮於水面", "直徑至少要 20 mm 以上"], ans: [0, 1, 2], analysis: "長度要適中，重點是要會浮在水上。" },
     { q: "34. 救援小組組長在任務現場的主要職責為何？(複選)", options: ["負責任務整體的指揮與決策", "進行動態風險評估", "下令救援方式的切換", "親自架設繩索細節"], ans: [0, 1, 2], analysis: "組長是大腦，要留在岸上觀察全局。" },
-    { q: "35. 當救援現場噪音巨大導致無線電受干擾時，應如何確保通訊？(複選)", options: ["使用標準手勢進行溝分", "使用哨音口令", "大聲喊叫", "建立視覺通訊機制"], ans: [0, 1, 3], analysis: "水聲會蓋過吼叫，手勢跟哨音最準。" },
+    { q: "35. 當救援現場噪音巨大導致無線電受干擾時，應如何確保通訊？(複選)", options: ["使用標準手勢進行溝通", "使用哨音口令", "大聲喊叫", "建立視覺通訊機制"], ans: [0, 1, 3], analysis: "水聲會蓋過吼叫，手勢跟哨音最準。" },
     { q: "36. 救援任務結束後的「撤離階段」，應包含哪些工作？(複選)", options: ["回收現場所有救援器材", "確認所有任務人員安全在位", "再次對環境進行安全評估", "建立暫時性的醫療安置點"], ans: [0, 1, 2], analysis: "撤退時要清點好所有人跟裝備。" },
     { q: "37. 為什麼救援應避免直接涉水救人？(複選)", options: ["涉水是極高風險的救援行為", "水流力量大", "地形不可預測性", "拋繩風險較低"], ans: [0, 1, 2, 3], analysis: "能不走水裡就不走，生命安全第一。" },
     { q: "38. 關於救助器材的保養與管理，下列敘述何者正確？(複選)", options: ["器材使用後應定期檢查", "清洗泥沙並陰乾", "避開高溫曝曬", "受油污損壞應汰換"], ans: [0, 1, 2, 3], analysis: "保養好裝備，下次它才會救你。" },
     { q: "39. 專業小組在橫渡系統架設上的速度要求？(複選)", options: ["10 分鐘內完成架設", "快速部署能力", "精確協同分工", "一小時內完成"], ans: [0, 1, 2], analysis: "救人是搶時間，10分鐘是專業門檻。" },
     { q: "40. V 型橫渡系統在洪水救援中的主要應用價值為何？(複選)", options: ["可以精確控制受困者的移動方向", "非常適合用於擔架傷患的轉運", "架設過程比拋繩簡單快速", "只需要一條繩"], ans: [0, 1], analysis: "兩條繩控制，像遙控一樣精準平穩。" },
-    { q: "41. 如何判斷及建立穩固的「地錨固定點」？(複選)", options: ["使用三根鋼釘組組成三角地錨", "土壤緊實度與深度", "鋼釘打入一半深度即可", "鋼釘應盡量完全打入"], ans: [0, 1, 3], analysis: "釘子要打實，土壤太軟就不安全。" },
+    { q: "41. 如何判斷及建立穩固的「地錨固定點」？(複選)", options: ["使用三根鋼釘組成三角地錨", "土壤緊實度與深度", "鋼釘打入一半深度即可", "鋼釘應盡量完全打入"], ans: [0, 1, 3], analysis: "釘子要打實，土壤太軟就不安全。" },
     { q: "42. 傷患救出後的轉運階段，應注意哪些事項？(複選)", options: ["立即將傷患送至安全區域", "輸送過程中應保持平穩", "必須防止傷患發生二次傷害", "速度第一"], ans: [0, 1, 2], analysis: "傷患脆弱，平穩送到安全區安置最重要。" },
     { q: "43. 洪水力學中，關於水流推力公式參數的敘述何者正確？(複選)", options: ["ρ 為水密度", "V 為水流速度", "A 為迎水面積", "Cd 為阻力係數"], ans: [0, 1, 2, 3], analysis: "這些數據決定了水流對人的衝擊力。" },
     { q: "44. 在偵察中發現「過濾機 (Strainer)」障礙物時，應如何處理？(複選)", options: ["標記並嚴禁靠近", "絕對規避路徑", "說明致命風險", "利用作站立點"], ans: [0, 1, 2], analysis: "那是奪命區，一定要叫夥伴避開。" },
@@ -475,16 +445,28 @@ function initApp() {
     showQuestion();
     changeAudioSource();
 
-    // 註冊 Service Worker
+    // 註冊 Service Worker (後台助手)
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js')
-                .then(reg => console.log('🛡️ 助手已就位'))
+            // 加入版本號防止舊的 sw.js 殘留
+            navigator.serviceWorker.register('./sw.js?v=17')
+                .then(reg => {
+                    console.log('🛡️ 助手已就位');
+                    // 檢查更新
+                    reg.onupdatefound = () => {
+                        const installingWorker = reg.installing;
+                        installingWorker.onstatechange = () => {
+                            if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                console.log('✨ 發現新版本，請重新整理');
+                            }
+                        };
+                    };
+                })
                 .catch(err => console.log('❌ 助手啟動失敗'));
         });
     }
 
-    // 捕捉安裝事件
+    // 捕捉 PWA 安裝事件
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
@@ -512,7 +494,7 @@ function showInstallInstructions() {
             1. 點擊瀏覽器工具列的<b>「分享」</b>圖示（正方形帶向上箭頭）。<br>
             2. 在選單中向下滑動，選擇<b>「加入主畫面」</b>。<br>
             3. 點擊右上角的<b>「新增」</b>。<br>
-            <div style="text-align:center; color:var(--accent); font-weight:bold; margin-top:15px;">系統將建立於桌面，並使用您設計的戰術圖標。</div>
+            <div style="text-align:center; color:var(--accent); font-weight:bold; margin-top:15px;">系統將建立於桌面，若 Icon 未顯示，請過幾分鐘再試。</div>
         `;
     } else if (deferredPrompt) {
         body.innerHTML = `本裝置支援快速安裝，請點擊下方按鈕啟動：<br><br><button class="main-btn" style="width:100%" onclick="triggerPWA()">立即安裝到桌面</button>`;
@@ -522,7 +504,7 @@ function showInstallInstructions() {
             1. 點擊瀏覽器右上角的<b>「選單」</b>（三個點圖示）。<br>
             2. 選擇<b>「安裝應用程式」</b>或<b>「加入主畫面」</b>。<br>
             3. 確認後，桌面即可看見系統圖標。<br>
-            <div style="text-align:center; color:var(--accent); font-weight:bold; margin-top:15px;">安裝完成後即可像 App 一樣快速啟動。</div>
+            <div style="text-align:center; color:var(--accent); font-weight:bold; margin-top:15px;">若 Icon 仍為舊版，請刪除舊捷徑後再試。</div>
         `;
     }
     modal.style.display = 'block';
