@@ -10,7 +10,7 @@
     <meta property="og:description" content="本系統由 散木團隊 開發製作，提供專業防汛技術練習與篇章導讀。">
     <meta property="og:type" content="website">
     <!-- 已更新：使用 GitHub 原始圖片網址確保 LINE 預覽正常 -->
-    <meta property="og:image" content="https://raw.githubusercontent.com/fang5761-source/flood-training/main/icon.png">
+    <meta property="og:image" content="https://fang5761-source.github.io/flood-training/icon-512.png">
 
     <!-- 網頁與主畫面圖標設定 -->
     <link rel="icon" type="image/png" href="icon.png">
@@ -266,6 +266,7 @@
             font-weight: bold;
         }
     </style>
+    <meta property="og:url" content="https://fang5761-source.github.io/flood-training/">
 </head>
 <body>
 
@@ -608,5 +609,20 @@ function resetProgress() {
 }
 initApp();
 </script>
+
+<script>
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(reg => {
+                console.log('✅ Service Worker 註冊成功:', reg.scope);
+            })
+            .catch(err => {
+                console.log('❌ Service Worker 註冊失敗:', err);
+            });
+    });
+}
+</script>
+
 </body>
 </html>
