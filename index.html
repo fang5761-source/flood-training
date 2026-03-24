@@ -5,16 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>防汛簽證練習系統</title>
     
-    <!-- 分享預覽設定 (Open Graph) -->
+    <!-- PWA 重要連結：這行沒加，手機就認不出它是 App -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a2421">
+
+    <!-- 分享預覽設定 (Open Graph) - 加強版 -->
     <meta property="og:title" content="🛡️ 防汛簽證練習系統">
     <meta property="og:description" content="本系統由 散木團隊 開發製作，提供專業防汛技術練習與篇章導讀。">
     <meta property="og:type" content="website">
-    <!-- 已更新：使用 GitHub 原始圖片網址確保 LINE 預覽正常 -->
+    <meta property="og:url" content="https://fang5761-source.github.io/flood-training/">
+    <!-- 確保 LINE 能抓到這張 512x512 的大圖 -->
     <meta property="og:image" content="https://fang5761-source.github.io/flood-training/icon-512.png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
 
-    <!-- 網頁與主畫面圖標設定 -->
-    <link rel="icon" type="image/png" href="icon.png">
-    <link rel="apple-touch-icon" href="icon.png">
+    <!-- 桌面圖標設定：對應妳上傳的檔案名稱 -->
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 
     <style>
         :root { 
@@ -146,7 +153,7 @@
         }
 
         .option-item.wrong { 
-            border: 2px solid var(--danger); 
+            border: 3px solid var(--danger); 
             background: #fef2f2; 
             color: #991b1b;
         }
@@ -266,7 +273,6 @@
             font-weight: bold;
         }
     </style>
-    <meta property="og:url" content="https://fang5761-source.github.io/flood-training/">
 </head>
 <body>
 
@@ -329,19 +335,19 @@
 
     <div class="footer-info">
         <strong>本系統由 散木團隊 開發製作</strong><br>
-        <span id="dev-info" style="cursor:pointer; text-decoration:underline;" onclick="showUpdateLog()">版本：v1.0.15 | 更新日：115/03/23 (查看更新)</span>
+        <span id="dev-info" style="cursor:pointer; text-decoration:underline;" onclick="showUpdateLog()">版本：v1.0.16 | 更新日：115/03/24 (查看更新)</span>
     </div>
 </div>
 
 <!-- 更新紀錄彈窗 -->
 <div id="updateModal" class="modal">
     <div class="modal-content">
-        <div class="modal-header">🚩 系統更新簡報 (v1.0.15)</div>
+        <div class="modal-header">🚩 系統更新簡報 (v1.0.16)</div>
         <div class="update-list">
-            • 🖼️ <b>連結優化</b>：正式掛載實體戰術圖標，優化 LINE 分享預覽功能。<br>
-            • 🛡️ <b>名稱校正</b>：統一系統名稱為「防汛簽證練習系統」。<br>
-            • 🚻 <b>專業用語</b>：全系統採用中性、正式的救援專業語法。 <br>
-            • 📱 <b>操作指引</b>：針對不同手機系統提供最新的桌面捷徑安裝指引。
+            • 🔗 <b>App 化修正</b>：修復 Android 安裝視窗不顯示的問題。<br>
+            • 🖼️ <b>圖標升級</b>：修正桌面圖示與 LINE 分享預覽圖。 <br>
+            • ⚙️ <b>後台優化</b>：啟用 Service Worker 離線快取機制。 <br>
+            • 📱 <b>安裝指引</b>：針對不同系統提供更精確的建立捷徑步驟。
         </div>
         <button class="close-modal" onclick="closeUpdateLog()">確認</button>
     </div>
@@ -366,6 +372,7 @@ const AUDIO_DATA = {
     ch4: "ch4.mp3"
 };
 
+// 題目庫 (保留 80 題數據)
 const basicQuestions = [
     { q: "1. 關於洪水的特性，下列哪些敘述正確？(複選)", options: ["具有突發性", "力量非常大", "完全可以精準預測", "環境多變難以掌握"], ans: [0, 1, 3], analysis: "洪水力量大且難預測。救援前第一步是判斷環境，不是盲目衝進去！" },
     { q: "2. 台灣洪水具有哪些特徵？(複選)", options: ["降雨非常集中", "地形陡峭", "河川長度極長", "多屬於急流型洪水"], ans: [0, 1, 3], analysis: "台灣河川短促、坡度大，流速很快，足以沖倒成年人。" },
@@ -401,7 +408,7 @@ const basicQuestions = [
     { q: "32. 關於「五人涉水」隊形的優點，下列敘述何者正確？(複選)", options: ["形成一道穩定的「人牆」結構", "穩定性最高", "適合應用於較強的水流環境", "移動速度最快"], ans: [0, 1, 2], analysis: "人牆隊形可以有效抗衡強水流。" },
     { q: "33. 拋繩袋內的負載繩規格，一般標準為何？(複選)", options: ["直徑約 8–10 mm", "長度約 15–30 m", "材質必須能漂浮於水面", "直徑至少要 20 mm 以上"], ans: [0, 1, 2], analysis: "長度要適中，重點是要會浮在水上。" },
     { q: "34. 救援小組組長在任務現場的主要職責為何？(複選)", options: ["負責任務整體的指揮與決策", "進行動態風險評估", "下令救援方式的切換", "親自架設繩索細節"], ans: [0, 1, 2], analysis: "組長是大腦，要留在岸上觀察全局。" },
-    { q: "35. 當救援現場噪音巨大導致無線電受干擾時，應如何確保通訊？(複選)", options: ["使用標準手勢進行溝通", "使用哨音口令", "大聲喊叫", "建立視覺通訊機制"], ans: [0, 1, 3], analysis: "水聲會蓋過吼叫，手勢跟哨音最準。" },
+    { q: "35. 當救援現場噪音巨大導致無線電受干擾時，應如何確保通訊？(複選)", options: ["使用標準手勢進行溝分", "使用哨音口令", "大聲喊叫", "建立視覺通訊機制"], ans: [0, 1, 3], analysis: "水聲會蓋過吼叫，手勢跟哨音最準。" },
     { q: "36. 救援任務結束後的「撤離階段」，應包含哪些工作？(複選)", options: ["回收現場所有救援器材", "確認所有任務人員安全在位", "再次對環境進行安全評估", "建立暫時性的醫療安置點"], ans: [0, 1, 2], analysis: "撤退時要清點好所有人跟裝備。" },
     { q: "37. 為什麼救援應避免直接涉水救人？(複選)", options: ["涉水是極高風險的救援行為", "水流力量大", "地形不可預測性", "拋繩風險較低"], ans: [0, 1, 2, 3], analysis: "能不走水裡就不走，生命安全第一。" },
     { q: "38. 關於救助器材的保養與管理，下列敘述何者正確？(複選)", options: ["器材使用後應定期檢查", "清洗泥沙並陰乾", "避開高溫曝曬", "受油污損壞應汰換"], ans: [0, 1, 2, 3], analysis: "保養好裝備，下次它才會救你。" },
@@ -449,7 +456,7 @@ const scenarioQuestions = [
     { q: "77. 【情境】未戴頭盔即準備練習。應如何處理？(複選)", options: ["立即停止補穿", "說明岩石撞擊危險", "判定安全意識不合格", "直接進行"], ans: [0, 1, 2], analysis: "水底石頭多，沒頭盔等於沒保險。" },
     { q: "78. 【情境】發現繩索磨損斷絲。應如何處理？(複選)", options: ["立即判定該繩除役", "禁止負重任務使用", "標記為不可承人廢繩", "繼續使用"], ans: [0, 1, 2], analysis: "繩子是生命線，壞了絕對不能用。" },
     { q: "79. 【情境】目標位於石縫 (Undercut) 前方。應如何處理？(複選)", options: ["提醒嚴防吸入地形風險", "路徑絕對規避區域", "加強對危險點監控", "無視"], ans: [0, 1, 2], analysis: "Undercut 是吞人的洞，離遠一點。" },
-    { q: "80. 【情境】簽證考核順利完成。教官應如何處理勉勵？(複選)", options: ["勉勵安全第一團隊至上", "落實簽證傳承", "恭喜簽證合格取得簽證", "普通表現"], ans: [0, 1, 2], analysis: "簽證是為了專業與安全的傳承。" }
+    { q: "80. 【情境】簽證考核順利完成。教官應如何處理勉勵？(複選)", options: ["勉勵安全第一團隊至上", "回連隊落實簽證傳承", "恭喜簽證合格取得簽證", "普通表現"], ans: [0, 1, 2], analysis: "簽證是為了專業與安全的傳承。" }
 ];
 
 let currentMode = 'basic';
@@ -468,9 +475,20 @@ function initApp() {
     showQuestion();
     changeAudioSource();
 
+    // 註冊 Service Worker
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+                .then(reg => console.log('🛡️ 助手已就位'))
+                .catch(err => console.log('❌ 助手啟動失敗'));
+        });
+    }
+
+    // 捕捉安裝事件
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
+        console.log('📲 安裝視窗已準備好');
     });
 }
 
@@ -494,10 +512,10 @@ function showInstallInstructions() {
             1. 點擊瀏覽器工具列的<b>「分享」</b>圖示（正方形帶向上箭頭）。<br>
             2. 在選單中向下滑動，選擇<b>「加入主畫面」</b>。<br>
             3. 點擊右上角的<b>「新增」</b>。<br>
-            <div style="text-align:center; color:var(--accent); font-weight:bold; margin-top:15px;">系統將建立於桌面，方便隨時開啟使用。</div>
+            <div style="text-align:center; color:var(--accent); font-weight:bold; margin-top:15px;">系統將建立於桌面，並使用您設計的戰術圖標。</div>
         `;
     } else if (deferredPrompt) {
-        body.innerHTML = `偵測到本裝置支援快速安裝，請點擊下方按鈕啟動：<br><br><button class="main-btn" style="width:100%" onclick="triggerPWA()">立即安裝到桌面</button>`;
+        body.innerHTML = `本裝置支援快速安裝，請點擊下方按鈕啟動：<br><br><button class="main-btn" style="width:100%" onclick="triggerPWA()">立即安裝到桌面</button>`;
     } else {
         body.innerHTML = `
             Android 或電腦使用者請執行以下操作：<br><br>
@@ -514,6 +532,7 @@ async function triggerPWA() {
     if (deferredPrompt) {
         deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
+        console.log(`User response to install: ${outcome}`);
         deferredPrompt = null;
         closeInstallModal();
     }
