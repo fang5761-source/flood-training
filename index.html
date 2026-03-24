@@ -5,27 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>防汛簽證練習系統</title>
     
-    <!-- PWA 重要連結：版本號更新至 v18 強制 Android 讀取新設定 -->
-    <link rel="manifest" href="manifest.json?v=18">
+    <!-- PWA 重要連結：版本號更新至 v19 強制 Android 系統重新註冊 App 資訊 -->
+    <link rel="manifest" href="manifest.json?v=19">
     <meta name="theme-color" content="#1a2421">
 
     <!-- Safari / iPhone 專用 App 設定 -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="防汛簽證">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=18">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=19">
 
-    <!-- Android 桌面圖標直接宣告 (補強三星手機讀不到的問題) -->
-    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=18">
-    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png?v=18">
+    <!-- Android 桌面圖標直接宣告 -->
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=19">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png?v=19">
 
-    <!-- 分享預覽設定 (Open Graph) - 強制更換路徑以破除 LINE 快取 -->
-    <meta property="og:title" content="防汛簽證練習系統">
+    <!-- 分享預覽設定 (Open Graph) - 針對 LINE 深度優化 -->
+    <meta property="og:title" content="🛡️ 防汛簽證練習系統">
     <meta property="og:description" content="本系統由 散木團隊 開發製作，提供專業防汛技術練習與篇章導讀。">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://fang5761-source.github.io/flood-training/">
-    <meta property="og:image" content="https://fang5761-source.github.io/flood-training/icon-512.png?v=18">
-    <meta property="og:image:secure_url" content="https://fang5761-source.github.io/flood-training/icon-512.png?v=18">
+    <meta property="og:image" content="https://fang5761-source.github.io/flood-training/icon-512.png?v=19">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="512">
     <meta property="og:image:height" content="512">
@@ -256,7 +255,7 @@
 
 <div class="app-container">
     <div class="header">
-        <h2>防汛簽證練習系統</h2>
+        <h2>🛡️ 防汛簽證練習系統</h2>
         <div id="progress">進度載入中...</div>
     </div>
 
@@ -313,19 +312,19 @@
 
     <div class="footer-info">
         <strong>本系統由 散木團隊 開發製作</strong><br>
-        <span id="dev-info" style="cursor:pointer; text-decoration:underline;" onclick="showUpdateLog()">版本：v1.0.18 | 更新日：115/03/24 (查看更新)</span>
+        <span id="dev-info" style="cursor:pointer; text-decoration:underline;" onclick="showUpdateLog()">版本：v1.0.19 | 更新日：115/03/24 (查看更新)</span>
     </div>
 </div>
 
 <!-- 更新紀錄彈窗 -->
 <div id="updateModal" class="modal">
     <div class="modal-content">
-        <div class="modal-header">🚩 系統更新簡報 (v1.0.18)</div>
+        <div class="modal-header">🚩 系統更新簡報 (v1.0.19)</div>
         <div class="update-list">
-            • 🔗 <b>強力破除快取</b>：更新版本連結，強制 Android 手機抓取最新戰術圖標。<br>
-            • 📱 <b>三星專用優化</b>：在網頁頭部直接補強 Android 圖標宣告。<br>
-            • 🖼️ <b>LINE 抓圖補強</b>：增加安全連結標籤，引導通訊軟體精確抓取縮圖。 <br>
-            • ⚙️ <b>安裝觸發</b>：優化安裝攔截邏輯。
+            • ⚙️ <b>Android 系統快取排除</b>：使用強制版本標籤，修正三星手機無法顯示新 Icon 的問題。<br>
+            • 📱 <b>安裝機制補強</b>：優化 Manifest 設定，確保 Android 系統正確彈出安裝提示。<br>
+            • 🔗 <b>LINE 抓圖機制升級</b>：重新定義 Open Graph 標籤，破除通訊軟體預覽圖快取。<br>
+            • 🛠️ <b>離線小助手更新</b>：同步更新 Service Worker 緩存邏輯。
         </div>
         <button class="close-modal" onclick="closeUpdateLog()">確認</button>
     </div>
@@ -366,7 +365,7 @@ const basicQuestions = [
     { q: "15. 救援隊執行防汛任務的三大安全原則為何？(複選)", options: ["不要讓救援者成為受困者", "優先使用非接觸救援", "建立下游安全區", "採取個人英雄式下水救援"], ans: [0, 1, 2], analysis: "自己先安全才能救人；下游安全是最後一道防線。" },
     { q: "16. 20人小組執行防汛時，應如何編組分工？(複選)", options: ["固定點組", "繩索架設組", "安全監控組", "支援組"], ans: [0, 1, 2, 3], analysis: "分工明確才能在10分鐘內快速部署。" },
     { q: "17. 「子惠結」在洪水救援中有何應用特性？(複選)", options: ["摩擦特性可預測", "滑動過程平順可控制", "具有漸進式鎖定功能", "結構穩定"], ans: [0, 1, 2, 3], analysis: "它是精銳救援隊的標準結組，控繩專業戶必學。" },
-    { q: "18. 洪水危險矩陣中，哪些組合屬於「極高風險」？(複選)", options: ["腰部以上深度", "大腿深且流速 1m/s 以上", "小腿深且流速 3m/s 以上", "腳踝深且無流速"], ans: [0, 1, 2], analysis: "只要水深過大腿或流速過快，都是極限了。" },
+    { q: "18. 洪水危險矩陣中，哪些組合屬於「極高風險」？(複選)", options: ["腰部以上深度", "大腿深且流速 1m/s 以上", "小腿深且流速 3m/s 以上", "腳踝深且無流速"], ans: [0, 1, 2], analysis: "只要水深過大腿或流速過快（>3m/s）都是生存極限。" },
     { q: "19. 執行夜間防汛救援任務時，應特別注意哪些事項？(複選)", options: ["增加照明設備", "建立反光或化學標記", "降低整體行動速度", "加強安全監控與通信"], ans: [0, 1, 2, 3], analysis: "夜間風險判斷難度大，安全監控要加倍。" },
     { q: "20. 防汛作戰標準 SOP 的五個階段包含哪些？(複選)", options: ["偵察", "建立安全區", "救援與轉運", "撤離"], ans: [0, 1, 2, 3], analysis: "每個階段都有標準流程，偵察評估環境是第一步。" },
     { q: "21. 關於「下縮 (Undercut)」地形，下列敘述何者正確？(複選)", options: ["是水流侵蝕岩石底部形成的空洞", "受困者被吸入後極難自行脫困", "是理想的避難區域", "屬於危險地形"], ans: [0, 1, 3], analysis: "Undercut 會把人吸進去石縫，絕對要避開。" },
@@ -389,7 +388,7 @@ const basicQuestions = [
     { q: "38. 關於救助器材的保養與管理，下列敘述何者正確？(複選)", options: ["器材使用後應定期檢查", "清洗泥沙並陰乾", "避開高溫曝曬", "受油污損壞應汰換"], ans: [0, 1, 2, 3], analysis: "保養好裝備，下次它才會救你。" },
     { q: "39. 專業小組在橫渡系統架設上的速度要求？(複選)", options: ["10 分鐘內完成架設", "快速部署能力", "精確協同分工", "一小時內完成"], ans: [0, 1, 2], analysis: "救人是搶時間，10分鐘是專業門檻。" },
     { q: "40. V 型橫渡系統在洪水救援中的主要應用價值為何？(複選)", options: ["可以精確控制受困者的移動方向", "非常適合用於擔架傷患的轉運", "架設過程比拋繩簡單快速", "只需要一條繩"], ans: [0, 1], analysis: "兩條繩控制，像遙控一樣精準平穩。" },
-    { q: "41. 如何判斷及建立穩固的「地錨固定點」？(複選)", options: ["使用三根鋼釘組成三角地錨", "土壤緊實度與深度", "鋼釘打入一半深度即可", "鋼釘應盡量完全打入"], ans: [0, 1, 3], analysis: "釘子要打實，土壤太軟就不安全。" },
+    { q: "41. 如何判斷及建立穩固的「地錨固定點」？(複選)", options: ["使用三根鋼釘組組成三角地錨", "土壤緊實度與深度", "鋼釘打入一半深度即可", "鋼釘應盡量完全打入"], ans: [0, 1, 3], analysis: "釘子要打實，土壤太軟就不安全。" },
     { q: "42. 傷患救出後的轉運階段，應注意哪些事項？(複選)", options: ["立即將傷患送至安全區域", "輸送過程中應保持平穩", "必須防止傷患發生二次傷害", "速度第一"], ans: [0, 1, 2], analysis: "傷患脆弱，平穩送到安全區安置最重要。" },
     { q: "43. 洪水力學中，關於水流推力公式參數的敘述何者正確？(複選)", options: ["ρ 為水密度", "V 為水流速度", "A 為迎水面積", "Cd 為阻力係數"], ans: [0, 1, 2, 3], analysis: "這些數據決定了水流對人的衝擊力。" },
     { q: "44. 在偵察中發現「過濾機 (Strainer)」障礙物時，應如何處理？(複選)", options: ["標記並嚴禁靠近", "絕對規避路徑", "說明致命風險", "利用作站立點"], ans: [0, 1, 2], analysis: "那是奪命區，一定要叫夥伴避開。" },
@@ -411,26 +410,26 @@ const scenarioQuestions = [
     { q: "57. 【情境】橫渡繩系統架設完成後，繩索被拉得極為緊繃。應如何處理？(複選)", options: ["說明張力過大斷裂風險", "必須放鬆繩索保留弧度", "檢查固定點裝備變形狀況", "拉更緊防止碰水"], ans: [0, 1, 2], analysis: "拉越直力越大，固定點可能會被拔掉。" },
     { q: "58. 【情境】現場噪音極大，指令無法傳達。應如何處理？(複選)", options: ["立即切換為標準手勢信號", "使用哨音口令", "所有人大聲吼叫", "暫停誤解操作"], ans: [0, 1, 3], analysis: "通訊要用可視化或特定頻率才有效。" },
     { q: "59. 【情境】一名使用者在急流練習游泳試圖踩踏水底。應如何處理？(複選)", options: ["告知腳應抬高防止卡死", "維持防禦姿勢腳朝下游", "告知用力踩底穩住重心", "腳伸直沒關係"], ans: [0, 1], analysis: "石縫卡腳是急流奪命殺手，腳絕對不落地。" },
-    { q: "60. 【情境】簽證考核中未對下游進行安全布置就拋繩。應如何處理？(複選)", options: ["判定該項簽證不合格", "說明下游安全是生命防線", "要求立即補設安全防護", "判定及格"], ans: [0, 1, 2], analysis: "安全原則不打折，這是簽證底線。" },
+    { q: "60. 【情境】簽證考核中未對下游進行安全布置就拋繩.應如何處理？(複選)", options: ["判定該項簽證不合格", "說明下游安全是生命防線", "要求立即補設安全防護", "判定及格"], ans: [0, 1, 2], analysis: "安全原則不打折，這是簽證底線。" },
     { q: "61. 【情境】偵察發現上遊山洪預警。應如何處理？(複選)", options: ["人員立即撤離水域", "暫停救援作業", "移往高處", "加速救援"], ans: [0, 1, 2], analysis: "洪水來襲別挑戰大自然，保命撤退第一。" },
-    { q: "62. 【情境】橫渡繩路徑正接觸尖銳岩石。應如何處理？(複選)", options: ["使用繩套或防磨墊保護", "調整固定點位置避開接觸", "說明受損風險", "直接使用"], ans: [0, 1, 2], analysis: "繩子磨石頭會瞬間斷裂，加墊或移位。" },
+    { q: "62. 【情境】橫渡繩路徑正接觸尖銳岩石.應如何處理？(複選)", options: ["使用繩套或防磨墊保護", "調整固定點位置避開接觸", "說明受損風險", "直接使用"], ans: [0, 1, 2], analysis: "繩子磨石頭會瞬間斷裂，加墊或移位。" },
     { q: "63. 【情境】拋繩落在受困者的正下游。應如何處理？(複選)", options: ["糾正瞄準上游方向", "說明水流帶動原理", "要求收回重丟", "稱讚精準"], ans: [0, 1, 2], analysis: "丟下游受困者根本抓不到繩子。" },
-    { q: "64. 【情境】需運送傷患橫渡 40 公尺強流區。應如何處理？(複選)", options: ["架設高張力橫渡系統", "滑輪組增加穩定度", "單人涉水背負", "讓傷患游過"], ans: [0, 1], analysis: "重負載或長距需省力機械優勢。" },
-    { q: "65. 【情境】將繩繫在救援車保險桿。應如何處理？(複選)", options: ["立即糾正強度不足風險", "說明張力扯落危險", "指導尋找拖車鉤", "可以接受"], ans: [0, 1, 2], analysis: "保險桿只是外殼，絕對拉不動系統。" },
-    { q: "66. 【情境】穿戴救生衣未檢查快速釋放扣。應如何處理？(複選)", options: ["提醒檢查功能性", "說明脫離作用", "要求小組互助檢查", "不理會"], ans: [0, 1, 2], analysis: "那是最後保命裝置，務必確認功能正常。" },
-    { q: "67. 【情境】受困者在回流區 (Hydraulic) 內打轉。應如何處理？(複選)", options: ["利用拋繩袋實施救援", "救援人員嚴禁進入該區", "評估回流區的力量", "下水營救"], ans: [0, 1, 2], analysis: "那是死亡地帶，用非接觸方式救人。" },
-    { q: "68. 【情境】任務完成撤離現場留有垃圾。應如何處理？(複選)", options: ["落實環境復原帶走垃圾", "全數回收清點器材", "人員平安離開", "破損留現場"], ans: [0, 1, 2], analysis: "救援任務應包含環境復原與器材清點。" },
-    { q: "69. 【情境】現場有一棵倒在河中的大樹 (Strainer)。應如何處理？(複選)", options: ["指出過濾機致命風險", "嚴禁人員漂向該區域", "致命地形陷阱說明", "休息區"], ans: [0, 1, 2], analysis: "看見 Strainer 就躲得遠遠的。" },
-    { q: "70. 【情境】橫渡系統夾角角度過小。應如何處理？(複選)", options: ["立即增加系統弧度", "說明固定點失效風險", "重新調整固定點位置", "拉更緊"], ans: [0, 1, 2], analysis: "角度太小會扯斷地錨，一定要放鬆。" },
-    { q: "71. 【情境】拉繩時將繩索纏繞在手臂上。應如何處理？(複選)", options: ["警告嚴禁纏繞手部", "指導正確握法", "糾正嚴重違規行為", "增加拉力"], ans: [0, 1, 2], analysis: "水流力量大到能拉斷手骨，絕不纏手。" },
-    { q: "72. 【情境】下游 50 公尺有大型障礙設施。應如何處理？(複選)", options: ["強化下游安全組防線", "嚴禁人員下水游泳", "考慮高處救援方案", "無視"], ans: [0, 1, 2], analysis: "下游有陷阱，防線要做多幾層。" },
-    { q: "73. 【情境】固定點樹木生長在土鬆陡坡。應如何處理？(複選)", options: ["視為不穩定固定點棄用", "說明根系拔起風險", "尋找車體替代", "先試拉"], ans: [0, 1, 2], analysis: "根基不穩，不能拿命去賭。" },
-    { q: "74. 【情境】三人涉水水深過膝且流速約 2 m/s。應如何處理？(複選)", options: ["判斷為極高風險應撤退", "改用其他方式", "參考風險矩陣禁止涉水", "強行通過"], ans: [0, 1, 2], analysis: "過膝急流非兒戲，看數據決定撤退。" },
-    { q: "75. 【情境】地錨鋼釘只打入一半深度。應如何處理？(複選)", options: ["鋼釘必須完全打入到底", "說明槓桿拔離風險", "判定不合格並重做", "釘多幾根"], ans: [0, 1, 2], analysis: "釘子沒打滿會被槓桿拔起，失去效用。" },
-    { q: "76. 【情境】救援中無線電通訊不清。應如何處理？(複選)", options: ["改用預備手勢", "哨音口號通訊", "暫停關鍵操作直到確認", "吼叫"], ans: [0, 1, 2], analysis: "備援通訊（看手勢）這時最重要。" },
-    { q: "77. 【情境】未戴頭盔即準備練習。應如何處理？(複選)", options: ["立即停止補穿", "說明岩石撞擊危險", "判定安全意識不合格", "直接進行"], ans: [0, 1, 2], analysis: "水底石頭多，沒頭盔等於沒保險。" },
-    { q: "78. 【情境】發現繩索磨損斷絲。應如何處理？(複選)", options: ["立即判定該繩除役", "禁止負重任務使用", "標記為不可承人廢繩", "繼續使用"], ans: [0, 1, 2], analysis: "繩子是生命線，壞了絕對不能用。" },
-    { q: "79. 【情境】目標位於石縫 (Undercut) 前方。應如何處理？(複選)", options: ["提醒嚴防吸入地形風險", "路徑絕對規避區域", "加強對危險點監控", "無視"], ans: [0, 1, 2], analysis: "Undercut 是吞人的洞，離遠一點。" },
+    { q: "64. 【情境】需運送傷患橫渡 40 公尺強流區.應如何處理？(複選)", options: ["架設高張力橫渡系統", "滑輪組增加穩定度", "單人涉水背負", "讓傷患游過"], ans: [0, 1], analysis: "重負載或長距需省力機械優勢。" },
+    { q: "65. 【情境】將繩繫在救援車保險桿.應如何處理？(複選)", options: ["立即糾正強度不足風險", "說明張力扯落危險", "指導尋找拖車鉤", "可以接受"], ans: [0, 1, 2], analysis: "保險桿只是外殼，絕對拉不動系統。" },
+    { q: "66. 【情境】穿戴救生衣未檢查快速釋放扣.應如何處理？(複選)", options: ["提醒檢查功能性", "說明脫離作用", "要求小組互助檢查", "不理會"], ans: [0, 1, 2], analysis: "那是最後保命裝置，務必確認功能正常。" },
+    { q: "67. 【情境】受困者在回流區 (Hydraulic) 內打轉.應如何處理？(複選)", options: ["利用拋繩袋實施救援", "救援人員嚴禁進入該區", "評估回流區的力量", "下水營救"], ans: [0, 1, 2], analysis: "那是死亡地帶，用非接觸方式救人。" },
+    { q: "68. 【情境】任務完成撤離現場留有垃圾.應如何處理？(複選)", options: ["落實環境復原帶走垃圾", "全數回收清點器材", "人員平安離開", "破損留現場"], ans: [0, 1, 2], analysis: "救援任務應包含環境復原與器材清點。" },
+    { q: "69. 【情境】現場有一棵倒在河中的大樹 (Strainer).應如何處理？(複選)", options: ["指出過濾機致命風險", "嚴禁人員漂向該區域", "致命地形陷阱說明", "休息區"], ans: [0, 1, 2], analysis: "看見 Strainer 就躲得遠遠的。" },
+    { q: "70. 【情境】橫渡系統夾角角度過小.應如何處理？(複選)", options: ["立即增加系統弧度", "說明固定點失效風險", "重新調整固定點位置", "拉更緊"], ans: [0, 1, 2], analysis: "角度太小會扯斷地錨，一定要放鬆。" },
+    { q: "71. 【情境】拉繩時將繩索纏繞在手臂上.應如何處理？(複選)", options: ["警告嚴禁纏繞手部", "指導正確握法", "糾正嚴重違規行為", "增加拉力"], ans: [0, 1, 2], analysis: "水流力量大到能拉斷手骨，絕不纏手。" },
+    { q: "72. 【情境】下游 50 公尺有大型障礙設施.應如何處理？(複選)", options: ["強化下游安全組防線", "嚴禁人員下水游泳", "考慮高處救援方案", "無視"], ans: [0, 1, 2], analysis: "下游有陷阱，防線要做多幾層。" },
+    { q: "73. 【情境】固定點樹木生長在土鬆陡坡.應如何處理？(複選)", options: ["視為不穩定固定點棄用", "說明根系拔起風險", "尋找車體替代", "先試拉"], ans: [0, 1, 2], analysis: "根基不穩，不能拿命去賭。" },
+    { q: "74. 【情境】三人涉水水深過膝且流速約 2 m/s.應如何處理？(複選)", options: ["判斷為極高風險應撤退", "改用其他方式", "參考風險矩陣禁止涉水", "強行通過"], ans: [0, 1, 2], analysis: "過膝急流非兒戲，看數據決定撤退。" },
+    { q: "75. 【情境】地錨鋼釘只打入一半深度.應如何處理？(複選)", options: ["鋼釘必須完全打入到底", "說明槓桿拔離風險", "判定不合格並重做", "釘多幾根"], ans: [0, 1, 2], analysis: "釘子沒打滿會被槓桿拔起，失去效用。" },
+    { q: "76. 【情境】救援中無線電通訊不清.應如何處理？(複選)", options: ["改用預備手勢", "哨音口號通訊", "暫停關鍵操作直到確認", "吼叫"], ans: [0, 1, 2], analysis: "備援通訊（看手勢）這時最重要。" },
+    { q: "77. 【情境】未戴頭盔即準備練習.應如何處理？(複選)", options: ["立即停止補穿", "說明岩石撞擊危險", "判定安全意識不合格", "直接進行"], ans: [0, 1, 2], analysis: "水底石頭多，沒頭盔等於沒保險。" },
+    { q: "78. 【情境】發現繩索磨損斷絲.應如何處理？(複選)", options: ["立即判定該繩除役", "禁止負重任務使用", "標記為不可承人廢繩", "繼續使用"], ans: [0, 1, 2], analysis: "繩子是生命線，壞了絕對不能用。" },
+    { q: "79. 【情境】目標位於石縫 (Undercut) 前方.應如何處理？(複選)", options: ["提醒嚴防吸入地形風險", "路徑絕對規避區域", "加強對危險點監控", "無視"], ans: [0, 1, 2], analysis: "Undercut 是吞人的洞，離遠一點。" },
     { q: "80. 【情境】簽證考核順利完成。教官應如何處理勉勵？(複選)", options: ["勉勵安全第一團隊至上", "回連隊落實簽證傳承", "恭喜簽證合格取得簽證", "普通表現"], ans: [0, 1, 2], analysis: "簽證是為了專業與安全的傳承。" }
 ];
 
@@ -450,26 +449,18 @@ function initApp() {
     showQuestion();
     changeAudioSource();
 
-    // 註冊 Service Worker
+    // 註冊 Service Worker：加上版本號破除快取
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js?v=18')
+            navigator.serviceWorker.register('./sw.js?v=19')
                 .then(reg => {
                     console.log('🛡️ 助手已就位');
-                    reg.onupdatefound = () => {
-                        const installingWorker = reg.installing;
-                        installingWorker.onstatechange = () => {
-                            if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                console.log('✨ 發現新版本');
-                            }
-                        };
-                    };
+                    reg.update(); // 強制檢查更新
                 })
                 .catch(err => console.log('❌ 助手啟動失敗'));
         });
     }
 
-    // 捕捉 PWA 安裝事件
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
@@ -482,7 +473,7 @@ function closeUpdateLog() { document.getElementById('updateModal').style.display
 
 function shareToLine() {
     const url = window.location.href;
-    const text = "防汛簽證練習系統：提供專業技術練習與篇章導讀。歡迎加入練習！";
+    const text = "🛡️ 防汛簽證練習系統：提供專業技術練習與篇章導讀。歡迎加入練習！";
     window.open(`https://line.me/R/msg/text/?${encodeURIComponent(text + "\n" + url)}`, '_blank');
 }
 
@@ -497,7 +488,7 @@ function showInstallInstructions() {
             1. 點擊瀏覽器工具列的<b>「分享」</b>圖示（正方形帶向上箭頭）。<br>
             2. 在選單中向下滑動，選擇<b>「加入主畫面」</b>。<br>
             3. 點擊右上角的<b>「新增」</b>。<br>
-            <div style="text-align:center; color:var(--accent); font-weight:bold; margin-top:15px;">系統將建立於桌面。若圖示未更新，請重新整理網頁。</div>
+            <div style="text-align:center; color:var(--accent); font-weight:bold; margin-top:15px;">系統將建立於桌面，若 Icon 未顯示，請過幾分鐘再試。</div>
         `;
     } else if (deferredPrompt) {
         body.innerHTML = `本裝置支援快速安裝，請點擊下方按鈕啟動：<br><br><button class="main-btn" style="width:100%" onclick="triggerPWA()">立即安裝到桌面</button>`;
@@ -507,7 +498,7 @@ function showInstallInstructions() {
             1. 點擊瀏覽器右上角的<b>「選單」</b>（三個點圖示）。<br>
             2. 選擇<b>「安裝應用程式」</b>或<b>「加入主畫面」</b>。<br>
             3. 確認後，桌面即可看見系統圖標。<br>
-            <div style="text-align:center; color:var(--accent); font-weight:bold; margin-top:15px;">若 Icon 仍為舊版，請至設定清除快取後再試。</div>
+            <div style="text-align:center; color:var(--accent); font-weight:bold; margin-top:15px;">若安裝後 Icon 仍為舊版，請刪除舊捷徑並重新整理網頁後再試。</div>
         `;
     }
     modal.style.display = 'block';
@@ -517,7 +508,6 @@ async function triggerPWA() {
     if (deferredPrompt) {
         deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
-        console.log(`User response to install: ${outcome}`);
         deferredPrompt = null;
         closeInstallModal();
     }
