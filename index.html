@@ -5,25 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>防汛簽證練習系統</title>
     
-    <!-- PWA 重要連結：版本 v27 -->
-    <link rel="manifest" href="manifest.json?v=27">
+    <!-- 強制不快取標籤 (確保瀏覽器每次都問伺服器) -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <!-- PWA 重要連結：版本 v28 -->
+    <link rel="manifest" href="manifest.json?v=28">
     <meta name="theme-color" content="#1a2421">
 
     <!-- Safari / iPhone 專用 App 設定 -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="防汛簽證">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=27">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=28">
 
-    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=27">
-    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png?v=27">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=28">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png?v=28">
 
     <!-- 分享預覽設定 -->
     <meta property="og:title" content="🛡️ 防汛簽證練習系統">
     <meta property="og:description" content="專業防汛技術練習、現場指揮模擬與篇章導讀。">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://fang5761-source.github.io/flood-training/">
-    <meta property="og:image" content="https://fang5761-source.github.io/flood-training/icon-512.png?v=27">
+    <meta property="og:image" content="https://fang5761-source.github.io/flood-training/icon-512.png?v=28">
     <meta property="og:image:width" content="512">
     <meta property="og:image:height" content="512">
 
@@ -172,23 +177,22 @@
     <div class="footer-info">
         <strong>本系統由 散木團隊 開發製作</strong><br>
         教材規劃：徐世豐 &nbsp;&nbsp; APP設計：吳佩芳（朵朵）<br>
-        <span id="dev-info" style="cursor:pointer; text-decoration:underline;" onclick="showUpdateLog()">版本：v1.0.27 | 最後更新：115/03/26</span>
+        <span id="dev-info" style="cursor:pointer; text-decoration:underline;" onclick="showUpdateLog()">版本：v1.0.28 | 最後更新：115/03/26</span><br>
+        <!-- 終極殺手鐧：強制清除快取按鈕 -->
+        <span style="cursor:pointer; text-decoration:underline; color:var(--danger); font-weight:bold; margin-top:8px; display:inline-block;" onclick="forceClearCache()">⚠️ 畫面卡住？點此強制清除快取更新</span>
     </div>
 </div>
 
 <!-- 更新紀錄彈窗 -->
 <div id="updateModal" class="modal">
     <div class="modal-content">
-        <div class="modal-header">🚩 系統全方位優化戰果 (v1.0.27)</div>
+        <div class="modal-header">🚩 系統終極防卡死升級 (v1.0.28)</div>
         <div class="update-list">
-            <div class="update-item">🍎 <b>強迫 iPhone 更新機制</b>：新增 iOS 換班偵測功能，確保主畫面 App 能即時同步最新優化內容。</div>
+            <div class="update-item">🚀 <b>網路優先策略 (Network First)</b>：重寫核心緩存機制。現在開啟 App 會強制優先向伺服器要最新資料，徹底解決 iPhone 與三星機無法自動更新的死結。</div>
+            <div class="update-item">⚠️ <b>強制更新緊急按鈕</b>：於頁尾新增「強制清除快取」按鈕，未來若畫面卡在舊版，一鍵即可炸毀舊資料並載入最新版。</div>
             <div class="update-item">🎯 <b>介面用語專業化</b>：優化跳題功能敘述為「選擇題號」，視覺更俐落且符合 App 質感。</div>
             <div class="update-item">🎨 <b>視覺風格重塑</b>：導入「軍事墨綠迷彩」配色與卡片式背景，大幅提升閱讀舒適度。</div>
-            <div class="update-item">📲 <b>PWA App 化部屬成功</b>：支援「安裝至手機主畫面」。克服 Android/三星快取限制，成功啟用新版圖標。</div>
             <div class="update-item">📝 <b>教材深度校對優化</b>：全面校對及優化 80 題題目內容與選項，確保敘述更精確。</div>
-            <div class="update-item">🗣️ <b>專業用語標準化</b>：優化情境題問法為「應如何處理？」，並改採中性稱謂。</div>
-            <div class="update-item">🎧 <b>全篇章導讀整合</b>：整合四篇章專業語音導讀音軌。</div>
-            <div class="update-item">🛠️ <b>系統邏輯修復</b>：掃除程式 Bug，解決「重新挑戰」失效及彈窗收合等技術問題。</div>
         </div>
         <button class="sub-btn" style="float:right; margin-top:15px;" onclick="closeUpdateLog()">確認收悉</button>
     </div>
@@ -216,7 +220,7 @@ const basicQuestions = [
     { q: "7.國際急流救援體系普遍遵循的救援優先順序為何？", options: ["優先使用非接觸式救援（如觀察、呼叫、拋繩）", "儘量避免直接涉水或游泳接近受困者", "船艇救援風險低於拋繩", "下水 (Go) 是最後且風險最高的選擇"], ans: [0, 1, 3], analysis: "能不接觸就不接觸，拋繩比下水安全多了！" },
     { q: "8.關於急流「防禦式游泳」的姿勢要點，下列何者正確？", options: ["背部朝下", "腳朝下游方向", "雙腳略微抬起防止卡住", "遇到障礙物時可以用腳推開"], ans: [0, 1, 2, 3], analysis: "腳朝下游是用來推開障礙物、保護頭部的。" },
     { q: "9.執行「三人涉水」隊形時，下列哪些操作標準正確？", options: ["最強壯的人站在上游位置", "三人站成三角形隊形", "互相抓住對方的救生衣或肩帶", "最強壯的人在最下游負責推動"], ans: [0, 1, 2], analysis: "上游的人負責破水，三角形結構最穩。" },
-    { q: "10.使用拋繩袋進行救援時，哪些步驟符合標準程序？", options: ["確保繩索一端固定在救援者身上（不可纏繞手部）", "拋投目標應瞄準受困者的「上游」方向", "受困者抓住繩索後應保持仰姿", "利用「擺盪救援」效應將受困者帶向岸邊"], ans: [0, 1, 2, 3], analysis: "要丟上游，水流才會把繩子帶到受困者手上。" },
+    { q: "10.使用拋繩袋進行救援時，哪些步驟符合標準程序？", options: ["確保繩索一端固定在救援者身上（不可纏繞手部）", "目標瞄準受困者的「上游」方向", "受困者抓住繩索後應保持仰姿", "利用「擺盪救援」效應將受困者帶向岸邊"], ans: [0, 1, 2, 3], analysis: "要丟上游，水流才會把繩子帶到受困者手上。" },
     { q: "11.合格的急流專用救生衣 (PFD) 應具備哪些功能？", options: ["浮力通常為 70–100 N", "具備快速釋放扣", "具備救援拖曳環", "必須是自動充氣式設計"], ans: [0, 1, 2], analysis: "急流救生衣不能用充氣式的。快速釋放扣是遇險時脫離繩索的保命符。" },
     { q: "12.選擇樹木作為洪水救援固定點時，應注意哪些準則？", options: ["樹幹直徑建議至少 30 cm", "需考慮根系穩定性", "需觀察土壤狀況是否鬆軟", "只要有葉子就可以"], ans: [0, 1, 2], analysis: "大樹才拉得住橫渡的張力，小樹或根部鬆動的樹會被拔起來。" },
     { q: "13.使用車輛作為固定點時，哪些位置是建議的承載點？", options: ["拖車鉤", "車架大樑", "保險桿", "車門把手"], ans: [0, 1], analysis: "保險桿通常是塑膠或薄金屬，一拉就掉。" },
@@ -310,12 +314,26 @@ function initApp() {
 
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js?v=27').then(reg => reg.update());
+            navigator.serviceWorker.register('./sw.js?v=28').then(reg => {
+                console.log('🛡️ 助手已就位');
+                reg.update();
+                
+                // 監聽更新：若發現有新版，強制重新載入
+                reg.onupdatefound = () => {
+                    const installingWorker = reg.installing;
+                    installingWorker.onstatechange = () => {
+                        if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            console.log('✨ 發現新版本，準備重啟...');
+                            window.location.reload(true);
+                        }
+                    };
+                };
+            });
         });
 
+        // 若控制器改變，強制刷新頁面 (iOS 救星)
         navigator.serviceWorker.addEventListener('controllerchange', () => {
-            console.log('✨ 助手換班，系統自動重啟...');
-            window.location.reload();
+            window.location.reload(true);
         });
     }
 
@@ -329,6 +347,25 @@ function initApp() {
         const inModal = document.getElementById('installModal');
         if (event.target == upModal) closeUpdateLog();
         if (event.target == inModal) closeInstallModal();
+    }
+}
+
+// 終極殺手鐧：強制清除所有快取
+function forceClearCache() {
+    if(confirm("即將強制清除系統快取並重新載入最新版本，確定執行嗎？")) {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+        }
+        caches.keys().then(keys => {
+            Promise.all(keys.map(key => caches.delete(key))).then(() => {
+                // 加上時間戳強制抓新檔案
+                window.location.href = window.location.pathname + '?v=' + new Date().getTime();
+            });
+        });
     }
 }
 
@@ -346,7 +383,7 @@ function showInstallInstructions() {
     const modal = document.getElementById('installModal');
     const body = document.getElementById('install-body');
     if (isIOS) {
-        body.innerHTML = `<div style="font-weight:800; color:var(--primary); margin-bottom:10px;">iOS (iPhone/iPad) 安裝指引：</div>1. 點擊瀏覽器下方工具列的<b>「分享」</b>圖示。<br>2. 向下滑動找到並點擊<b>「加入主畫面」</b>。<br>3. 點擊右上角的<b>「新增」</b>。<br><br><small>💡 若內容未更新，請徹底關閉主畫面 App 並重開兩次。</small>`;
+        body.innerHTML = `<div style="font-weight:800; color:var(--primary); margin-bottom:10px;">iOS (iPhone/iPad) 安裝指引：</div>1. 點擊瀏覽器下方工具列的<b>「分享」</b>圖示。<br>2. 向下滑動找到並點擊<b>「加入主畫面」</b>。<br>3. 點擊右上角的<b>「新增」</b>。<br><br><small>💡 若內容未更新，請徹底關閉主畫面 App 並重開兩次，或點擊頁尾「強制清除快取」。</small>`;
     } else if (deferredPrompt) {
         body.innerHTML = `<button class="main-btn" style="width:100%" onclick="triggerPWA()">立即安裝到桌面</button>`;
     } else {
