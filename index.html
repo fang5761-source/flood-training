@@ -5,39 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>防汛簽證練習系統</title>
     
-    <!-- PWA 重要連結：版本號更新至 v19 強制 Android 系統重新註冊 App 資訊 -->
-    <link rel="manifest" href="manifest.json?v=19">
+    <link rel="manifest" href="manifest.json?v=26">
     <meta name="theme-color" content="#1a2421">
 
-    <!-- Safari / iPhone 專用 App 設定 -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="防汛簽證">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=19">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=26">
 
-    <!-- Android 桌面圖標直接宣告 -->
-    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=19">
-    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png?v=19">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=26">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png?v=26">
 
-    <!-- 分享預覽設定 (Open Graph) - 針對 LINE 深度優化 -->
-    <meta property="og:title" content="防汛簽證練習系統">
-    <meta property="og:description" content="本系統由 散木團隊 開發製作，提供專業防汛技術練習與篇章導讀。">
+    <meta property="og:title" content="🛡️ 防汛簽證練習系統">
+    <meta property="og:description" content="專業防汛技術練習、現場指揮模擬與篇章導讀。">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://fang5761-source.github.io/flood-training/">
-    <meta property="og:image" content="https://fang5761-source.github.io/flood-training/icon-512.png?v=19">
-    <meta property="og:image:type" content="image/png">
+    <meta property="og:image" content="https://fang5761-source.github.io/flood-training/icon-512.png?v=26">
     <meta property="og:image:width" content="512">
     <meta property="og:image:height" content="512">
 
     <style>
         :root { 
-            --primary: #2d3a30; /* 戰術深綠 */
-            --secondary: #4f772d; /* 軍綠色 */
-            --accent: #bc6c25; /* 戰術大地橙 */
-            --line-green: #06c755; /* LINE 代表色 */
+            --primary: #2d3a30; 
+            --secondary: #4f772d; 
+            --accent: #bc6c25; 
+            --line-green: #06c755; 
             --danger: #991b1b; 
             --bg-gradient: linear-gradient(135deg, #1a2421 0%, #2d3a30 100%);
-            --card-bg: #fdfaf6; /* 淺沙色底 */
+            --card-bg: #fdfaf6; 
             --text-main: #131c15;
         }
         
@@ -45,392 +40,252 @@
             font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; 
             background: var(--bg-gradient); 
             background-attachment: fixed;
-            margin: 0; 
-            padding: 15px; 
-            display: flex; 
-            justify-content: center; 
+            margin: 0; padding: 15px; 
+            display: flex; justify-content: center; 
             min-height: 100vh;
             color: var(--text-main);
             overflow-x: hidden;
         }
 
         .app-container { 
-            width: 100%; 
-            max-width: 600px; 
+            width: 100%; max-width: 600px; 
             background: var(--card-bg); 
             border-radius: 15px; 
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4); 
-            padding: 24px; 
-            box-sizing: border-box; 
+            padding: 24px; box-sizing: border-box; 
             margin: auto;
             border: 2px solid #3d4e41;
             position: relative;
         }
 
-        .header { 
-            text-align: center; 
-            border-bottom: 2px solid #dcd7cc; 
-            margin-bottom: 20px; 
-            padding-bottom: 15px; 
-        }
+        .header { text-align: center; border-bottom: 2px solid #dcd7cc; margin-bottom: 20px; padding-bottom: 15px; }
+        .header h2 { margin: 0; color: var(--primary); font-size: 1.5rem; letter-spacing: 2px; font-weight: 800; }
 
-        .header h2 {
-            margin: 0;
-            color: var(--primary);
-            font-size: 1.5rem;
-            letter-spacing: 2px;
-            font-weight: 800;
-        }
-
-        .audio-section { 
-            background: #e9e5d9; 
-            border-radius: 10px; 
-            padding: 15px; 
-            margin-bottom: 20px; 
-            border: 1px solid #c4bfae;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-        }
-
+        .audio-section { background: #e9e5d9; border-radius: 10px; padding: 15px; margin-bottom: 20px; border: 1px solid #c4bfae; }
         .audio-controls { display: flex; flex-direction: column; gap: 10px; }
-        .audio-select { 
-            padding: 10px; 
-            border-radius: 6px; 
-            border: 1px solid #a39e8d; 
-            font-size: 14px; 
-            width: 100%; 
-            background-color: white;
-            color: var(--primary);
-            cursor: pointer;
-        }
+        .audio-select { padding: 10px; border-radius: 6px; border: 1px solid #a39e8d; font-size: 14px; width: 100%; background-color: white; color: var(--primary); cursor: pointer; }
 
         .mode-selector { display: flex; gap: 10px; margin-bottom: 25px; }
-        .mode-btn { 
-            flex: 1; 
-            padding: 12px; 
-            border: 2px solid var(--primary); 
-            background: #f1ede4; 
-            color: var(--primary);
-            cursor: pointer; 
-            border-radius: 8px; 
-            font-weight: bold; 
-            font-size: 15px; 
-            transition: all 0.3s ease;
-        }
+        .mode-btn { flex: 1; padding: 12px; border: 2px solid var(--primary); background: #f1ede4; color: var(--primary); cursor: pointer; border-radius: 8px; font-weight: bold; font-size: 15px; transition: all 0.3s ease; }
+        .mode-btn.active { background: var(--primary); color: #f1ede4; }
 
-        .mode-btn.active { 
-            background: var(--primary); 
-            color: #f1ede4; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-        }
-
-        .question-box { 
-            background: #e9e5d9; 
-            padding: 20px; 
-            border-radius: 10px; 
-            margin-bottom: 20px; 
-            border-left: 8px solid var(--primary);
-            font-size: 1.1rem;
-            line-height: 1.6;
-            font-weight: 600;
-        }
-
-        .option-item { 
-            display: block; 
-            padding: 14px 18px; 
-            border: 1px solid #d1ccbc; 
-            border-radius: 10px; 
-            margin-bottom: 12px; 
-            cursor: pointer; 
-            transition: all 0.2s ease; 
-            font-size: 16px; 
-            background: white;
-        }
-
+        .question-box { background: #e9e5d9; padding: 20px; border-radius: 10px; margin-bottom: 20px; border-left: 8px solid var(--primary); font-size: 1.1rem; line-height: 1.6; font-weight: 600; }
+        .option-item { display: block; padding: 14px 18px; border: 1px solid #d1ccbc; border-radius: 10px; margin-bottom: 12px; cursor: pointer; transition: all 0.2s ease; font-size: 16px; background: white; }
         .option-item:hover { border-color: var(--secondary); background: #f8f7f0; }
         .option-item input { margin-right: 12px; transform: scale(1.3); accent-color: var(--secondary); }
         .option-item.correct { border: 3px solid var(--secondary); background: #f0fdf4; color: #166534; }
         .option-item.wrong { border: 3px solid var(--danger); background: #fef2f2; color: #991b1b; }
 
         .btn-group { display: flex; flex-direction: column; gap: 12px; }
-        .main-btn { 
-            padding: 16px; 
-            background: var(--primary); 
-            color: #f1ede4; 
-            border: none; 
-            border-radius: 10px; 
-            font-size: 18px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-            text-transform: uppercase;
-        }
+        .main-btn { padding: 16px; background: var(--primary); color: #f1ede4; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(0,0,0,0.2); text-transform: uppercase; }
         .main-btn:hover { background: #3d4e41; transform: translateY(-1px); }
 
         .action-row { display: flex; gap: 10px; margin-top: 10px; }
-        .sub-btn { 
-            flex: 1;
-            padding: 12px; 
-            background: #57635a; 
-            color: white; 
-            border: none; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-size: 13px; 
-            font-weight: bold;
-        }
+        .sub-btn { flex: 1; padding: 12px; background: #57635a; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: bold; }
         .share-btn { background: var(--line-green); }
         .install-btn { background: var(--accent); }
 
-        .analysis { 
-            margin-top: 20px; 
-            padding: 18px; 
-            background: #fef3c7; 
-            border-left: 6px solid var(--accent); 
-            border-radius: 10px; 
-            display: none; 
-            line-height: 1.7; 
-            font-size: 15px; 
-            color: #92400e;
-        }
+        .analysis { margin-top: 20px; padding: 18px; background: #fef3c7; border-left: 6px solid var(--accent); border-radius: 10px; display: none; line-height: 1.7; font-size: 15px; color: #92400e; }
+        
+        .progress-container { display: flex; justify-content: center; align-items: center; font-size: 15px; color: #57635a; margin-top: 8px; font-weight: 800; background: #eeede8; padding: 8px; border-radius: 6px; gap: 5px; }
+        .jump-select { padding: 6px 12px; border-radius: 6px; border: 1px solid #a39e8d; background: white; font-weight: bold; color: var(--primary); font-size: 16px; min-width: 80px; text-align: center; }
 
-        .legend {
-            display: flex;
-            gap: 15px;
-            font-size: 13px;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #fde68a;
-        }
-        .legend-item { display: flex; align-items: center; gap: 5px; font-weight: 700; }
-        .dot { width: 14px; height: 14px; border-radius: 3px; }
-        .dot.green { background: var(--secondary); border: 1px solid #166534; }
-        .dot.red { background: var(--danger); border: 1px solid #7f1d1d; }
+        #finish-screen { display: none; text-align: center; padding: 40px 0; }
 
-        .footer-info { 
-            margin-top: 40px; 
-            padding-top: 20px; 
-            border-top: 1px solid #dcd7cc; 
-            color: #7a7f71; 
-            font-size: 13px; 
-            text-align: center; 
-        }
-
-        .play-hint { font-size: 13px; color: #854d0e; margin-bottom: 8px; font-weight: 700; }
-        #progress { font-size: 14px; color: #57635a; margin-top: 8px; font-weight: 800; }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0; top: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.7);
-        }
-        .modal-content {
-            background-color: var(--card-bg);
-            margin: 15% auto;
-            padding: 24px;
-            border: 2px solid var(--primary);
-            width: 85%;
-            max-width: 400px;
-            border-radius: 15px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
-        }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); }
+        .modal-content { background-color: var(--card-bg); margin: 10% auto; padding: 24px; border: 2px solid var(--primary); width: 85%; max-width: 480px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.5); position: relative; }
         .modal-header { border-bottom: 2px solid #ddd; padding-bottom: 10px; margin-bottom: 15px; font-weight: 800; color: var(--primary); font-size: 1.1rem; }
-        .update-list { font-size: 15px; line-height: 1.8; color: #333; }
-        .close-modal {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 8px;
-            float: right;
-            cursor: pointer;
-            margin-top: 20px;
-            font-weight: bold;
-        }
+        .update-list { font-size: 14px; line-height: 1.8; color: #333; max-height: 400px; overflow-y: auto; }
+        .update-item { margin-bottom: 12px; padding-left: 20px; position: relative; }
+        .update-item::before { content: "✅"; position: absolute; left: 0; font-size: 12px; }
+
+        .footer-info { margin-top: 40px; padding-top: 20px; border-top: 1px solid #dcd7cc; color: #57635a; font-size: 13px; text-align: center; line-height: 1.6; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
     <div class="header">
-        <h2>防汛簽證練習系統</h2>
-        <div id="progress">進度載入中...</div>
+        <h2>🛡️ 防汛簽證練習系統</h2>
+        <div class="progress-container">
+            <span>選擇題號：</span>
+            <select id="jump-select" class="jump-select" onchange="jumpToQuestion(this.value)"></select>
+        </div>
     </div>
 
     <!-- 音軌播放器 -->
     <div class="audio-section">
-        <div class="play-hint">🎧 選擇篇章導讀：</div>
         <div class="audio-controls">
             <select class="audio-select" id="audio-chapter-select" onchange="changeAudioSource()">
-                <option value="ch1">第一篇：洪水環境與風險判讀(三十公分積水的奪命力學)</option>
-                <option value="ch2">第二篇：急流救援基礎技術(急流救援物理學)</option>
-                <option value="ch3">第四篇：戰術繩索防汛(洪水救命繩千萬別拉直)</option>
-                <option value="ch4">第五篇：防汛作戰 SOP(洪水救援的邏輯)</option>
+                <option value="ch1">第一篇：洪水環境與風險判讀</option>
+                <option value="ch2">第二篇：急流救援基礎技術</option>
+                <option value="ch3">第四篇：戰術繩索防汛</option>
+                <option value="ch4">第五篇：防汛作戰 SOP</option>
             </select>
             <audio id="lecture-audio" controls style="width: 100%; height: 35px;">
                 <source id="audio-source" src="ch1.mp3" type="audio/mpeg">
-                您的瀏覽器不支援音檔播放
             </audio>
         </div>
     </div>
 
     <div class="mode-selector">
-        <button class="mode-btn active" id="btn-basic" onclick="switchMode('basic')">基礎複選</button>
+        <button class="mode-btn active" id="btn-basic" onclick="switchMode('basic')">基礎練習</button>
         <button class="mode-btn" id="btn-scenario" onclick="switchMode('scenario')">情境模擬</button>
     </div>
 
     <div id="quiz-area">
-        <div class="question-box" id="q-text"></div>
-        <div id="options-area"></div>
-        
-        <div class="analysis" id="analysis-box">
-            <div class="legend">
-                <div class="legend-item"><div class="dot green"></div> 正確答案</div>
-                <div class="legend-item"><div class="dot red"></div> 選擇錯誤</div>
+        <div id="question-container">
+            <div class="question-box" id="q-text"></div>
+            <div id="options-area"></div>
+            
+            <div class="analysis" id="analysis-box">
+                <strong>💡 戰術分析：</strong><br>
+                <span id="analysis-text"></span>
             </div>
-            <strong>💡 白話解析：</strong><br>
-            <span id="analysis-text"></span>
+
+            <div class="btn-group" style="margin-top:25px;">
+                <button class="main-btn" id="submit-btn" onclick="checkAnswer()">提交判斷</button>
+                <button class="main-btn" id="next-btn" onclick="nextQuestion()" style="display:none;">進入下一題</button>
+            </div>
         </div>
 
-        <div class="btn-group" style="margin-top:25px;">
-            <button class="main-btn" id="submit-btn" onclick="checkAnswer()">提交判斷</button>
-            <button class="main-btn" id="next-btn" onclick="nextQuestion()" style="display:none;">進入下一題</button>
-            
-            <div class="action-row">
-                <button class="sub-btn" onclick="shuffleCurrentMode()">隨機出題</button>
-                <button class="sub-btn" onclick="resetProgress()">重置紀錄</button>
-            </div>
-            
-            <div class="action-row">
-                <button class="sub-btn share-btn" onclick="shareToLine()">🟢 LINE 分享</button>
-                <button class="sub-btn install-btn" onclick="showInstallInstructions()">📲 建立桌面捷徑</button>
-            </div>
+        <div id="finish-screen">
+            <h3 style="color:var(--secondary); font-size:24px;">🎉 任務完成！</h3>
+            <p style="color:#57635a; margin-bottom:30px; font-weight:bold;">您已完全掌握各項練習內容，請持續保持精進。</p>
+            <button class='main-btn' style="width:100%" onclick='resetProgressUI()'>重新挑戰第一題</button>
+        </div>
+
+        <div class="action-row" style="margin-top: 20px;">
+            <button class="sub-btn" onclick="shuffleCurrentMode()">隨機出題</button>
+            <button class="sub-btn" onclick="resetProgress()">重置進度</button>
+        </div>
+        
+        <div class="action-row">
+            <button class="sub-btn share-btn" onclick="shareToLine()">🟢 LINE 分享</button>
+            <button class="sub-btn install-btn" onclick="showInstallInstructions()">📲 建立桌面捷徑</button>
         </div>
     </div>
 
     <div class="footer-info">
         <strong>本系統由 散木團隊 開發製作</strong><br>
-        <span id="dev-info" style="cursor:pointer; text-decoration:underline;" onclick="showUpdateLog()">版本：v1.0.19 | 更新日：115/03/24 (查看更新)</span>
+        教材規劃：徐世豐 &nbsp;&nbsp; APP設計：吳佩芳（朵朵）<br>
+        <span id="dev-info" style="cursor:pointer; text-decoration:underline;" onclick="showUpdateLog()">版本：v1.0.26 | 最後更新：115/03/26</span>
     </div>
 </div>
 
 <!-- 更新紀錄彈窗 -->
 <div id="updateModal" class="modal">
     <div class="modal-content">
-        <div class="modal-header">🚩 系統更新簡報 (v1.0.19)</div>
+        <div class="modal-header">🚩 系統全方位優化戰果 (v1.0.26)</div>
         <div class="update-list">
-            • ⚙️ <b>Android 系統快取排除</b>：使用強制版本標籤，修正三星手機無法顯示新 Icon 的問題。<br>
-            • 📱 <b>安裝機制補強</b>：優化 Manifest 設定，確保 Android 系統正確彈出安裝提示。<br>
-            • 🔗 <b>LINE 抓圖機制升級</b>：重新定義 Open Graph 標籤，破除通訊軟體預覽圖快取。<br>
-            • 🛠️ <b>離線小助手更新</b>：同步更新 Service Worker 緩存邏輯。
+            <div class="update-item">🎯 <b>介面用語專業化</b>：優化跳題功能敘述為「選擇題號」，更符合現代 App 使用者習慣。</div>
+            <div class="update-item">🎨 <b>視覺風格重塑</b>：導入「軍事墨綠迷彩」戰術配色與卡片式沙地背景，提升實戰沉浸感。</div>
+            <div class="update-item">📲 <b>PWA App 化部屬成功</b>：支援「安裝至手機主畫面」，並克服 Android/三星手機快取限制，成功啟用新版圖標。</div>
+            <div class="update-item">📝 <b>教材深度校對優化</b>：全面校對及優化 80 題題目內容與選項，確保敘述精確。</div>
+            <div class="update-item">🗣️ <b>專業用語標準化</b>：優化情境題問法為「應如何處理？」，並改採中性稱謂。</div>
+            <div class="update-item">🎧 <b>全篇章導讀整合</b>：整合四篇章專業語音導讀音軌，提供視覺與聽覺同步學習。</div>
+            <div class="update-item">🔗 <b>社群分享優化</b>：強化 LINE 分享機制，呈現專業縮圖 (OG Image) 與標題。</div>
+            <div class="update-item">🛠️ <b>系統邏輯修復</b>：解決「重新挑戰」失效及彈窗收合等技術問題。</div>
         </div>
-        <button class="close-modal" onclick="closeUpdateLog()">確認</button>
+        <button class="sub-btn" style="float:right; margin-top:15px;" onclick="closeUpdateLog()">確認收悉</button>
     </div>
 </div>
 
-<!-- 安裝指引彈窗 -->
 <div id="installModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">📲 將系統加入手機主畫面</div>
         <div id="install-body" class="update-list"></div>
-        <button class="close-modal" onclick="closeInstallModal()">關閉</button>
+        <button class="sub-btn" style="float:right; margin-top:15px;" onclick="closeInstallModal()">關閉</button>
     </div>
 </div>
 
 <script>
-const AUDIO_DATA = {
-    ch1: "ch1.mp3",
-    ch2: "ch2.mp3",
-    ch3: "ch3.mp3",
-    ch4: "ch4.mp3"
-};
+const AUDIO_DATA = { ch1: "ch1.mp3", ch2: "ch2.mp3", ch3: "ch3.mp3", ch4: "ch4.mp3" };
 
 const basicQuestions = [
-    { q: "1. 關於洪水的特性，下列哪些敘述正確？(複選)", options: ["具有突發性", "力量非常大", "完全可以精準預測", "環境多變難以掌握"], ans: [0, 1, 3], analysis: "洪水力量大且難預測。救援前第一步是判斷環境，不是盲目衝進去！" },
-    { q: "2. 台灣洪水具有哪些特徵？(複選)", options: ["降雨非常集中", "地形陡峭", "河川長度極長", "多屬於急流型洪水"], ans: [0, 1, 3], analysis: "台灣河川短促、坡度大，流速很快，足以沖倒成年人。" },
-    { q: "3. 關於「速度平方效應」，下列哪些說法是正確的？(複選)", options: ["流速增加 1 倍，力量增加 2 倍", "流速增加 1 倍，力量增加 4 倍", "流速增加 3 倍，力量增加 9 倍", "水流推力與流速的平方成正比"], ans: [1, 2, 3], analysis: "流速只要快一點點，力量是成平方倍跳上去的，這是科學基礎。" },
-    { q: "4. 當流速達到多少時，一般成人通常就站不住了？(複選)", options: ["流速 0.5 m/s", "流速 1.5 m/s 開始不穩", "流速 2 m/s 幾乎站不住", "流速 3 m/s 成人會被沖倒"], ans: [1, 2, 3], analysis: "1.5公尺/秒就開始晃了，3公尺/秒以上絕對會被沖走。" },
-    { q: "5. 急流環境中常見的「過濾機 (Strainer)」障礙物包含哪些？(複選)", options: ["水中的倒木", "橋墩結構", "鐵欄杆", "河岸邊的緩流區"], ans: [0, 1, 2], analysis: "Strainer 是會讓水流過、但把人卡住的東西，非常致命！" },
-    { q: "6. 關於「回流區 (Hydraulic)」，下列敘述哪些正確？(複選)", options: ["又稱為液壓區", "水流越過落差後形成", "人掉進去會被不斷拉回", "是絕對安全的休息區"], ans: [0, 1, 2], analysis: "回流區會把人捲住，讓人無法自行脫困，要非常小心。" },
-    { q: "7. 洪水救援的優先順序（低風險到高風險）為何？(複選)", options: ["優先使用非接觸式救援（如拋繩）", "儘量避免涉水救援", "船艇救援風險低於拋繩", "下水游泳接近是最後手段"], ans: [0, 1, 3], analysis: "能不接觸就不接觸，拋繩比下水安全多了！" },
-    { q: "8. 急流游泳技術中，「防禦式游泳」的重點為何？(複選)", options: ["背部朝下", "腳朝下游方向", "雙腳抬起防止卡住", "頭部朝下游觀察"], ans: [0, 1, 2], analysis: "腳朝下游是用來推開障礙物、保護頭部的。" },
-    { q: "9. 執行「三人涉水」隊形時，下列哪些正確？(複選)", options: ["最強壯的人在上游位", "三人站成三角形", "互相抓住救生衣肩帶", "最強壯的人在最下游"], ans: [0, 1, 2], analysis: "上游的人負責破水，三角形結構最穩。" },
-    { q: "10. 拋繩袋救援的正確步驟為何？(複選)", options: ["繩索一端需固定在救援者身上", "目標瞄準受困者的「上游」", "受困者抓住後應保持仰姿", "直接將繩索拉直對抗水流"], ans: [0, 1, 2], analysis: "要丟上游，水流才會把繩子帶到受困者手上。" },
-    { q: "11. 合格的急流專用救生衣 (PFD) 應具備哪些功能？(複選)", options: ["浮力通常為 70–100 N", "具備快速釋放扣", "具備救援拖曳環", "必須是自動充氣式設計"], ans: [0, 1, 2], analysis: "急流救生衣不能用充氣式的。快速釋放扣是遇險時脫離繩索的保命符。" },
-    { q: "12. 洪水固定點選擇樹木 (Tree) 時，應注意哪些？(複選)", options: ["樹幹直徑建議至少 30 cm", "根系要穩定", "土壤不能過於鬆軟", "只要有葉子就可以"], ans: [0, 1, 2], analysis: "大樹才拉得住橫渡張力，小樹會被拔起來。" },
-    { q: "13. 使用車輛作為固定點時，哪些位置較安全？(複選)", options: ["拖車鉤", "車架大樑", "保險桿", "車門把手"], ans: [0, 1], analysis: "保險桿通常是塑膠或薄金屬，一拉就斷。" },
-    { q: "14. 關於橫渡繩的張力與角度，下列哪些敘述正確？(複選)", options: ["夾角越小，張力越大", "夾角 30度時張力是負載的 2 倍以上", "繩索應拉到死緊不能有弧度", "保留弧度可減少固定點受力"], ans: [0, 1, 3], analysis: "拉越直越危險！固定點可能會被扯斷。" },
-    { q: "15. 救援隊執行防汛任務的三大安全原則為何？(複選)", options: ["不要讓救援者成為受困者", "優先使用非接觸救援", "建立下游安全區", "採取個人英雄式下水救援"], ans: [0, 1, 2], analysis: "自己先安全才能救人；下游安全是最後一道防線。" },
-    { q: "16. 20人小組執行防汛時，應如何編組分工？(複選)", options: ["固定點組", "繩索架設組", "安全監控組", "支援組"], ans: [0, 1, 2, 3], analysis: "分工明確才能在10分鐘內快速部署。" },
-    { q: "17. 「子惠結」在洪水救援中有何應用特性？(複選)", options: ["摩擦特性可預測", "滑動過程平順可控制", "具有漸進式鎖定功能", "結構穩定"], ans: [0, 1, 2, 3], analysis: "它是精銳救援隊的標準結組，控繩專業戶必學。" },
-    { q: "18. 洪水危險矩陣中，哪些組合屬於「極高風險」？(複選)", options: ["腰部以上深度", "大腿深且流速 1m/s 以上", "小腿深且流速 3m/s 以上", "腳踝深且無流速"], ans: [0, 1, 2], analysis: "只要水深過大腿或流速過快（>3m/s）都是生存極限。" },
-    { q: "19. 執行夜間防汛救援任務時，應特別注意哪些事項？(複選)", options: ["增加照明設備", "建立反光或化學標記", "降低整體行動速度", "加強安全監控與通信"], ans: [0, 1, 2, 3], analysis: "夜間風險判斷難度大，安全監控要加倍。" },
-    { q: "20. 防汛作戰標準 SOP 的五個階段包含哪些？(複選)", options: ["偵察", "建立安全區", "救援與轉運", "撤離"], ans: [0, 1, 2, 3], analysis: "每個階段都有標準流程，偵察評估環境是第一步。" },
-    { q: "21. 關於「下縮 (Undercut)」地形，下列敘述何者正確？(複選)", options: ["是水流侵蝕岩石底部形成的空洞", "受困者被吸入後極難自行脫困", "是理想的避難區域", "屬於危險地形"], ans: [0, 1, 3], analysis: "Undercut 會把人吸進去石縫，絕對要避開。" },
-    { q: "22. 急流救援專用繩索通常具備哪些特點？(複選)", options: ["材質通常為聚丙烯或聚酯材質", "具備可漂浮性", "重量輕且負載足", "強吸水性"], ans: [0, 1, 2], analysis: "要會浮在水面上，才不會纏到水底雜物。" },
-    { q: "23. 拋繩後的「擺盪救援」原理為何？(複選)", options: ["利用水流將受困者帶向岸邊", "受困者保持仰姿", "救援者用力往回拉", "繩索隨水流帶動呈弧形移動"], ans: [0, 1, 3], analysis: "利用水的力量把人「盪」回來，最省力。" },
-    { q: "24. 在橫渡系統中，何時必須考慮使用高張力系統？(複選)", options: ["長距離橫渡", "進行擔架傷患輸送", "水流過強", "短距離拋繩"], ans: [0, 1, 2], analysis: "負重或遠距離才需要用到 3:1 或 5:1 的省力滑輪組。" },
-    { q: "25. 進行現場偵察時，必須評估的環境參數包含哪些？(複選)", options: ["水流速度與水深", "水底障礙物", "可用固定點位置", "現場通訊狀況"], ans: [0, 1, 2, 3], analysis: "數據決定救人方式，環境太危險要暫停。" },
-    { q: "26. 「攻擊式游泳」的使用時機為何？(複選)", options: ["快速接近目標受困者", "快速游向特定岸邊位置", "用於觀察下游地形", "長距離在急流中漂浮"], ans: [0, 1], analysis: "攻擊式是趴著游，速度快但視野受限。" },
-    { q: "27. 救援行動中的核心觀念「確保救援者安全」，包含哪些具體作為？(複選)", options: ["不要讓救援者成為待救者", "落實裝備互檢", "進行科學風險評估", "建立完善的下游安全防線"], ans: [0, 1, 2, 3], analysis: "保護好自己，才能保護別人。" },
-    { q: "28. 洪水中的「水流拖曳力 (F)」主要受哪些物理參數影響？(複選)", options: ["流速的平方 (V²)", "人體或繩索的迎水面積 (A)", "水的密度 (ρ)", "阻力係數 (Cd)"], ans: [0, 1, 2, 3], analysis: "流速增加一倍，推力增加四倍！" },
-    { q: "29. 建立有效的「下游安全區」可採取哪些方式？(複選)", options: ["安排拋繩組在下游待命", "建立備份攔截點", "設置觀察哨提醒漂流物", "在下游安全區域待命"], ans: [0, 1, 2, 3], analysis: "萬一失手，下游的人要能接住掉下去的人。" },
-    { q: "30. 關於急流專用頭盔的敘述，下列何者正確？(複選)", options: ["必須具備排水孔以避免水壓影響", "主要功能為保護頭部碰撞岩石", "完全不透水設計", "防止碰撞岩石"], ans: [0, 1, 3], analysis: "排水孔防止水壓扭傷脖子，防撞最重要。" },
-    { q: "31. 執行「單人涉水」技術時，應注意哪些細節？(複選)", options: ["身體應微向上游方向傾斜", "必須使用長杖探測水底狀況", "大步前進", "確保腳步穩定再前進"], ans: [0, 1, 3], analysis: "重心放低，長杖是你的第三隻腳。" },
-    { q: "32. 關於「五人涉水」隊形的優點，下列敘述何者正確？(複選)", options: ["形成一道穩定的「人牆」結構", "穩定性最高", "適合應用於較強的水流環境", "移動速度最快"], ans: [0, 1, 2], analysis: "人牆隊形可以有效抗衡強水流。" },
-    { q: "33. 拋繩袋內的負載繩規格，一般標準為何？(複選)", options: ["直徑約 8–10 mm", "長度約 15–30 m", "材質必須能漂浮於水面", "直徑至少要 20 mm 以上"], ans: [0, 1, 2], analysis: "長度要適中，重點是要會浮在水上。" },
-    { q: "34. 救援小組組長在任務現場的主要職責為何？(複選)", options: ["負責任務整體的指揮與決策", "進行動態風險評估", "下令救援方式的切換", "親自架設繩索細節"], ans: [0, 1, 2], analysis: "組長是大腦，要留在岸上觀察全局。" },
-    { q: "35. 當救援現場噪音巨大導致無線電受干擾時，應如何確保通訊？(複選)", options: ["使用標準手勢進行溝通", "使用哨音口令", "大聲喊叫", "建立視覺通訊機制"], ans: [0, 1, 3], analysis: "水聲會蓋過吼叫，手勢跟哨音最準。" },
-    { q: "36. 救援任務結束後的「撤離階段」，應包含哪些工作？(複選)", options: ["回收現場所有救援器材", "確認所有任務人員安全在位", "再次對環境進行安全評估", "建立暫時性的醫療安置點"], ans: [0, 1, 2], analysis: "撤退時要清點好所有人跟裝備。" },
-    { q: "37. 為什麼救援應避免直接涉水救人？(複選)", options: ["涉水是極高風險的救援行為", "水流力量大", "地形不可預測性", "拋繩風險較低"], ans: [0, 1, 2, 3], analysis: "能不走水裡就不走，生命安全第一。" },
-    { q: "38. 關於救助器材的保養與管理，下列敘述何者正確？(複選)", options: ["器材使用後應定期檢查", "清洗泥沙並陰乾", "避開高溫曝曬", "受油污損壞應汰換"], ans: [0, 1, 2, 3], analysis: "保養好裝備，下次它才會救你。" },
-    { q: "39. 專業小組在橫渡系統架設上的速度要求？(複選)", options: ["10 分鐘內完成架設", "快速部署能力", "精確協同分工", "一小時內完成"], ans: [0, 1, 2], analysis: "救人是搶時間，10分鐘是專業門檻。" },
-    { q: "40. V 型橫渡系統在洪水救援中的主要應用價值為何？(複選)", options: ["可以精確控制受困者的移動方向", "非常適合用於擔架傷患的轉運", "架設過程比拋繩簡單快速", "只需要一條繩"], ans: [0, 1], analysis: "兩條繩控制，像遙控一樣精準平穩。" },
-    { q: "41. 如何判斷及建立穩固的「地錨固定點」？(複選)", options: ["使用三根鋼釘組組成三角地錨", "土壤緊實度與深度", "鋼釘打入一半深度即可", "鋼釘應盡量完全打入"], ans: [0, 1, 3], analysis: "釘子要打實，土壤太軟就不安全。" },
-    { q: "42. 傷患救出後的轉運階段，應注意哪些事項？(複選)", options: ["立即將傷患送至安全區域", "輸送過程中應保持平穩", "必須防止傷患發生二次傷害", "速度第一"], ans: [0, 1, 2], analysis: "傷患脆弱，平穩送到安全區安置最重要。" },
-    { q: "43. 洪水力學中，關於水流推力公式參數的敘述何者正確？(複選)", options: ["ρ 為水密度", "V 為水流速度", "A 為迎水面積", "Cd 為阻力係數"], ans: [0, 1, 2, 3], analysis: "這些數據決定了水流對人的衝擊力。" },
-    { q: "44. 在偵察中發現「過濾機 (Strainer)」障礙物時，應如何處理？(複選)", options: ["標記並嚴禁靠近", "絕對規避路徑", "說明致命風險", "利用作站立點"], ans: [0, 1, 2], analysis: "那是奪命區，一定要叫夥伴避開。" },
-    { q: "45. 「子惠結」在工程力學上的優勢為何？(複選)", options: ["摩擦力分布均勻", "鎖定漸進平順", "提供可預測滑動", "架設最慢"], ans: [0, 1, 2], analysis: "摩擦分布均勻，控繩非常專業平順。" },
-    { q: "46. 正式救援前的「安全建立」階段應包含哪些具體設施？(複選)", options: ["建立下游安全攔截線", "劃定傷患醫療處置區", "整理裝備器材存放區", "通訊測試"], ans: [0, 1, 2], analysis: "井然有序的區域劃分能提高效率。" },
-    { q: "47. 根據洪水危險矩陣，水深僅 30 cm 在什麼情況下具有高度風險？(複選)", options: ["只要流速夠快，仍足以將人沖倒", "結合流速 3 m/s 即屬於極高風險", "對照風險矩陣進行評估", "腳踝深度時"], ans: [0, 1, 2], analysis: "別小看淺水，流速快照樣傷人。" },
-    { q: "48. 救生衣上的「快速釋放扣」正確使用觀念為何？(複選)", options: ["用於救援者被繩索捲入時緊急脫離", "熟練單手操作即可解開", "不可隨意開啟", "穿脫主扣"], ans: [0, 1, 2], analysis: "救命按鈕，危急時必按。" },
-    { q: "49. 使用車輛作為固定點時，停放與架設要求為何？(複選)", options: ["選擇地面堅實平整處", "手剎車拉緊並放置擋塊", "檢查承載點強度", "打入P檔"], ans: [0, 1, 2, 3], analysis: "車子滑動系統就垮，一定要停穩。" },
-    { q: "50. 教官在結訓簽證時，應評核學員具備哪些核心能力？(複選)", options: ["正確的洪水環境判讀能力", "技術操作精確度", "展現良好的小組協作與教導力", "個人體能表現"], ans: [0, 1, 2], analysis: "教官是要回去傳承專業與安全的。" }
+    { q: "1.關於洪水的特性，下列哪些敘述正確？", options: ["具有突發性", "力量非常大", "完全可以精準預測", "環境多變難以掌握"], ans: [0, 1, 3], analysis: "洪水來得快、力量大且難預測。救援前第一步是判斷環境，不是盲目衝進去！" },
+    { q: "2.台灣的洪水災害具有哪些明顯特徵？", options: ["降雨非常集中", "地形陡峭", "河川長度極長", "多屬於急流型洪水"], ans: [0, 1, 3], analysis: "台灣山高水急，流速很快，足以沖倒成年人。" },
+    { q: "3.關於「速度平方效應」對水流推力的影響，下列敘述何者正確？", options: ["流速增加 1 倍，力量增加 2 倍", "流速增加 1 倍，力量增加 4 倍", "流速增加 3 倍，力量增加 9 倍", "推力與流速的平方成正比"], ans: [1, 2, 3], analysis: "流速只要快一點點，力量是成平方倍跳上去的，這是科學！" },
+    { q: "4.當流速達到多少時，一般成人通常就站不住了？", options: ["流速 0.5 m/s", "流速 1.5 m/s 開始不穩", "流速 2 m/s 幾乎站不住", "流速 3 m/s 以上足以將成人沖倒"], ans: [1, 2, 3], analysis: "1.5公尺/秒就開始晃了，3公尺/秒以上絕對會被沖走。" },
+    { q: "5.急流環境中常見的「過濾機 (Strainer)」障礙物包含哪些？", options: ["水中的倒木", "橋墩結構", "鐵欄杆", "河岸邊的緩流區 (Eddy)"], ans: [0, 1, 2], analysis: "Strainer 是會讓水流過、但把人卡住的東西，非常致命！" },
+    { q: "6.關於「回流區 (Hydraulic)」，下列敘述哪些正確？", options: ["又稱為液壓區", "水流越過落差後形成", "受困者在此區域可能會被水流不斷拉回", "是絕對安全的休息區域"], ans: [0, 1, 2], analysis: "回流區會把人捲住，讓人無法自行脫困，要非常小心。" },
+    { q: "7.國際急流救援體系普遍遵循的救援優先順序為何？", options: ["優先使用非接觸式救援（如觀察、呼叫、拋繩）", "儘量避免涉水救援", "船艇救援風險低於拋繩", "下水 (Go) 是最後且風險最高的選擇"], ans: [0, 1, 3], analysis: "能不接觸就不接觸，拋繩比下水安全多了！" },
+    { q: "8.關於急流「防禦式游泳」的姿勢要點，下列何者正確？", options: ["背部朝下", "腳朝下游方向", "雙腳略微抬起防止卡住", "遇到障礙物時可以用腳推開"], ans: [0, 1, 2, 3], analysis: "腳朝下游是用來推開障礙物、保護頭部的。" },
+    { q: "9.執行「三人涉水」隊形時，下列哪些操作標準正確？", options: ["最強壯的人站在上游位置", "三人站成三角形隊形", "互相抓住對方的救生衣或肩帶", "最強壯的人在最下游負責推動"], ans: [0, 1, 2], analysis: "上游的人負責破水，三角形結構最穩。" },
+    { q: "10.使用拋繩袋進行救援時，哪些步驟符合標準程序？", options: ["確保繩索一端固定在救援者身上（不可纏繞手部）", "目標瞄準受困者的「上游」方向", "受困者抓住繩索後應保持仰姿", "利用「擺盪救援」效應將受困者帶向岸邊"], ans: [0, 1, 2, 3], analysis: "要丟上游，水流才會把繩子帶到受困者手上。" },
+    { q: "11.合格的急流專用救生衣 (PFD) 應具備哪些功能？", options: ["浮力通常為 70–100 N", "具備快速釋放扣", "具備救援拖曳環", "必須是自動充氣式設計"], ans: [0, 1, 2], analysis: "急流救生衣不能用充氣式的。快速釋放扣是遇險時脫離繩索的保命符。" },
+    { q: "12.選擇樹木作為洪水救援固定點時，應注意哪些準則？", options: ["樹幹直徑建議至少 30 cm", "需考慮根系穩定性", "需觀察土壤狀況是否鬆軟", "只要有葉子就可以"], ans: [0, 1, 2], analysis: "大樹才拉得住橫渡的張力，小樹或根部鬆動的樹會被拔起來。" },
+    { q: "13.使用車輛作為固定點時，哪些位置是建議的承載點？", options: ["拖車鉤", "車架大樑", "保險桿", "車門把手"], ans: [0, 1], analysis: "保險桿通常是塑膠或薄金屬，一拉就掉。" },
+    { q: "14.關於橫渡繩的張力與夾角關係，下列哪些敘述哪些正確？", options: ["夾角越小，張力越大", "夾角 30 度時，張力可能達到負載的 2 倍以上", "橫渡繩應拉到極度筆直，不可有下垂弧度", "保留適當弧度可有效減少系統張力"], ans: [0, 1, 3], analysis: "拉越直越危險！固定點可能會被扯斷。" },
+    { q: "15.救援隊執行防汛任務的三大安全原則為何？", options: ["不要讓救援者成為受困者", "優先使用非接觸救援", "建立下游安全區", "採取個人英雄式下水救援"], ans: [0, 1, 2], analysis: "自己先安全，才能救人；下游安全是最後一道防線。" },
+    { q: "16.一個 20 人的防汛小組執行任務時，應包含哪些功能編組？", options: ["固定點組", "繩索架設組", "安全監控組", "支援組"], ans: [0, 1, 2, 3], analysis: "精準分工才能在 10 分鐘內快速部署。" },
+    { q: "17.關於「子惠結」在救援系統中的應用特性為何？", options: ["摩擦特性可預測", "滑動過程平順可控制", "具有漸進式鎖定功能", "結構穩定"], ans: [0, 1, 2, 3], analysis: "它是精銳救援隊的標準結組，控繩專業戶必學。" },
+    { q: "18.根據洪水危險矩陣，下列哪些組合屬於「極高風險」？", options: ["水深在腰部以上", "水深至大腿，且流速 1 m/s 以上", "水深至小腿，且流速 3 m/s 以上", "水深至腳踝，且無流速"], ans: [0, 1, 2], analysis: "只要水深過大腿或流速過快，都是極限了。" },
+    { q: "19.執行夜間防汛救援任務時，應採取哪些必要措施？", options: ["使用可靠的防水照明設備", "在重要位置建立反光或化學標記", "降低整體行動速度", "加強安全監控與通信"], ans: [0, 1, 2, 3], analysis: "夜間風險判斷難度大，安全監控要加倍。" },
+    { q: "20.防汛作戰標準 SOP 的五個階段包含哪些？", options: ["偵察", "建立安全區", "救援與轉運", "撤離"], ans: [0, 1, 2, 3], analysis: "每個階段都有標準流程，偵察評估環境是第一步。" },
+    { q: "21.關於「下縮 (Undercut)」地形，下列敘述何者正確？", options: ["是水流侵蝕岩石底部形成的空洞", "受困者被吸入後極難自行脫困", "是理想的避難區域", "屬於急流中的危險地形"], ans: [0, 1, 3], analysis: "Undercut 會把人吸進去石縫，絕對要避開。" },
+    { q: "22.急流救援專用繩索通常具備哪些特點？", options: ["材質通常為聚丙烯或聚酯材質", "具有可漂浮性", "重量輕且負載力足", "使用吸水性強的棉質材料"], ans: [0, 1, 2], analysis: "急流用的繩子要會浮在水面上，才不會纏到水底雜物。" },
+    { q: "23.拋繩後的「擺盪救援 (Pendulum Effect)」運作原理為何？", options: ["利用水流將受困者帶向岸邊", "受困者需保持仰姿", "救援者需與水流呈直線強拉", "繩索隨水流帶動呈弧形移動"], ans: [0, 1, 3], analysis: "利用水的力量把人「盪」回來，最省力。" },
+    { q: "24.在橫渡系統中，何時必須考慮使用高張力系統 (如 3:1 或 5:1)？", options: ["長距離橫渡", "進行擔架傷患輸送", "水流過強導致阻力增加", "僅用於 5 公尺內的短距離救援"], ans: [0, 1, 2], analysis: "載重或遠距離才需要用到 3:1 或 5:1 的省力滑輪組。" },
+    { q: "25.進行現場偵察時，必須評估的環境參數包含哪些？", options: ["水流速度與水深", "潛在障礙物 (如倒木、橋墩)", "可用固定點位置", "現場光線與天氣狀況"], ans: [0, 1, 2, 3], analysis: "這些數據決定了我們要用什麼方式救人，環境太危險就要暫停。" },
+    { q: "26.「攻擊式游泳 (Aggressive Swimming)」的正確使用時機為何？", options: ["需要快速接近目標受困者", "需要快速游向特定岸邊位置", "用於觀察下游地形", "長距離在急流中漂浮"], ans: [0, 1], analysis: "攻擊式是趴著游，速度快但看不到前面，只有短程用。" },
+    { q: "27.救援行動中的核心觀念「確保救援者安全」，包含哪些具體作為？", options: ["不要讓救援者成為受困者", "落實裝備互檢", "進行科學的風險矩陣評估", "建立完善的下游安全防線"], ans: [0, 1, 2, 3], analysis: "救援者變成受困者是最大的失敗。" },
+    { q: "28.洪水中的「水流拖曳力 (F)」主要受哪些物理參數影響？", options: ["流速的平方 (V²)", "人體或繩索的迎水面積 (A)", "水的密度 (ρ)", "阻力係數 (Cd)"], ans: [0, 1, 2, 3], analysis: "流速是關鍵，流速快一點，力量是平方跳級的！" },
+    { q: "29.建立有效的「下游安全區」可採取哪些方式？", options: ["安排拋繩組在下游待命", "建立備份攔截點", "設置觀察哨提醒漂流物", "在安全區域內安置受困者"], ans: [0, 1, 2, 3], analysis: "萬一救援失敗，下游一定要有人能接住掉下去的人。" },
+    { q: "30.關於急流專用頭盔的敘述，下列何者正確？", options: ["必須具備排水孔以避免水壓影響", "主要功能為保護頭部碰撞岩石", "必須能完全覆蓋耳朵且不透水", "是水域作業的必備安全防護"], ans: [0, 1, 3], analysis: "排水孔很重要，不然水壓會增加脖子的負荷。" },
+    { q: "31.執行「單人涉水」技術時，應注意哪些細節？", options: ["身體應微向上游方向傾斜", "必須使用長杖探測水底狀況", "雙腳應緩慢且穩定地移動", "確保前腳踩穩後，後腳再跟上"], ans: [0, 1, 2, 3], analysis: "每一步都要踩穩，長杖就像你的第三隻腳。" },
+    { q: "32.關於「五人涉水」隊形的優點，下列敘述何者正確？", options: ["形成一道穩定的「人牆」結構", "穩定性高於單人或三人涉水", "適合應用於較強的水流環境", "隊員間應互相抓住肩帶以連結力量"], ans: [0, 1, 2, 3], analysis: "形成人牆可以大幅對抗強水流。" },
+    { q: "33.拋繩袋內的浮水繩規格，一般標準為何？", options: ["直徑約 8–10 mm", "長度約 15–30 m", "材質必須能漂浮於水面", "直徑至少要 20 mm 以上"], ans: [0, 1, 2], analysis: "會浮在水上最重要。" },
+    { q: "34.救援小組組長在任務現場的主要職責為何？", options: ["負責任務整體的指揮與決策", "進行動態風險評估", "下令救援方式的切換", "負責實際架設繩索細節"], ans: [0, 1, 2], analysis: "組長是大腦，要留在岸上判斷風險與指揮全局。" },
+    { q: "35.當救援現場噪音巨大導致無線電受干擾時，應如何確保通訊？", options: ["使用標準手勢進行溝通", "使用哨音口令", "增加人員大聲喊叫", "事先建立視覺通信機制"], ans: [0, 1, 3], analysis: "聲音聽不見就用看的，手勢跟哨音這時候最管用。" },
+    { q: "36.救援任務結束後的「撤離階段」，應包含哪些工作？", options: ["回收現場所有救援器材", "確認所有任務人員安全在位", "再次對環境進行安全評估", "建立暫時性的醫療安置點"], ans: [0, 1, 2], analysis: "有秩序的撤退，清點好人跟裝備。" },
+    { q: "37.救援原則中強調「避免直接涉水救援」的原因為何？", options: ["涉水是極高風險的救援行為", "應優先採用非接觸式救援（風險較低）", "水流力量往往超出人體負荷", "水底地形具有高度不可預測性"], ans: [0, 1, 2, 3], analysis: "涉水很危險，能拋繩或架繩就不要走水裡。" },
+    { q: "38.關於救助器材的保養與管理，下列敘述何者正確？", options: ["器材使用後應定期檢查", "救生衣應清洗泥沙並於陰涼處晾乾", "繩索若受化學污染應立即汰換", "器材不需特別保養，直接收納即可"], ans: [0, 1, 2], analysis: "裝備要定期檢查，確保救人時它是好的。" },
+    { q: "39.專業救援小組在橫渡系統架設上的速度要求與標準為何？", options: ["目標於 10 分鐘內完成架設", "強調快速部署能力", "需透過精確的小組分工達成", "只要一小時內架好即可"], ans: [0, 1, 2], analysis: "10 分鐘內架好是專業標竿。" },
+    { q: "40.V 型橫渡系統在洪水救援中的主要應用價值為何？", options: ["可以精確控制受困者的移動方向", "非常適合用於擔架傷患的轉運", "架設過程比拋繩簡單快速", "能夠適應大多數複雜水域環境"], ans: [0, 1], analysis: "轉運傷患最平穩。" },
+    { q: "41.如何判斷及建立穩固的「地錨固定點」？", options: ["使用三根鋼釘組成的三角地錨", "必須考慮土壤的緊實度與深度", "鋼釘應盡量完全打入地面", "地錨位置可選在鬆軟的河沙灘上"], ans: [0, 1, 2], analysis: "地錨要打實，土壤太軟就不行。" },
+    { q: "42.傷患救出後的轉運階段，應注意哪些事項？", options: ["立即將傷患送至安全區域", "輸送過程中應保持平穩", "必須防止傷患在轉運中發生二次傷害", "輸送速度越快越好，不需考慮穩定性"], ans: [0, 1, 2], analysis: "救出來後趕快送到安全區安置。" },
+    { q: "43.洪水力學中，關於水密度 (ρ) 的敘述何者正確？", options: ["是計算流體推力的參數之一", "會影響物體在水中的浮力與推力", "水密度固定不變，不需考慮", "包含在力量公式的組成內"], ans: [0, 1, 3], analysis: "推力跟水密度、受力面積、阻力及流速平方都有關係。" },
+    { q: "44.在偵察中發現「過濾機 (Strainer)」障礙物時，教官應如何指導？", options: ["標記危險區域並嚴禁靠近", "規劃救援路徑時必須絕對規避", "說明水流通過但人會卡住的致命風險", "利用作站立點"], ans: [0, 1, 2], analysis: "看到會卡人的東西一定要避開，不能靠近。" },
+    { q: "45.「子惠結」在工程力學上的優勢為何？", options: ["具有多點接觸與連續摩擦特性", "摩擦力分布較為均勻", "能夠提供可預測的滑動行為", "適合應用於需要精確控制張力的系統"], ans: [0, 1, 2, 3], analysis: "它是控繩專業戶必學，摩擦力很均勻。" },
+    { q: "46.正式救援前的「安全建立」階段應包含哪些具體設施？", options: ["建立下游安全攔截線", "劃定傷患醫療處置區", "整理裝備器材存放區", "設置媒體聯絡區"], ans: [0, 1, 2], analysis: "救援前先劃好安全區，下游安全最重要。" },
+    { q: "47.根據講義，水深僅 30 cm 對人體造成的風險為何？", options: ["只要流速夠快，仍足以將人沖倒", "結合流速 3 m/s 即屬於極高風險", "低於膝蓋深度絕對安全", "必須對照風險矩陣進行評估"], ans: [0, 1, 3], analysis: "別小看小腿深的水，流速一快照樣沖走人。" },
+    { q: "48.救生衣上的「快速釋放扣」正確使用觀念為何？", options: ["用於救援者被繩索捲入或卡住時緊急脫離", "必須熟練單手操作即可解開", "平時不可隨意開啟", "這是穿脫救生衣唯一的扣環"], ans: [0, 1, 2], analysis: "當你被繩子捲入水底時，按下去就能脫離。" },
+    { q: "49.使用車輛作為固定點時，停放與架設要求為何？", options: ["應選擇地面堅實平整處", "手剎車必須拉緊並放置擋塊", "必須考慮車輛承載點（如拖車鉤）的負荷力", "只要車體夠重，不需考慮停放位置"], ans: [0, 1, 2], analysis: "車子要停穩在堅硬土地上，不能滑動。" },
+    { q: "50.教官在結訓簽證時，應如何評核學員是否合格？", options: ["具備正確的洪水環境判讀能力", "技術操作精確且符合安全規範", "展現良好的小組協作能力", "具備將技術帶回連隊教導的能力"], ans: [0, 1, 2, 3], analysis: "簽證就是要確認你懂判斷、技術好且安全。" }
 ];
 
 const scenarioQuestions = [
-    { q: "51. 【情境】發現受困者在河中巨石上，距離 20 公尺。現場流速 2.5 m/s。應如何處理？(複選)", options: ["先建立下游安全監控與拋繩組", "嘗試拋繩救援", "架設橫渡系統", "直接游泳接近確認"], ans: [0, 1, 2], analysis: "能不接觸就不下水，拋繩最快，不行就架繩。" },
-    { q: "52. 【情境】準備架設橫渡繩但現場樹木直徑皆小於 10 cm。旁邊停有一輛救援車。應如何處理？(複選)", options: ["改用救援車的拖車鉤或車架作為固定點", "車輛加擋塊並停穩", "說明細木斷裂風險", "隨便綁在後照鏡"], ans: [0, 1, 2], analysis: "樹細會斷，改用車體大樑最保險。" },
-    { q: "53. 【情境】拋繩成功後受困者抓住繩索。由於水流強勁，受困者被帶向側面。應如何處理？(複選)", options: ["利用水流擺盪效應將受困者帶向岸邊", "要求受困者保持仰姿", "用力向後死命拉", "保持繩索張力"], ans: [0, 1, 3], analysis: "順水推舟盪回來，硬拉受困者頭部會沒入水中。" },
-    { q: "54. 【情境】執行三人涉水技術時，一名隊員腳步滑動不穩。應如何處理？(複選)", options: ["保持三人隊形連結互相支撐", "穩住後緩慢撤回岸邊", "放手各自脫困", "強行加速前進"], ans: [0, 1], analysis: "團隊是一體的，穩住後安全撤退。" },
-    { q: "55. 【情境】夜間山洪救援任務中視線極差。應如何處理？(複選)", options: ["增加照明與反光標記", "下令降低整體行動速度", "加強下游觀察與通信", "加快速度救人"], ans: [0, 1, 2], analysis: "夜間環境詭譎，慢就是快，安全至上。" },
-    { q: "56. 【情境】發現下游安全組人員擅離職守。應如何處理？(複選)", options: ["立即暫停水域救援行動", "糾正行為並要求復位", "重新指派體力足者擔任", "無視繼續救援"], ans: [0, 1, 2], analysis: "下游監控失效絕對不能開機救援。" },
-    { q: "57. 【情境】橫渡繩系統架設完成後，繩索被拉得極為緊繃。應如何處理？(複選)", options: ["說明張力過大斷裂風險", "必須放鬆繩索保留弧度", "檢查固定點裝備變形狀況", "拉更緊防止碰水"], ans: [0, 1, 2], analysis: "拉越直力越大，固定點可能會被拔掉。" },
-    { q: "58. 【情境】現場噪音極大，指令無法傳達。應如何處理？(複選)", options: ["立即切換為標準手勢信號", "使用哨音口令", "所有人大聲吼叫", "暫停誤解操作"], ans: [0, 1, 3], analysis: "通訊要用可視化或特定頻率才有效。" },
-    { q: "59. 【情境】一名使用者在急流練習游泳試圖踩踏水底。應如何處理？(複選)", options: ["告知腳應抬高防止卡死", "維持防禦姿勢腳朝下游", "告知用力踩底穩住重心", "腳伸直沒關係"], ans: [0, 1], analysis: "石縫卡腳是急流奪命殺手，腳絕對不落地。" },
-    { q: "60. 【情境】簽證考核中未對下游進行安全布置就拋繩.應如何處理？(複選)", options: ["判定該項簽證不合格", "說明下游安全是生命防線", "要求立即補設安全防護", "判定及格"], ans: [0, 1, 2], analysis: "安全原則不打折，這是簽證底線。" },
-    { q: "61. 【情境】偵察發現上遊山洪預警。應如何處理？(複選)", options: ["人員立即撤離水域", "暫停救援作業", "移往高處", "加速救援"], ans: [0, 1, 2], analysis: "洪水來襲別挑戰大自然，保命撤退第一。" },
-    { q: "62. 【情境】橫渡繩路徑正接觸尖銳岩石.應如何處理？(複選)", options: ["使用繩套或防磨墊保護", "調整固定點位置避開接觸", "說明受損風險", "直接使用"], ans: [0, 1, 2], analysis: "繩子磨石頭會瞬間斷裂，加墊或移位。" },
-    { q: "63. 【情境】拋繩落在受困者的正下游。應如何處理？(複選)", options: ["糾正瞄準上游方向", "說明水流帶動原理", "要求收回重丟", "稱讚精準"], ans: [0, 1, 2], analysis: "丟下游受困者根本抓不到繩子。" },
-    { q: "64. 【情境】需運送傷患橫渡 40 公尺強流區.應如何處理？(複選)", options: ["架設高張力橫渡系統", "滑輪組增加穩定度", "單人涉水背負", "讓傷患游過"], ans: [0, 1], analysis: "重負載或長距需省力機械優勢。" },
-    { q: "65. 【情境】將繩繫在救援車保險桿.應如何處理？(複選)", options: ["立即糾正強度不足風險", "說明張力扯落危險", "指導尋找拖車鉤", "可以接受"], ans: [0, 1, 2], analysis: "保險桿只是外殼，絕對拉不動系統。" },
-    { q: "66. 【情境】穿戴救生衣未檢查快速釋放扣.應如何處理？(複選)", options: ["提醒檢查功能性", "說明脫離作用", "要求小組互助檢查", "不理會"], ans: [0, 1, 2], analysis: "那是最後保命裝置，務必確認功能正常。" },
-    { q: "67. 【情境】受困者在回流區 (Hydraulic) 內打轉.應如何處理？(複選)", options: ["利用拋繩袋實施救援", "救援人員嚴禁進入該區", "評估回流區的力量", "下水營救"], ans: [0, 1, 2], analysis: "那是死亡地帶，用非接觸方式救人。" },
-    { q: "68. 【情境】任務完成撤離現場留有垃圾.應如何處理？(複選)", options: ["落實環境復原帶走垃圾", "全數回收清點器材", "人員平安離開", "破損留現場"], ans: [0, 1, 2], analysis: "救援任務應包含環境復原與器材清點。" },
-    { q: "69. 【情境】現場有一棵倒在河中的大樹 (Strainer).應如何處理？(複選)", options: ["指出過濾機致命風險", "嚴禁人員漂向該區域", "致命地形陷阱說明", "休息區"], ans: [0, 1, 2], analysis: "看見 Strainer 就躲得遠遠的。" },
-    { q: "70. 【情境】橫渡系統夾角角度過小.應如何處理？(複選)", options: ["立即增加系統弧度", "說明固定點失效風險", "重新調整固定點位置", "拉更緊"], ans: [0, 1, 2], analysis: "角度太小會扯斷地錨，一定要放鬆。" },
-    { q: "71. 【情境】拉繩時將繩索纏繞在手臂上.應如何處理？(複選)", options: ["警告嚴禁纏繞手部", "指導正確握法", "糾正嚴重違規行為", "增加拉力"], ans: [0, 1, 2], analysis: "水流力量大到能拉斷手骨，絕不纏手。" },
-    { q: "72. 【情境】下游 50 公尺有大型障礙設施.應如何處理？(複選)", options: ["強化下游安全組防線", "嚴禁人員下水游泳", "考慮高處救援方案", "無視"], ans: [0, 1, 2], analysis: "下游有陷阱，防線要做多幾層。" },
-    { q: "73. 【情境】固定點樹木生長在土鬆陡坡.應如何處理？(複選)", options: ["視為不穩定固定點棄用", "說明根系拔起風險", "尋找車體替代", "先試拉"], ans: [0, 1, 2], analysis: "根基不穩，不能拿命去賭。" },
-    { q: "74. 【情境】三人涉水水深過膝且流速約 2 m/s.應如何處理？(複選)", options: ["判斷為極高風險應撤退", "改用其他方式", "參考風險矩陣禁止涉水", "強行通過"], ans: [0, 1, 2], analysis: "過膝急流非兒戲，看數據決定撤退。" },
-    { q: "75. 【情境】地錨鋼釘只打入一半深度.應如何處理？(複選)", options: ["鋼釘必須完全打入到底", "說明槓桿拔離風險", "判定不合格並重做", "釘多幾根"], ans: [0, 1, 2], analysis: "釘子沒打滿會被槓桿拔起，失去效用。" },
-    { q: "76. 【情境】救援中無線電通訊不清.應如何處理？(複選)", options: ["改用預備手勢", "哨音口號通訊", "暫停關鍵操作直到確認", "吼叫"], ans: [0, 1, 2], analysis: "備援通訊（看手勢）這時最重要。" },
-    { q: "77. 【情境】未戴頭盔即準備練習.應如何處理？(複選)", options: ["立即停止補穿", "說明岩石撞擊危險", "判定安全意識不合格", "直接進行"], ans: [0, 1, 2], analysis: "水底石頭多，沒頭盔等於沒保險。" },
-    { q: "78. 【情境】發現繩索磨損斷絲.應如何處理？(複選)", options: ["立即判定該繩除役", "禁止負重任務使用", "標記為不可承人廢繩", "繼續使用"], ans: [0, 1, 2], analysis: "繩子是生命線，壞了絕對不能用。" },
-    { q: "79. 【情境】目標位於石縫 (Undercut) 前方.應如何處理？(複選)", options: ["提醒嚴防吸入地形風險", "路徑絕對規避區域", "加強對危險點監控", "無視"], ans: [0, 1, 2], analysis: "Undercut 是吞人的洞，離遠一點。" },
-    { q: "80. 【情境】簽證考核順利完成。教官應如何處理勉勵？(複選)", options: ["勉勵安全第一團隊至上", "回連隊落實簽證傳承", "恭喜簽證合格取得簽證", "普通表現"], ans: [0, 1, 2], analysis: "簽證是為了專業與安全的傳承。" }
+    { q: "51.【情境】發現受困者在河中巨石上，距離岸邊 20 公尺。現場流速 2.5 m/s。您應如何處理？", options: ["先建立下游安全監控與拋繩組", "嘗試拋繩救援（若距離與流速允許）", "立即架設橫渡系統", "派出一名隊員游泳接近確認狀況"], ans: [0, 1, 2], analysis: "能拋繩就不要下水，拋繩前先設好下游攔截人。" },
+    { q: "52.【情境】準備架設橫渡繩但現場樹木直徑皆小於 10 cm。旁邊停有救援車。您應如何處理？", options: ["改用救援車的拖車鉤或車架作為固定點", "要求車輛拉緊手剎車並放置輪檔", "繼續使用多棵小樹合併作為固定點", "說明細小樹木在強張力下有斷裂風險"], ans: [0, 1, 3], analysis: "樹太細會斷，改用車子的骨架最保險。" },
+    { q: "53.【情境】拋繩成功後，受困者抓住繩索。由於水流強勁，受困者被帶向側面。您應如何處理？", options: ["利用水流擺盪效應將受困者帶向岸邊", "要求受困者保持仰姿", "用力將繩索向正後方強拉", "確保拋繩袋一端未纏繞在自己手上"], ans: [0, 1, 3], analysis: "利用水的力量讓他盪回來，別硬扯。" },
+    { q: "54.【情境】執行三人涉水技術時，隊伍到達河道中央，一名隊員腳步滑動不穩。您應如何處理？", options: ["保持三人隊形連結，互相支撐穩住重心", "穩住後集體緩慢撤回岸邊", "放手讓滑動隊員自行游回", "強行加速衝向目標"], ans: [0, 1], analysis: "大家抓緊互拉，穩住後再慢慢走回岸邊。" },
+    { q: "55.【情境】夜間山洪救援任務中視線極差且洪水持續上漲。您應如何處理？", options: ["增加現場照明與建立反光路徑標記", "下令降低所有技術操作速度，以求穩健", "加強下游觀察與撤離信號的建立", "為了救人爭取時效，忽略標記動作直接開工"], ans: [0, 1, 2], analysis: "慢就是快，照明標記做好，安全第一。" },
+    { q: "56.【情境】發現下游安全組人員自行坐下休息。您應如何處理？", options: ["立即暫停水域救援行動", "糾正行為並要求重新進入警戒狀態", "重新指派體力充足的人員擔任", "認為風險不大，繼續救援"], ans: [0, 1, 2], analysis: "下游沒人接應絕對不能救。" },
+    { q: "57.【情境】橫渡繩系統架設完成後，繩索被拉得極為緊繃無下垂度。您應如何處理？", options: ["說明系統崩潰風險", "必須放鬆繩索，保留一定的自然弧度", "檢查固定點是否出現移位", "很好，繩索越直越安全"], ans: [0, 1, 2], analysis: "繩子不能拉死，留點弧度才能保護固定點。" },
+    { q: "58.【情境】現場噪音極大通訊完全中斷時。您應如何處理？", options: ["立即切換為標準手勢信號", "使用哨音進行溝通", "所有人大聲吼叫以利傳遞", "暫停所有可能產生誤解的操作"], ans: [0, 1, 3], analysis: "聽不見就用看的，手勢跟哨音最管用。" },
+    { q: "59.【情境】學員在練習游泳試圖踩踏水底以求平衡。您應如何處理？", options: ["喊腳抬高！小心卡死在石縫中！", "要求維持防禦式姿勢，腳朝下游！", "喊用力踩到底，穩定重心！", "背部朝下，隨流移動！"], ans: [0, 1], analysis: "急流不能踩到底，會被石縫卡住。" },
+    { q: "60.【情境】簽證考核中學員未對下游進行安全布置就拋繩。評核應如何處理？", options: ["判定該項簽證不合格", "說明下游安全區是救援的生命防線", "要求立即補設安全防護", "視拋繩準確度決定是否給予及格"], ans: [0, 1, 2], analysis: "沒設下游安全就是不及格。" },
+    { q: "61.【情境】偵察發現上遊水位發出山洪暴發預警。您應如何處理？", options: ["全員立即撤離水域，移往高處", "暫停所有救援作業", "加派下游觀察員", "爭取最後 5 分鐘加速救人"], ans: [0, 1, 2], analysis: "大自然發威別硬拚，撤到高地。" },
+    { q: "62.【情境】發現橫渡繩路徑正接觸尖銳岩石。您應如何處理？", options: ["使用繩套或防磨墊保護繩索", "調整固定點位置避開接觸面", "直接橫越，繩索纖維耐磨不需擔心", "說明繩索受損會導致整個系統失效"], ans: [0, 1, 3], analysis: "繩子不能磨石頭，會磨斷。" },
+    { q: "63.【情境】學員拋繩袋落在受困者正下游 2 公尺處。您應如何處理？", options: ["「拋投目標應瞄準上游位置」", "「水流會帶動繩索，丟下游抓不到」", "「拋得很準，請受困者游去抓」", "「收回重丟，瞄準受困者上方」"], ans: [0, 1, 3], analysis: "丟下游抓不到，水會把繩子越帶越遠。" },
+    { q: "64.【情境】需要運送傷勢穩定傷患橫渡 40 公尺強流區。您應如何處理？", options: ["架設高張力橫渡系統", "利用 3:1 或 5:1 滑輪組增加張力與穩定度", "使用單人涉水背負過河", "讓傷患抓住繩索自行游過"], ans: [0, 1], analysis: "載重又遠，就要用滑輪省力系統。" },
+    { q: "65.【情境】學員試圖將橫渡繩繫在救援車保險桿上。您應如何處理？", options: ["立即糾正，保險桿不具備結構支撐力", "說明強大張力會將保險桿扯落", "指導尋找車架大樑或拖車鉤", "若只是運送輕型物資則可以允許"], ans: [0, 1, 2], analysis: "保險桿一拉就噴，不能當固定點。" },
+    { q: "66.【情境】學員穿戴救生衣後未對快速釋放扣進行檢查。您應如何處理？", options: ["提醒學員檢查扣環功能是否正常", "說明快速釋放扣在危急時的脫離作用", "要求學員實施互助檢查", "判定該員裝備穿戴不合格"], ans: [0, 1, 2, 3], analysis: "扣子要天天檢查，隊友也要互檢。" },
+    { q: "67.【情境】受困者被困在回流區 (Hydraulic) 內打轉。您應如何處理？", options: ["利用拋繩袋救援受困者", "救援人員嚴禁隨意進入該回流區域", "先評估回流區的落差與力量", "直接游入回流區將人拖出"], ans: [0, 1, 2], analysis: "回流區會吸人，要用拋繩救援。" },
+    { q: "68.【情境】任務完成準備撤離現場留有破損器材與垃圾。您應如何處理？", options: ["落實現場環境復原，帶走所有廢棄物", "全數回收並清點救援器材", "破損器材可棄置現場，帶走好的就好", "確認所有人員皆已平安離開水岸"], ans: [0, 1, 3], analysis: "收工時裝備一個都不能少。" },
+    { q: "69.【情境】考核現場有一棵倒在河中的大樹 (Strainer)。學員應如何處理？", options: ["指出水流可以穿透但人體會被壓在上面的風險", "這是極度危險的死亡地形", "這是一個良好的天然避難點", "絕對禁止人員漂向該倒木區域"], ans: [0, 1, 3], analysis: "看到卡人的東西一定要避開。" },
+    { q: "70.【情境】橫渡系統夾角角度過小 (如 20 度)。您應如何處理？", options: ["立即增加系統弧度（放鬆繩索）", "警告學員固定點可能有失效風險", "要求學員重新調整固定點位置以擴大夾角", "繼續操作以求快速完成"], ans: [0, 1, 2], analysis: "角度太小繩子會斷，放鬆一點點。" },
+    { q: "71.【情境】看見隊員在拉繩時將繩索纏繞在手掌或手臂上。您應如何處理？", options: ["喊「鬆手！禁止纏繞！會扯斷手臂！」", "「使用正確握法，不可環繞！」", "「這樣拉比較有力，繼續！」", "「安全第一，改用身體核心力量拉！」"], ans: [0, 1, 3], analysis: "絕對不能纏手，水一拉手就廢了！" },
+    { q: "72.【情境】偵察發現下游 50 公尺處有大型 Strainer 設施。您應如何處理？", options: ["極度強化下游安全攔截與觀察", "嚴禁人員以游泳方式接近受困者", "若風險過高應考慮其他方案", "無視距離，直接執行拋繩救援"], ans: [0, 1, 2], analysis: "下游有奪命網，不能讓人員漂過去。" },
+    { q: "73.【情境】評估固定點樹木生長在土質鬆軟的陡坡上。您應如何處理？", options: ["視為不穩定固定點，尋找其他目標", "考慮樹木根系可能連同土堆被拔起的風險", "棄用該樹木，改用人造地錨或車輛", "先試拉看看，沒倒就可以用"], ans: [0, 1, 2], analysis: "土坡上的樹容易倒，別當固定點。" },
+    { q: "74.【情境】執行三人涉水技術時，水深已過膝且流速約 2 m/s。您應如何處理？", options: ["判斷為極高風險應撤退", "應視為不適合繼續涉水，轉向其他方式", "保持高度警覺，緩慢嘗試", "成員若體格壯碩則可安全通過"], ans: [0, 1], analysis: "水過膝蓋就很強了，太急就撤。" },
+    { q: "75.【情境】學員架設鋼釘只打入三分之二深度。您應如何處理？", options: ["指導學員鋼釘必須完全打入以確保抓地力", "說明未完全打入會產生槓桿原理將地錨拔起", "判定該項簽證不合格，要求重做", "鋼釘夠多就行，不須全部打入"], ans: [0, 1, 2], analysis: "釘子沒打滿會被拔出來，重打！" },
+    { q: "76.【情境】救援中無線電受干擾通訊不清。您應如何處理？", options: ["啟動預備通訊計畫，改用手勢", "使用哨音口號進行通訊同步", "暫停所有關鍵性操作，直到確認指令", "派出一名傳令兵在岸上奔跑傳令"], ans: [0, 1, 2], analysis: "眼睛看手勢最管用。" },
+    { q: "77.【情境】學員未戴頭盔就準備下水練習。您應如何處理？", options: ["立即停止該員行為，要求補穿裝備", "說明水流中岩石撞擊對頭部的致命危險", "判定裝備意識不合格", "水淺沒關係，練一下就起來"], ans: [0, 1, 2], analysis: "沒戴頭盔是在拿命開玩笑。" },
+    { q: "78.【情境】檢查繩索發現明顯磨損斷絲且受化學油垢污染。您應如何處理？", options: ["該繩索應立即判定除役", "禁止將此繩用於負重救援任務", "可降級為練習用廢繩，但不可承載人體", "洗乾淨後即可繼續使用"], ans: [0, 1, 2], analysis: "繩子壞了就不能救人，換一條。" },
+    { q: "79.【情境】受困者位於水流吸入石縫 (Undercut) 的正前方。您應如何處理？", options: ["提醒所有隊員嚴防被水流吸入石縫", "避開該區域的水流路徑進行作業", "加強對該危險地形的監控", "這是天然擋牆，在那救援最安全"], ans: [0, 1, 2], analysis: "離石縫遠一點，吸進去救不出來。" },
+    { q: "80.【情境】簽證考核結束順利完成所有動作。您應如何處理勉勵？", options: ["「恭喜簽證合格」", "「回連隊後落實安全觀念，確實帶領隊員」", "「救援首重團隊協作，不可個人英雄主義」", "「安全第一，這才是簽證真正的專業意義」"], ans: [0, 1, 2, 3], analysis: "恭喜！帶回專業，安全第一！" }
 ];
 
 let currentMode = 'basic';
@@ -438,7 +293,6 @@ let currentIndex = 0;
 let questions = [];
 let deferredPrompt;
 
-// 初始化
 function initApp() {
     currentMode = localStorage.getItem('flood_mode') || 'basic';
     const savedIndex = localStorage.getItem(`flood_index_${currentMode}`);
@@ -446,26 +300,27 @@ function initApp() {
     
     updateModeButtons();
     loadQuestions();
+    updateJumpSelect();
     showQuestion();
     changeAudioSource();
 
-    // 註冊 Service Worker：加上版本號破除快取
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js?v=19')
-                .then(reg => {
-                    console.log('🛡️ 助手已就位');
-                    reg.update(); // 強制檢查更新
-                })
-                .catch(err => console.log('❌ 助手啟動失敗'));
+            navigator.serviceWorker.register('./sw.js?v=26').then(reg => reg.update());
         });
     }
 
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
-        console.log('📲 安裝視窗已準備好');
     });
+
+    window.onclick = function(event) {
+        const upModal = document.getElementById('updateModal');
+        const inModal = document.getElementById('installModal');
+        if (event.target == upModal) closeUpdateLog();
+        if (event.target == inModal) closeInstallModal();
+    }
 }
 
 function showUpdateLog() { document.getElementById('updateModal').style.display = 'block'; }
@@ -473,7 +328,7 @@ function closeUpdateLog() { document.getElementById('updateModal').style.display
 
 function shareToLine() {
     const url = window.location.href;
-    const text = "防汛簽證練習系統：提供專業技術練習與篇章導讀。歡迎加入練習！";
+    const text = "🛡️ 防汛簽證練習系統：提供專業技術練習與篇章導讀。歡迎加入練習！";
     window.open(`https://line.me/R/msg/text/?${encodeURIComponent(text + "\n" + url)}`, '_blank');
 }
 
@@ -481,25 +336,12 @@ function showInstallInstructions() {
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     const modal = document.getElementById('installModal');
     const body = document.getElementById('install-body');
-    
     if (isIOS) {
-        body.innerHTML = `
-            iOS (iPhone/iPad) 使用者請執行以下操作：<br><br>
-            1. 點擊瀏覽器工具列的<b>「分享」</b>圖示（正方形帶向上箭頭）。<br>
-            2. 在選單中向下滑動，選擇<b>「加入主畫面」</b>。<br>
-            3. 點擊右上角的<b>「新增」</b>。<br>
-            <div style="text-align:center; color:var(--accent); font-weight:bold; margin-top:15px;">系統將建立於桌面，若 Icon 未顯示，請過幾分鐘再試。</div>
-        `;
+        body.innerHTML = `<div style="font-weight:800; color:var(--primary); margin-bottom:10px;">iOS (iPhone/iPad) 安裝指引：</div>1. 點擊瀏覽器下方工具列的<b>「分享」</b>圖示。<br>2. 向下滑動找到並點擊<b>「加入主畫面」</b>。<br>3. 點擊右上角的<b>「新增」</b>。`;
     } else if (deferredPrompt) {
-        body.innerHTML = `本裝置支援快速安裝，請點擊下方按鈕啟動：<br><br><button class="main-btn" style="width:100%" onclick="triggerPWA()">立即安裝到桌面</button>`;
+        body.innerHTML = `<button class="main-btn" style="width:100%" onclick="triggerPWA()">立即安裝到桌面</button>`;
     } else {
-        body.innerHTML = `
-            Android 或電腦使用者請執行以下操作：<br><br>
-            1. 點擊瀏覽器右上角的<b>「選單」</b>（三個點圖示）。<br>
-            2. 選擇<b>「安裝應用程式」</b>或<b>「加入主畫面」</b>。<br>
-            3. 確認後，桌面即可看見系統圖標。<br>
-            <div style="text-align:center; color:var(--accent); font-weight:bold; margin-top:15px;">若安裝後 Icon 仍為舊版，請刪除舊捷徑並重新整理網頁後再試。</div>
-        `;
+        body.innerHTML = `<div style="font-weight:800; color:var(--primary); margin-bottom:10px;">Android / 電腦安裝指引：</div>1. 點擊瀏覽器右上角<b>「選單」</b>(三個點點)。<br>2. 選擇<b>「安裝應用程式」</b>或<b>「加入主畫面」</b>。`;
     }
     modal.style.display = 'block';
 }
@@ -507,12 +349,11 @@ function showInstallInstructions() {
 async function triggerPWA() {
     if (deferredPrompt) {
         deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
+        await deferredPrompt.userChoice;
         deferredPrompt = null;
         closeInstallModal();
     }
 }
-
 function closeInstallModal() { document.getElementById('installModal').style.display = 'none'; }
 
 function changeAudioSource() {
@@ -530,6 +371,7 @@ function switchMode(mode) {
     currentIndex = savedIndex ? parseInt(savedIndex) : 0;
     updateModeButtons();
     loadQuestions();
+    updateJumpSelect();
     showQuestion();
 }
 
@@ -540,17 +382,40 @@ function updateModeButtons() {
 
 function loadQuestions() { questions = currentMode === 'basic' ? [...basicQuestions] : [...scenarioQuestions]; }
 
+function updateJumpSelect() {
+    const select = document.getElementById('jump-select');
+    select.innerHTML = '';
+    const startNum = currentMode === 'basic' ? 1 : 51;
+    questions.forEach((_, i) => {
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.innerText = startNum + i;
+        select.appendChild(opt);
+    });
+    select.value = currentIndex;
+}
+
+function jumpToQuestion(val) {
+    currentIndex = parseInt(val);
+    localStorage.setItem(`flood_index_${currentMode}`, currentIndex);
+    showQuestion();
+}
+
 function showQuestion() {
+    const qContainer = document.getElementById('question-container');
+    const fScreen = document.getElementById('finish-screen');
+    const jumpSelect = document.getElementById('jump-select');
+
     if (currentIndex >= questions.length) {
-        document.getElementById('quiz-area').innerHTML = `<div style="text-align:center; padding:40px 0;">
-            <h3 style="color:var(--secondary); font-size:24px;">✅ 恭喜完成練習！</h3>
-            <p style="color:#57635a; margin-bottom:30px; font-weight:bold;">您已完成所有專業測驗，請持續精進技術。</p>
-            <button class='main-btn' style="width:200px" onclick='resetProgress()'>重新挑戰</button>
-        </div>`;
+        qContainer.style.display = 'none';
+        fScreen.style.display = 'block';
         return;
     }
+
+    qContainer.style.display = 'block';
+    fScreen.style.display = 'none';
     const data = questions[currentIndex];
-    document.getElementById('progress').innerText = `📊 進度：第 ${currentIndex + 1} / ${questions.length} 題`;
+    jumpSelect.value = currentIndex;
     document.getElementById('q-text').innerText = data.q;
     document.getElementById('analysis-box').style.display = 'none';
     document.getElementById('submit-btn').style.display = 'block';
@@ -558,7 +423,7 @@ function showQuestion() {
     const optionsArea = document.getElementById('options-area');
     optionsArea.innerHTML = '';
     data.options.forEach((opt, i) => {
-        optionsArea.innerHTML += `<label class="option-item" id="opt-${i}"><input type="checkbox" value="${i}"> ${opt}</label>`;
+        optionsArea.innerHTML += `<label class="option-item" id="opt-${i}"><input type="checkbox" value="${i}"> ( ${String.fromCharCode(65+i)} ) ${opt}</label>`;
     });
     window.scrollTo(0, 0);
 }
@@ -585,21 +450,24 @@ function nextQuestion() {
     showQuestion();
 }
 
-function shuffleCurrentMode() {
-    for (let i = questions.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [questions[i], questions[j]] = [questions[j], questions[i]];
-    }
+function resetProgressUI() {
+    localStorage.removeItem(`flood_index_${currentMode}`);
     currentIndex = 0;
     showQuestion();
 }
 
 function resetProgress() {
-    if(confirm("確定要重置進度紀錄嗎？")) {
-        localStorage.removeItem(`flood_index_${currentMode}`);
-        currentIndex = 0;
-        showQuestion();
+    if(confirm("確定要將本模組的作答進度歸零嗎？")) {
+        resetProgressUI();
     }
+}
+
+function shuffleCurrentMode() {
+    for (let i = questions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [questions[i], questions[j]] = [questions[j], questions[i]];
+    }
+    resetProgressUI();
 }
 initApp();
 </script>
