@@ -5,22 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>防汛簽證練習系統</title>
     
-    <link rel="manifest" href="manifest.json?v=26">
+    <!-- PWA 重要連結：版本 v27 -->
+    <link rel="manifest" href="manifest.json?v=27">
     <meta name="theme-color" content="#1a2421">
 
+    <!-- Safari / iPhone 專用 App 設定 -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="防汛簽證">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=26">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=27">
 
-    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=26">
-    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png?v=26">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=27">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png?v=27">
 
+    <!-- 分享預覽設定 -->
     <meta property="og:title" content="🛡️ 防汛簽證練習系統">
     <meta property="og:description" content="專業防汛技術練習、現場指揮模擬與篇章導讀。">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://fang5761-source.github.io/flood-training/">
-    <meta property="og:image" content="https://fang5761-source.github.io/flood-training/icon-512.png?v=26">
+    <meta property="og:image" content="https://fang5761-source.github.io/flood-training/icon-512.png?v=27">
     <meta property="og:image:width" content="512">
     <meta property="og:image:height" content="512">
 
@@ -88,7 +91,7 @@
         .analysis { margin-top: 20px; padding: 18px; background: #fef3c7; border-left: 6px solid var(--accent); border-radius: 10px; display: none; line-height: 1.7; font-size: 15px; color: #92400e; }
         
         .progress-container { display: flex; justify-content: center; align-items: center; font-size: 15px; color: #57635a; margin-top: 8px; font-weight: 800; background: #eeede8; padding: 8px; border-radius: 6px; gap: 5px; }
-        .jump-select { padding: 6px 12px; border-radius: 6px; border: 1px solid #a39e8d; background: white; font-weight: bold; color: var(--primary); font-size: 16px; min-width: 80px; text-align: center; }
+        .jump-select { padding: 6px 12px; border-radius: 6px; border: 1px solid #a39e8d; background: white; font-weight: bold; color: var(--primary); font-size: 16px; min-width: 90px; text-align: center; }
 
         #finish-screen { display: none; text-align: center; padding: 40px 0; }
 
@@ -169,23 +172,23 @@
     <div class="footer-info">
         <strong>本系統由 散木團隊 開發製作</strong><br>
         教材規劃：徐世豐 &nbsp;&nbsp; APP設計：吳佩芳（朵朵）<br>
-        <span id="dev-info" style="cursor:pointer; text-decoration:underline;" onclick="showUpdateLog()">版本：v1.0.26 | 最後更新：115/03/26</span>
+        <span id="dev-info" style="cursor:pointer; text-decoration:underline;" onclick="showUpdateLog()">版本：v1.0.27 | 最後更新：115/03/26</span>
     </div>
 </div>
 
 <!-- 更新紀錄彈窗 -->
 <div id="updateModal" class="modal">
     <div class="modal-content">
-        <div class="modal-header">🚩 系統全方位優化戰果 (v1.0.26)</div>
+        <div class="modal-header">🚩 系統全方位優化戰果 (v1.0.27)</div>
         <div class="update-list">
-            <div class="update-item">🎯 <b>介面用語專業化</b>：優化跳題功能敘述為「選擇題號」，更符合現代 App 使用者習慣。</div>
-            <div class="update-item">🎨 <b>視覺風格重塑</b>：導入「軍事墨綠迷彩」戰術配色與卡片式沙地背景，提升實戰沉浸感。</div>
-            <div class="update-item">📲 <b>PWA App 化部屬成功</b>：支援「安裝至手機主畫面」，並克服 Android/三星手機快取限制，成功啟用新版圖標。</div>
-            <div class="update-item">📝 <b>教材深度校對優化</b>：全面校對及優化 80 題題目內容與選項，確保敘述精確。</div>
+            <div class="update-item">🍎 <b>強迫 iPhone 更新機制</b>：新增 iOS 換班偵測功能，確保主畫面 App 能即時同步最新優化內容。</div>
+            <div class="update-item">🎯 <b>介面用語專業化</b>：優化跳題功能敘述為「選擇題號」，視覺更俐落且符合 App 質感。</div>
+            <div class="update-item">🎨 <b>視覺風格重塑</b>：導入「軍事墨綠迷彩」配色與卡片式背景，大幅提升閱讀舒適度。</div>
+            <div class="update-item">📲 <b>PWA App 化部屬成功</b>：支援「安裝至手機主畫面」。克服 Android/三星快取限制，成功啟用新版圖標。</div>
+            <div class="update-item">📝 <b>教材深度校對優化</b>：全面校對及優化 80 題題目內容與選項，確保敘述更精確。</div>
             <div class="update-item">🗣️ <b>專業用語標準化</b>：優化情境題問法為「應如何處理？」，並改採中性稱謂。</div>
-            <div class="update-item">🎧 <b>全篇章導讀整合</b>：整合四篇章專業語音導讀音軌，提供視覺與聽覺同步學習。</div>
-            <div class="update-item">🔗 <b>社群分享優化</b>：強化 LINE 分享機制，呈現專業縮圖 (OG Image) 與標題。</div>
-            <div class="update-item">🛠️ <b>系統邏輯修復</b>：解決「重新挑戰」失效及彈窗收合等技術問題。</div>
+            <div class="update-item">🎧 <b>全篇章導讀整合</b>：整合四篇章專業語音導讀音軌。</div>
+            <div class="update-item">🛠️ <b>系統邏輯修復</b>：掃除程式 Bug，解決「重新挑戰」失效及彈窗收合等技術問題。</div>
         </div>
         <button class="sub-btn" style="float:right; margin-top:15px;" onclick="closeUpdateLog()">確認收悉</button>
     </div>
@@ -202,6 +205,7 @@
 <script>
 const AUDIO_DATA = { ch1: "ch1.mp3", ch2: "ch2.mp3", ch3: "ch3.mp3", ch4: "ch4.mp3" };
 
+// 題目庫 (完整 80 題數據)
 const basicQuestions = [
     { q: "1.關於洪水的特性，下列哪些敘述正確？", options: ["具有突發性", "力量非常大", "完全可以精準預測", "環境多變難以掌握"], ans: [0, 1, 3], analysis: "洪水來得快、力量大且難預測。救援前第一步是判斷環境，不是盲目衝進去！" },
     { q: "2.台灣的洪水災害具有哪些明顯特徵？", options: ["降雨非常集中", "地形陡峭", "河川長度極長", "多屬於急流型洪水"], ans: [0, 1, 3], analysis: "台灣山高水急，流速很快，足以沖倒成年人。" },
@@ -209,10 +213,10 @@ const basicQuestions = [
     { q: "4.當流速達到多少時，一般成人通常就站不住了？", options: ["流速 0.5 m/s", "流速 1.5 m/s 開始不穩", "流速 2 m/s 幾乎站不住", "流速 3 m/s 以上足以將成人沖倒"], ans: [1, 2, 3], analysis: "1.5公尺/秒就開始晃了，3公尺/秒以上絕對會被沖走。" },
     { q: "5.急流環境中常見的「過濾機 (Strainer)」障礙物包含哪些？", options: ["水中的倒木", "橋墩結構", "鐵欄杆", "河岸邊的緩流區 (Eddy)"], ans: [0, 1, 2], analysis: "Strainer 是會讓水流過、但把人卡住的東西，非常致命！" },
     { q: "6.關於「回流區 (Hydraulic)」，下列敘述哪些正確？", options: ["又稱為液壓區", "水流越過落差後形成", "受困者在此區域可能會被水流不斷拉回", "是絕對安全的休息區域"], ans: [0, 1, 2], analysis: "回流區會把人捲住，讓人無法自行脫困，要非常小心。" },
-    { q: "7.國際急流救援體系普遍遵循的救援優先順序為何？", options: ["優先使用非接觸式救援（如觀察、呼叫、拋繩）", "儘量避免涉水救援", "船艇救援風險低於拋繩", "下水 (Go) 是最後且風險最高的選擇"], ans: [0, 1, 3], analysis: "能不接觸就不接觸，拋繩比下水安全多了！" },
+    { q: "7.國際急流救援體系普遍遵循的救援優先順序為何？", options: ["優先使用非接觸式救援（如觀察、呼叫、拋繩）", "儘量避免直接涉水或游泳接近受困者", "船艇救援風險低於拋繩", "下水 (Go) 是最後且風險最高的選擇"], ans: [0, 1, 3], analysis: "能不接觸就不接觸，拋繩比下水安全多了！" },
     { q: "8.關於急流「防禦式游泳」的姿勢要點，下列何者正確？", options: ["背部朝下", "腳朝下游方向", "雙腳略微抬起防止卡住", "遇到障礙物時可以用腳推開"], ans: [0, 1, 2, 3], analysis: "腳朝下游是用來推開障礙物、保護頭部的。" },
     { q: "9.執行「三人涉水」隊形時，下列哪些操作標準正確？", options: ["最強壯的人站在上游位置", "三人站成三角形隊形", "互相抓住對方的救生衣或肩帶", "最強壯的人在最下游負責推動"], ans: [0, 1, 2], analysis: "上游的人負責破水，三角形結構最穩。" },
-    { q: "10.使用拋繩袋進行救援時，哪些步驟符合標準程序？", options: ["確保繩索一端固定在救援者身上（不可纏繞手部）", "目標瞄準受困者的「上游」方向", "受困者抓住繩索後應保持仰姿", "利用「擺盪救援」效應將受困者帶向岸邊"], ans: [0, 1, 2, 3], analysis: "要丟上游，水流才會把繩子帶到受困者手上。" },
+    { q: "10.使用拋繩袋進行救援時，哪些步驟符合標準程序？", options: ["確保繩索一端固定在救援者身上（不可纏繞手部）", "拋投目標應瞄準受困者的「上游」方向", "受困者抓住繩索後應保持仰姿", "利用「擺盪救援」效應將受困者帶向岸邊"], ans: [0, 1, 2, 3], analysis: "要丟上游，水流才會把繩子帶到受困者手上。" },
     { q: "11.合格的急流專用救生衣 (PFD) 應具備哪些功能？", options: ["浮力通常為 70–100 N", "具備快速釋放扣", "具備救援拖曳環", "必須是自動充氣式設計"], ans: [0, 1, 2], analysis: "急流救生衣不能用充氣式的。快速釋放扣是遇險時脫離繩索的保命符。" },
     { q: "12.選擇樹木作為洪水救援固定點時，應注意哪些準則？", options: ["樹幹直徑建議至少 30 cm", "需考慮根系穩定性", "需觀察土壤狀況是否鬆軟", "只要有葉子就可以"], ans: [0, 1, 2], analysis: "大樹才拉得住橫渡的張力，小樹或根部鬆動的樹會被拔起來。" },
     { q: "13.使用車輛作為固定點時，哪些位置是建議的承載點？", options: ["拖車鉤", "車架大樑", "保險桿", "車門把手"], ans: [0, 1], analysis: "保險桿通常是塑膠或薄金屬，一拉就掉。" },
@@ -228,7 +232,7 @@ const basicQuestions = [
     { q: "23.拋繩後的「擺盪救援 (Pendulum Effect)」運作原理為何？", options: ["利用水流將受困者帶向岸邊", "受困者需保持仰姿", "救援者需與水流呈直線強拉", "繩索隨水流帶動呈弧形移動"], ans: [0, 1, 3], analysis: "利用水的力量把人「盪」回來，最省力。" },
     { q: "24.在橫渡系統中，何時必須考慮使用高張力系統 (如 3:1 或 5:1)？", options: ["長距離橫渡", "進行擔架傷患輸送", "水流過強導致阻力增加", "僅用於 5 公尺內的短距離救援"], ans: [0, 1, 2], analysis: "載重或遠距離才需要用到 3:1 或 5:1 的省力滑輪組。" },
     { q: "25.進行現場偵察時，必須評估的環境參數包含哪些？", options: ["水流速度與水深", "潛在障礙物 (如倒木、橋墩)", "可用固定點位置", "現場光線與天氣狀況"], ans: [0, 1, 2, 3], analysis: "這些數據決定了我們要用什麼方式救人，環境太危險就要暫停。" },
-    { q: "26.「攻擊式游泳 (Aggressive Swimming)」的正確使用時機為何？", options: ["需要快速接近目標受困者", "需要快速游向特定岸邊位置", "用於觀察下游地形", "長距離在急流中漂浮"], ans: [0, 1], analysis: "攻擊式是趴著游，速度快但看不到前面，只有短程用。" },
+    { q: "26.「攻擊式游泳 (Aggressive Swimming)」的正確使用時機為何？", options: ["需要快速接近目標受困者", "需要快速游向特定岸邊位置", "用於觀察下游地形", "長距離在急流中漂浮"], ans: [0, 1], analysis: "攻擊式是趴著游，速度快但看不到前面，只能短程用。" },
     { q: "27.救援行動中的核心觀念「確保救援者安全」，包含哪些具體作為？", options: ["不要讓救援者成為受困者", "落實裝備互檢", "進行科學的風險矩陣評估", "建立完善的下游安全防線"], ans: [0, 1, 2, 3], analysis: "救援者變成受困者是最大的失敗。" },
     { q: "28.洪水中的「水流拖曳力 (F)」主要受哪些物理參數影響？", options: ["流速的平方 (V²)", "人體或繩索的迎水面積 (A)", "水的密度 (ρ)", "阻力係數 (Cd)"], ans: [0, 1, 2, 3], analysis: "流速是關鍵，流速快一點，力量是平方跳級的！" },
     { q: "29.建立有效的「下游安全區」可採取哪些方式？", options: ["安排拋繩組在下游待命", "建立備份攔截點", "設置觀察哨提醒漂流物", "在安全區域內安置受困者"], ans: [0, 1, 2, 3], analysis: "萬一救援失敗，下游一定要有人能接住掉下去的人。" },
@@ -240,11 +244,11 @@ const basicQuestions = [
     { q: "35.當救援現場噪音巨大導致無線電受干擾時，應如何確保通訊？", options: ["使用標準手勢進行溝通", "使用哨音口令", "增加人員大聲喊叫", "事先建立視覺通信機制"], ans: [0, 1, 3], analysis: "聲音聽不見就用看的，手勢跟哨音這時候最管用。" },
     { q: "36.救援任務結束後的「撤離階段」，應包含哪些工作？", options: ["回收現場所有救援器材", "確認所有任務人員安全在位", "再次對環境進行安全評估", "建立暫時性的醫療安置點"], ans: [0, 1, 2], analysis: "有秩序的撤退，清點好人跟裝備。" },
     { q: "37.救援原則中強調「避免直接涉水救援」的原因為何？", options: ["涉水是極高風險的救援行為", "應優先採用非接觸式救援（風險較低）", "水流力量往往超出人體負荷", "水底地形具有高度不可預測性"], ans: [0, 1, 2, 3], analysis: "涉水很危險，能拋繩或架繩就不要走水裡。" },
-    { q: "38.關於救助器材的保養與管理，下列敘述何者正確？", options: ["器材使用後應定期檢查", "救生衣應清洗泥沙並於陰涼處晾乾", "繩索若受化學污染應立即汰換", "器材不需特別保養，直接收納即可"], ans: [0, 1, 2], analysis: "裝備要定期檢查，確保救人時它是好的。" },
+    { q: "38.關於救助器材的保養與管理，下列敘述何者正確？", options: ["器材使用後應定期檢查", "救生衣應清洗泥沙並於陰涼處晾乾", "繩索若受化學污染應立即汰換", "不需保養"], ans: [0, 1, 2], analysis: "裝備要定期檢查，確保救人時它是好的。" },
     { q: "39.專業救援小組在橫渡系統架設上的速度要求與標準為何？", options: ["目標於 10 分鐘內完成架設", "強調快速部署能力", "需透過精確的小組分工達成", "只要一小時內架好即可"], ans: [0, 1, 2], analysis: "10 分鐘內架好是專業標竿。" },
     { q: "40.V 型橫渡系統在洪水救援中的主要應用價值為何？", options: ["可以精確控制受困者的移動方向", "非常適合用於擔架傷患的轉運", "架設過程比拋繩簡單快速", "能夠適應大多數複雜水域環境"], ans: [0, 1], analysis: "轉運傷患最平穩。" },
-    { q: "41.如何判斷及建立穩固的「地錨固定點」？", options: ["使用三根鋼釘組成的三角地錨", "必須考慮土壤的緊實度與深度", "鋼釘應盡量完全打入地面", "地錨位置可選在鬆軟的河沙灘上"], ans: [0, 1, 2], analysis: "地錨要打實，土壤太軟就不行。" },
-    { q: "42.傷患救出後的轉運階段，應注意哪些事項？", options: ["立即將傷患送至安全區域", "輸送過程中應保持平穩", "必須防止傷患在轉運中發生二次傷害", "輸送速度越快越好，不需考慮穩定性"], ans: [0, 1, 2], analysis: "救出來後趕快送到安全區安置。" },
+    { q: "41.如何判斷及建立穩固的「地錨固定點」？", options: ["使用三根鋼釘組成的三角地錨", "必須考慮土壤緊實度與深度", "鋼釘應盡量完全打入地面", "地錨位置可選在鬆軟的河沙灘上"], ans: [0, 1, 2], analysis: "地錨要打實，土壤太軟就不行。" },
+    { q: "42.傷患救出後的轉運階段，應注意哪些事項？", options: ["立即將傷患送至安全區域", "輸送過程中應保持平穩", "必須防止傷患發生二次傷害", "速度第一不需考慮穩定性"], ans: [0, 1, 2], analysis: "救出來後趕快送到安全區安置。" },
     { q: "43.洪水力學中，關於水密度 (ρ) 的敘述何者正確？", options: ["是計算流體推力的參數之一", "會影響物體在水中的浮力與推力", "水密度固定不變，不需考慮", "包含在力量公式的組成內"], ans: [0, 1, 3], analysis: "推力跟水密度、受力面積、阻力及流速平方都有關係。" },
     { q: "44.在偵察中發現「過濾機 (Strainer)」障礙物時，教官應如何指導？", options: ["標記危險區域並嚴禁靠近", "規劃救援路徑時必須絕對規避", "說明水流通過但人會卡住的致命風險", "利用作站立點"], ans: [0, 1, 2], analysis: "看到會卡人的東西一定要避開，不能靠近。" },
     { q: "45.「子惠結」在工程力學上的優勢為何？", options: ["具有多點接觸與連續摩擦特性", "摩擦力分布較為均勻", "能夠提供可預測的滑動行為", "適合應用於需要精確控制張力的系統"], ans: [0, 1, 2, 3], analysis: "它是控繩專業戶必學，摩擦力很均勻。" },
@@ -263,12 +267,12 @@ const scenarioQuestions = [
     { q: "55.【情境】夜間山洪救援任務中視線極差且洪水持續上漲。您應如何處理？", options: ["增加現場照明與建立反光路徑標記", "下令降低所有技術操作速度，以求穩健", "加強下游觀察與撤離信號的建立", "為了救人爭取時效，忽略標記動作直接開工"], ans: [0, 1, 2], analysis: "慢就是快，照明標記做好，安全第一。" },
     { q: "56.【情境】發現下游安全組人員自行坐下休息。您應如何處理？", options: ["立即暫停水域救援行動", "糾正行為並要求重新進入警戒狀態", "重新指派體力充足的人員擔任", "認為風險不大，繼續救援"], ans: [0, 1, 2], analysis: "下游沒人接應絕對不能救。" },
     { q: "57.【情境】橫渡繩系統架設完成後，繩索被拉得極為緊繃無下垂度。您應如何處理？", options: ["說明系統崩潰風險", "必須放鬆繩索，保留一定的自然弧度", "檢查固定點是否出現移位", "很好，繩索越直越安全"], ans: [0, 1, 2], analysis: "繩子不能拉死，留點弧度才能保護固定點。" },
-    { q: "58.【情境】現場噪音極大通訊完全中斷時。您應如何處理？", options: ["立即切換為標準手勢信號", "使用哨音進行溝通", "所有人大聲吼叫以利傳遞", "暫停所有可能產生誤解的操作"], ans: [0, 1, 3], analysis: "聽不見就用看的，手勢跟哨音最管用。" },
+    { q: "58.【情境】現場噪音極大通訊完全中斷時。您應如何處理？", options: ["立即切換為標準手勢信號", "使用哨音進行溝通", "所有人大聲吼叫以利傳遞", "暫停所有可能產生誤解的操作"], ans: [0, 1, 3], analysis: "聽不見就用看的，手勢跟哨音這時候最管用。" },
     { q: "59.【情境】學員在練習游泳試圖踩踏水底以求平衡。您應如何處理？", options: ["喊腳抬高！小心卡死在石縫中！", "要求維持防禦式姿勢，腳朝下游！", "喊用力踩到底，穩定重心！", "背部朝下，隨流移動！"], ans: [0, 1], analysis: "急流不能踩到底，會被石縫卡住。" },
     { q: "60.【情境】簽證考核中學員未對下游進行安全布置就拋繩。評核應如何處理？", options: ["判定該項簽證不合格", "說明下游安全區是救援的生命防線", "要求立即補設安全防護", "視拋繩準確度決定是否給予及格"], ans: [0, 1, 2], analysis: "沒設下游安全就是不及格。" },
     { q: "61.【情境】偵察發現上遊水位發出山洪暴發預警。您應如何處理？", options: ["全員立即撤離水域，移往高處", "暫停所有救援作業", "加派下游觀察員", "爭取最後 5 分鐘加速救人"], ans: [0, 1, 2], analysis: "大自然發威別硬拚，撤到高地。" },
     { q: "62.【情境】發現橫渡繩路徑正接觸尖銳岩石。您應如何處理？", options: ["使用繩套或防磨墊保護繩索", "調整固定點位置避開接觸面", "直接橫越，繩索纖維耐磨不需擔心", "說明繩索受損會導致整個系統失效"], ans: [0, 1, 3], analysis: "繩子不能磨石頭，會磨斷。" },
-    { q: "63.【情境】學員拋繩袋落在受困者正下游 2 公尺處。您應如何處理？", options: ["「拋投目標應瞄準上游位置」", "「水流會帶動繩索，丟下游抓不到」", "「拋得很準，請受困者游去抓」", "「收回重丟，瞄準受困者上方」"], ans: [0, 1, 3], analysis: "丟下游抓不到，水會把繩子越帶越遠。" },
+    { q: "63.【情境】學員拋繩袋落在受困者正下游 2 公尺處。您應如何處理？", options: ["「拋投目標應瞄準上游位置」", "「水流會帶動繩索，丟下游抓不到」", "「拋得很準，請受困者游去抓」", "「收回重丟，瞄準受困者上方」"], ans: [0, 1, 3], analysis: "丟下游抓不到，水會幫繩子越帶越遠。" },
     { q: "64.【情境】需要運送傷勢穩定傷患橫渡 40 公尺強流區。您應如何處理？", options: ["架設高張力橫渡系統", "利用 3:1 或 5:1 滑輪組增加張力與穩定度", "使用單人涉水背負過河", "讓傷患抓住繩索自行游過"], ans: [0, 1], analysis: "載重又遠，就要用滑輪省力系統。" },
     { q: "65.【情境】學員試圖將橫渡繩繫在救援車保險桿上。您應如何處理？", options: ["立即糾正，保險桿不具備結構支撐力", "說明強大張力會將保險桿扯落", "指導尋找車架大樑或拖車鉤", "若只是運送輕型物資則可以允許"], ans: [0, 1, 2], analysis: "保險桿一拉就噴，不能當固定點。" },
     { q: "66.【情境】學員穿戴救生衣後未對快速釋放扣進行檢查。您應如何處理？", options: ["提醒學員檢查扣環功能是否正常", "說明快速釋放扣在危急時的脫離作用", "要求學員實施互助檢查", "判定該員裝備穿戴不合格"], ans: [0, 1, 2, 3], analysis: "扣子要天天檢查，隊友也要互檢。" },
@@ -278,7 +282,7 @@ const scenarioQuestions = [
     { q: "70.【情境】橫渡系統夾角角度過小 (如 20 度)。您應如何處理？", options: ["立即增加系統弧度（放鬆繩索）", "警告學員固定點可能有失效風險", "要求學員重新調整固定點位置以擴大夾角", "繼續操作以求快速完成"], ans: [0, 1, 2], analysis: "角度太小繩子會斷，放鬆一點點。" },
     { q: "71.【情境】看見隊員在拉繩時將繩索纏繞在手掌或手臂上。您應如何處理？", options: ["喊「鬆手！禁止纏繞！會扯斷手臂！」", "「使用正確握法，不可環繞！」", "「這樣拉比較有力，繼續！」", "「安全第一，改用身體核心力量拉！」"], ans: [0, 1, 3], analysis: "絕對不能纏手，水一拉手就廢了！" },
     { q: "72.【情境】偵察發現下游 50 公尺處有大型 Strainer 設施。您應如何處理？", options: ["極度強化下游安全攔截與觀察", "嚴禁人員以游泳方式接近受困者", "若風險過高應考慮其他方案", "無視距離，直接執行拋繩救援"], ans: [0, 1, 2], analysis: "下游有奪命網，不能讓人員漂過去。" },
-    { q: "73.【情境】評估固定點樹木生長在土質鬆軟的陡坡上。您應如何處理？", options: ["視為不穩定固定點，尋找其他目標", "考慮樹木根系可能連同土堆被拔起的風險", "棄用該樹木，改用人造地錨或車輛", "先試拉看看，沒倒就可以用"], ans: [0, 1, 2], analysis: "土坡上的樹容易倒，別當固定點。" },
+    { q: "73.【情境】評估固定點樹木生長在土質鬆軟的陡坡上。您應如何處理？", options: ["視為不穩定固定點，尋找其他目標", "考慮樹木根系可能連同土堆被拔起風險", "棄用該樹木，改用人造地錨或車輛", "先試拉看看，沒倒就可以用"], ans: [0, 1, 2], analysis: "土坡上的樹容易倒，別當固定點。" },
     { q: "74.【情境】執行三人涉水技術時，水深已過膝且流速約 2 m/s。您應如何處理？", options: ["判斷為極高風險應撤退", "應視為不適合繼續涉水，轉向其他方式", "保持高度警覺，緩慢嘗試", "成員若體格壯碩則可安全通過"], ans: [0, 1], analysis: "水過膝蓋就很強了，太急就撤。" },
     { q: "75.【情境】學員架設鋼釘只打入三分之二深度。您應如何處理？", options: ["指導學員鋼釘必須完全打入以確保抓地力", "說明未完全打入會產生槓桿原理將地錨拔起", "判定該項簽證不合格，要求重做", "鋼釘夠多就行，不須全部打入"], ans: [0, 1, 2], analysis: "釘子沒打滿會被拔出來，重打！" },
     { q: "76.【情境】救援中無線電受干擾通訊不清。您應如何處理？", options: ["啟動預備通訊計畫，改用手勢", "使用哨音口號進行通訊同步", "暫停所有關鍵性操作，直到確認指令", "派出一名傳令兵在岸上奔跑傳令"], ans: [0, 1, 2], analysis: "眼睛看手勢最管用。" },
@@ -306,7 +310,12 @@ function initApp() {
 
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js?v=26').then(reg => reg.update());
+            navigator.serviceWorker.register('./sw.js?v=27').then(reg => reg.update());
+        });
+
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+            console.log('✨ 助手換班，系統自動重啟...');
+            window.location.reload();
         });
     }
 
@@ -337,7 +346,7 @@ function showInstallInstructions() {
     const modal = document.getElementById('installModal');
     const body = document.getElementById('install-body');
     if (isIOS) {
-        body.innerHTML = `<div style="font-weight:800; color:var(--primary); margin-bottom:10px;">iOS (iPhone/iPad) 安裝指引：</div>1. 點擊瀏覽器下方工具列的<b>「分享」</b>圖示。<br>2. 向下滑動找到並點擊<b>「加入主畫面」</b>。<br>3. 點擊右上角的<b>「新增」</b>。`;
+        body.innerHTML = `<div style="font-weight:800; color:var(--primary); margin-bottom:10px;">iOS (iPhone/iPad) 安裝指引：</div>1. 點擊瀏覽器下方工具列的<b>「分享」</b>圖示。<br>2. 向下滑動找到並點擊<b>「加入主畫面」</b>。<br>3. 點擊右上角的<b>「新增」</b>。<br><br><small>💡 若內容未更新，請徹底關閉主畫面 App 並重開兩次。</small>`;
     } else if (deferredPrompt) {
         body.innerHTML = `<button class="main-btn" style="width:100%" onclick="triggerPWA()">立即安裝到桌面</button>`;
     } else {
