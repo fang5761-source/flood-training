@@ -1,12 +1,12 @@
-const CACHE_NAME = 'flood-training-v1.0.28';
+const CACHE_NAME = 'flood-training-v1.0.30';
 const ASSETS = [
   './',
-  './index.html?v=28',
-  './manifest.json?v=28',
-  './icon-128.png?v=28',
-  './icon-192.png?v=28',
-  './icon-512.png?v=28',
-  './apple-touch-icon.png?v=28',
+  './index.html?v=30',
+  './manifest.json?v=30',
+  './icon-128.png?v=30',
+  './icon-192.png?v=30',
+  './icon-512.png?v=30',
+  './apple-touch-icon.png?v=30',
   './ch1.mp3',
   './ch2.mp3',
   './ch3.mp3',
@@ -16,7 +16,7 @@ const ASSETS = [
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
-      console.log('🛡️ 部署 v28 網路優先防卡死資源');
+      console.log('🛡️ 部署 v30 網路優先防卡死資源');
       return cache.addAll(ASSETS);
     })
   );
